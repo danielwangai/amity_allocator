@@ -36,3 +36,48 @@ class Amity(object):
         "office": {},
         "living_space": {}
     }
+
+    def create_room(self, list_of_rooms):
+        '''
+            accepts a list as an argument containing a list of rooms
+            when list validates correctly returns a string confirming
+            successful addition.
+        '''
+        pass
+    def add_person(self, person_name, category, wants_accomodation='N'):
+        '''
+            accepts 3 parameters:-
+                - person_name - name of person
+                - category - FELLOW/STAFF
+                - wants_accomodation - with default value N
+            returns string confirming successful addition of person if inputs validate correctly
+        '''
+        pass
+
+    def reallocate_person(self):
+        pass
+
+
+    def load_people(self, file_path):
+        '''
+            Takes path to file as argument and populates people in specific lists
+        '''
+        pass
+
+    def print_unallocated(self):
+        pass
+
+    def print_allocations(self):
+        pass
+
+    def print_room(self, room_name):
+        '''
+            takes room name as argument and if exists returns list of occupants
+        '''
+        pass
+
+    def save_state(self):
+        pass
+
+    def load_state(self):
+        pass
