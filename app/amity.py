@@ -37,7 +37,7 @@ class Amity(object):
         "living_space": {}
     }
 
-    def create_room(self, list_of_rooms):
+    def create_room(self, list_of_rooms, room_type):
         '''
             accepts a list as an argument containing a list of rooms
             when list validates correctly returns a string confirming
