@@ -23,5 +23,14 @@ class TestAmity(unittest.TestCase):
         # confirm duplicate not added
         self.assertTrue(len(self.amity.rooms["office"]) == 1)
 
+    def test_create_room_does_not_create_office_and_living_space_with_same_name(self):
+        # create an office
+        self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Room successfully added")
+        # create living space with same name as office
+        self.assertEqual(self.amity.create_room(["Hogwarts"], "L"), "Room successfully added")
+        # confirm that living space has not been added
+        self.assertTrue(len(self.amity.rooms["living_space"]) == 0)
+
+
 if __name__== '__main__':
     unittest.main()
