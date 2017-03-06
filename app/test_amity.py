@@ -63,5 +63,9 @@ class TestAmity(unittest.TestCase):
         # check if added fellow is reflected in the list
         self.assertEqual((fellows_before + 1), fellows_after)
 
+    def test_load_people_file_does_not_exist(self):
+        file_path = '/path/to/no where'
+        self.assertEqual(self.amity.load_people(file_path), 'File doesnt exist')
+
 if __name__== '__main__':
     unittest.main()
