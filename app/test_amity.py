@@ -7,10 +7,10 @@ class TestAmity(unittest.TestCase):
         self.amity = Amity()
         # office and its allocations
         for i in ["Narnia", "Hogwarts", "Platform"]:
-            self.amity.rooms["office"][i] = []
+            (self.amity.rooms["office"]).append(i)
         # prepulate living spaces
         for i in ["Python", "Scala", "Go"]:
-            self.amity.rooms["living_space"][i] = []
+            (self.amity.rooms["living_space"]).append(i)
 
     def test_create_room_adds_rooms_successfully(self):
         # check the current number of rooms
