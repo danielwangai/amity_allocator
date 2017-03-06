@@ -28,7 +28,7 @@ class TestAmity(unittest.TestCase):
         # check current number of rooms
         old_number_of_offices = len(self.amity.rooms["office"])
         # create rooom
-        self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Room successfully added")
+        self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Cannot create room since a room with the same naem exists.")
         # get new number of rooms
         new_number_of_offices = self.amity.rooms["office"]
         # expected - old_number_of_rooms = new_number_of_rooms
