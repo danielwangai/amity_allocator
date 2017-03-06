@@ -31,6 +31,15 @@ class TestAmity(unittest.TestCase):
         # confirm that living space has not been added
         self.assertTrue(len(self.amity.rooms["living_space"]) == 0)
 
+    def test_add_person_creates_person_successfully(self):
+        # get number of people(fellows)
+        fellows_before = len(self.amity.people["fellow"]["no_accomodation"])
+        # create a person(fellow)
+        self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Person successfully added")
+        # check number of fellows after
+        fellows_after = len(self.amity.people["fellow"]["no_accomodation"])
+        # check if added fellow is reflected in the list
+        self.assertEqual((fellows_before + 1), fellows_after)
 
 if __name__== '__main__':
     unittest.main()
