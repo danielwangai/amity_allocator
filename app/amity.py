@@ -57,7 +57,7 @@ class Amity(object):
         '''
         pass
 
-    def reallocate_person(self):
+    def reallocate_person(self, person_id):
         pass
 
 
