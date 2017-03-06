@@ -6,4 +6,4 @@ class LivingSpace(Room):
     '''
     room_capacity = 6
     def init(self):
-        super(LivingSpace, self).__init__(room_id, name)
+        super(LivingSpace, self).__init__(name)
