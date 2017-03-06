@@ -79,5 +79,10 @@ class TestAmity(unittest.TestCase):
         # assert for increment
         self.assertEqual((fellows_after - fellows_after), 2)
 
+    def test_print_room_does_not_print_inexistent_room(self):
+        # name of inexistent room
+        room_name = "asdbakdsjs"
+        self.assertEqual(self.amity.print_room(room_name), "The room {0} does not exist".format(room_name))
+
 if __name__== '__main__':
     unittest.main()
