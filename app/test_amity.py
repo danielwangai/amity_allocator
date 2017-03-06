@@ -8,6 +8,9 @@ class TestAmity(unittest.TestCase):
         # office and its allocations
         for i in ["Narnia", "Hogwarts", "Platform"]:
             self.amity.rooms["office"][i] = []
+        # prepulate living spaces
+        for i in ["Python", "Scala", "Go"]:
+            self.amity.rooms["living_space"][i] = []
 
     def test_create_room_adds_rooms_successfully(self):
         # check the current number of rooms
@@ -16,28 +19,39 @@ class TestAmity(unittest.TestCase):
         # list of new office to be added
         new_office = ["Hogwarts"]
         self.assertEqual(self.amity.create_room(new_office, "O"), "Room successfully added")
-        # confirm that extra room has been added
+        # get new number of rooms
         new_number_of_offices = self.amity.rooms["office"]
         # expected - increase by 1
         self.assertEqual((new_number_of_offices - new_number_of_offices), 1)
 
     def test_create_room_does_not_create_duplicate_rooms(self):
+        # check current number of rooms
+        old_number_of_offices = len(self.amity.rooms["office"])
         # create rooom
         self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Room successfully added")
-        # assert that ONE office has been added
-        self.assertTrue(len(self.amity.rooms["office"]) == 1)
-        # try creating a room with the same name
-        self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Cannot create duplocate rooms.")
-        # confirm duplicate not added
-        self.assertTrue(len(self.amity.rooms["office"]) == 1)
+        # get new number of rooms
+        new_number_of_offices = self.amity.rooms["office"]
+        # expected - old_number_of_rooms = new_number_of_rooms
+        self.assertEqual(new_number_of_offices, new_number_of_offices)
 
     def test_create_room_does_not_create_office_and_living_space_with_same_name(self):
+        # check current number of offices
+        old_number_of_offices = len(self.amity.rooms["office"])
         # create an office
         self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Room successfully added")
+        # get new number of offices
+        new_number_of_offices = self.amity.rooms["office"]
+        # confirm addition of new office
+        self.assertEqual((new_number_of_offices - old_number_of_offices), 1)
+
+        # check current number of offices
+        old_number_of_living_spaces = len(self.amity.rooms["living_space"])
         # create living space with same name as office
-        self.assertEqual(self.amity.create_room(["Hogwarts"], "L"), "Room successfully added")
+        self.assertEqual(self.amity.create_room(["Hogwarts"], "L"), "Cannot add living space. An office with same name exists.")
+        # new number of living spaces
+        new_number_of_living_spaces = self.amity.rooms["living_space"]
         # confirm that living space has not been added
-        self.assertTrue(len(self.amity.rooms["living_space"]) == 0)
+        self.assertTrue((new_number_of_living_spaces - old_number_of_living_spaces) == 0)
 
     def test_add_person_creates_person_successfully(self):
         # get number of people(fellows)
