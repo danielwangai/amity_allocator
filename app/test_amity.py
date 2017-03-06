@@ -67,5 +67,17 @@ class TestAmity(unittest.TestCase):
         file_path = '/path/to/no where'
         self.assertEqual(self.amity.load_people(file_path), 'File doesnt exist')
 
+    def test_load_people_loads_people_successfully(self):
+        # assign file path
+        file_path = 'files/test_people.txt'
+        # get people count
+        fellows_before = len(self.amity.people["fellows"]["no_accomodation"])
+        # load people from file
+        self.assertEqual(self.amity.load_people(file_path), 'People loaded successfully.')
+        # get count after loading people
+        fellows_after = len(self.amity.people["fellow"]["no_accomodation"])
+        # assert for increment
+        self.assertEqual((fellows_after - fellows_after), 2)
+
 if __name__== '__main__':
     unittest.main()
