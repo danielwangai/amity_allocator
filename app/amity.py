@@ -16,12 +16,12 @@ class Amity(object):
     '''
     people = {
         # stores all people -> fellows + staff
-        "all_people": {},
+        "all_people": [],
         "fellows": {
-            "no_accomodation": {},
-            "wants_accomodation": {},
+            "no_accomodation": [],
+            "wants_accomodation": [],
         },
-        "staff": {}
+        "staff": []
     }
 
     '''
@@ -35,9 +35,9 @@ class Amity(object):
                 value - list of ids of occupants (Fellows ONLY) whose length cannot exceed 4
     '''
     rooms = {
-        "all_rooms": {},
-        "office": {},
-        "living_space": {}
+        "all_rooms": [],
+        "office": [],
+        "living_space": []
     }
 
     def create_room(self, list_of_rooms, room_type):
