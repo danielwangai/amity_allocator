@@ -15,6 +15,8 @@ class Amity(object):
                 value - name of staff member
     '''
     people = {
+        # stores all people -> fellows + staff
+        "all_people": {}
         "fellows": {
             "no_accomodation": {},
             "wants_accomodation": {},
@@ -33,6 +35,7 @@ class Amity(object):
                 value - list of ids of occupants (Fellows ONLY) whose length cannot exceed 4
     '''
     rooms = {
+        "all_rooms": {}
         "office": {},
         "living_space": {}
     }
