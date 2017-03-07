@@ -1,4 +1,9 @@
 from amity import Amity
+from fellow import Fellow
+from staff import Staff
+from office import Office
+from living_space import LivingSpace
+
 import unittest
 
 
@@ -7,10 +12,13 @@ class TestAmity(unittest.TestCase):
         self.amity = Amity()
         # office and its allocations
         for i in ["Narnia", "Krypton", "Platform"]:
-            (self.amity.rooms["office"]).append(i)
+            self.new_office = Office(i)
+            self.amity.rooms["office"][self.new_office] = []
         # prepulate living spaces
         for i in ["Python", "Scala", "Go"]:
-            (self.amity.rooms["living_space"]).append(i)
+            # (self.amity.rooms["living_space"]).append(i)
+            self.new_living_space = LivingSpace(i)
+            self.amity.rooms["living_space"][self.new_living_space] = []
 
     def test_create_room_adds_rooms_successfully(self):
         # check the current number of rooms
