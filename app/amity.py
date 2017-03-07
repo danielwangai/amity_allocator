@@ -46,12 +46,20 @@ class Amity(object):
             when list validates correctly returns a string confirming
             successful addition.
         '''
-        pass
+        result = ""
+        for room in list_of_rooms:
+            if room in self.get_all_rooms(self.rooms['all_rooms']):
+                return "Cannot create room since a room with the same naem exists."
+            if room_type in ["Office", "office", "O", "o"]:
+                office = Office(room)
+                self.rooms['all_rooms'].append(office)
+                self.rooms['office'][office] = []
+                result = "Room successfully added"
+                print(result)
+        return result
 
     def get_all_rooms(self, rooms):
-        """
-            Returns a list of all room names
-        """
+        # iterate all rooms
         room_names = []
         for room in rooms:
             room_names.append(room.name)
