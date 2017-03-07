@@ -55,7 +55,7 @@ class TestAmity(unittest.TestCase):
 
     def test_add_person_creates_person_successfully(self):
         # get number of people(fellows)
-        fellows_before = len(self.amity.people["fellows"]["no_accomodation"])
+        fellows_before = len(self.amity.people["fellows"])
         # create a person(fellow)
         self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Person successfully added")
         # check number of fellows after
@@ -71,7 +71,7 @@ class TestAmity(unittest.TestCase):
         # assign file path
         file_path = 'files/test_people.txt'
         # get people count
-        fellows_before = len(self.amity.people["fellows"]["no_accomodation"])
+        fellows_before = len(self.amity.people["fellows"])
         # load people from file
         self.assertEqual(self.amity.load_people(file_path), 'People loaded successfully.')
         # get count after loading people
