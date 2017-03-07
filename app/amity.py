@@ -17,10 +17,7 @@ class Amity(object):
     people = {
         # stores all people -> fellows + staff
         "all_people": [],
-        "fellows": {
-            "no_accomodation": [],
-            "wants_accomodation": [],
-        },
+        "fellows":[],
         "staff": []
     }
 
