@@ -2,17 +2,13 @@ class Amity(object):
 
     '''
         people is a dictionary contains the following keys:-
-            fellows - contains the following keys:
-                no_accomodation - for fellows who opt for no accomodation:
-                    key - person_id of fellow
-                    value - name of fellow
-                wants_accomodation - For Fellows ONLY:
-                    key - person_id of fellow
-                    value - name of fellow
+            all_people - for fellows who opt for no accomodation:
+                - a list of objects of all people
+            fellows - For Fellows ONLY:
+                - a list of objects of fellows
 
             staff - a dictionary with:
-                key - as person_id
-                value - name of staff member
+                - a list of objects of all staff
     '''
     people = {
         # stores all people -> fellows + staff
@@ -23,18 +19,19 @@ class Amity(object):
 
     '''
         rooms is a dictionary contains the following keys:-
+            all_rooms - a list of room objects
             office - a dictionary with:
-                key - as room name
-                value - list of ids of occupants (Fellows & Staff) whose length cannot exceed 6
+                key - room object
+                value - list of person objects (Fellows & Staff) whose length cannot exceed 6
 
             living_space - a dictionary with:
-                key - as room name
-                value - list of ids of occupants (Fellows ONLY) whose length cannot exceed 4
+                key - room object
+                value - list of objects of occupants (Fellows ONLY) whose length cannot exceed 4
     '''
     rooms = {
         "all_rooms": [],
-        "office": [],
-        "living_space": []
+        "office": {},
+        "living_space": {}
     }
 
     def create_room(self, list_of_rooms, room_type):
