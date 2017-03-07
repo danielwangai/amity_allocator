@@ -1,3 +1,9 @@
+from fellow import Fellow
+from staff import Staff
+from office import Office
+from living_space import LivingSpace
+
+
 class Amity(object):
 
     '''
@@ -41,6 +47,16 @@ class Amity(object):
             successful addition.
         '''
         pass
+
+    def get_all_rooms(self, rooms):
+        """
+            Returns a list of all room names
+        """
+        room_names = []
+        for room in rooms:
+            room_names.append(room.name)
+        return room_names
+
     def add_person(self, person_name, category, wants_accomodation='N'):
         '''
             accepts 3 parameters:-
