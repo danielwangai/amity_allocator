@@ -23,12 +23,13 @@ class TestAmity(unittest.TestCase):
     def test_create_room_adds_rooms_successfully(self):
         # check the current number of rooms
         old_number_of_offices = len(self.amity.rooms["office"])
-        self.assertEqual(old_number_of_offices, 3)
+        # self.assertEqual(old_number_of_offices, 3)
         # list of new office to be added
         new_office = ["Hogwarts"]
-        self.assertEqual(self.amity.create_room(new_office, "O"), "Room successfully added")
+        # self.amity.create_room(new_office, "o")
+        self.assertEqual(self.amity.create_room(new_office, "o"), "Room successfully added")
         # get new number of rooms
-        new_number_of_offices = self.amity.rooms["office"]
+        new_number_of_offices = len(self.amity.rooms["office"])
         # expected - increase by 1
         self.assertEqual((new_number_of_offices - new_number_of_offices), 1)
 
