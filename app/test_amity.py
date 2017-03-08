@@ -60,14 +60,16 @@ class TestAmity(unittest.TestCase):
 
 
     def test_add_person_creates_person_successfully(self):
-        # get number of people(fellows)
-        fellows_before = len(self.amity.people["fellows"])
-        # create a person(fellow)
+        # new person
+        name = "Dan"
+        # get initial number of people
+        length = len(self.amity.people["all_people"])
+        # create a person
         self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Person successfully added")
-        # check number of fellows after
-        fellows_after = len(self.amity.people["fellow"]["no_accomodation"])
-        # check if added fellow is reflected in the list
-        self.assertEqual((fellows_before + 1), fellows_after)
+        # get the new number of people
+        new_length = len(self.amity.people["all_people"])
+        # test that person is added
+        self.assertEqual((length + 1), new_length)
 
     def test_load_people_file_does_not_exist(self):
         file_path = '/path/to/no where'
