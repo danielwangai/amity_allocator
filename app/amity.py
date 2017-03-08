@@ -56,6 +56,12 @@ class Amity(object):
                 self.rooms['office'][office] = []
                 result = "Room successfully added"
                 print(result)
+            elif room_type in ["Living", "living", "L", "l"]:
+                living_space = LivingSpace(room)
+                self.rooms['all_rooms'].append(living_space)
+                self.rooms["living_space"][living_space] = []
+                result = "Room successfully added"
+                print(result)
         return result
 
     def get_all_rooms(self, rooms):
