@@ -20,15 +20,25 @@ class TestAmity(unittest.TestCase):
             self.new_living_space = LivingSpace(i)
             self.amity.rooms["living_space"][self.new_living_space] = []
 
-    def test_create_room_adds_rooms_successfully(self):
+    def test_create_room_adds_offices_successfully(self):
         # list of new room to be added
         new_office = ["Hogwarts"]
         # assert that new room is not is list of all rooms
         self.assertFalse(new_office[0] in self.amity.rooms["all_rooms"])
         # add room
-        self.assertEqual(self.amity.create_room(new_office, "o"), "Room successfully added")
+        self.assertEqual(self.amity.create_room(new_office, "o"), "Office successfully added")
         # assert that new room was added
         self.assertTrue(new_office[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+
+    def test_create_room_adds_living_spaces_successfully(self):
+        # list of new room to be added
+        new_living_space = ["PHP"]
+        # assert that new room is not is list of all rooms
+        self.assertFalse(new_living_space[0] in self.amity.rooms["all_rooms"])
+        # add room
+        self.assertEqual(self.amity.create_room(new_living_space, "l"), "Living Space successfully added")
+        # assert that new room was added
+        self.assertTrue(new_living_space[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
     def test_create_room_does_not_create_duplicate_rooms(self):
         # new room to be created
