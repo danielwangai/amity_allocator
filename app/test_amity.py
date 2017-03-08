@@ -45,23 +45,19 @@ class TestAmity(unittest.TestCase):
         self.assertIn(new_office, self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
     def test_create_room_does_not_create_office_and_living_space_with_same_name(self):
-        # check current number of offices
-        old_number_of_offices = len(self.amity.rooms["office"])
-        # create an office
-        self.assertEqual(self.amity.create_room(["Hogwarts"], "O"), "Room successfully added")
-        # get new number of offices
-        new_number_of_offices = self.amity.rooms["office"]
-        # confirm addition of new office
-        self.assertEqual((new_number_of_offices - old_number_of_offices), 1)
+        # new room to create
+        new_room = "Oculus"
+        # assert that new room is not is list of all rooms
+        self.assertFalse(new_room in [i.name for i in list(self.amity.rooms["office"].keys())])
+        # add room
+        self.assertEqual(self.amity.create_room([new_room], "o"), "Room successfully added")
+        # assert that new office was added
+        self.assertIn(new_room, [i.name for i in list(self.amity.rooms["office"].keys())])
+        # try creating an office with the same name
+        self.assertEqual(self.amity.create_room([new_room], "l"), "Cannot create room since a room with the same naem exists.")
 
-        # check current number of offices
-        old_number_of_living_spaces = len(self.amity.rooms["living_space"])
-        # create living space with same name as office
-        self.assertEqual(self.amity.create_room(["Hogwarts"], "L"), "Cannot add living space. An office with same name exists.")
-        # new number of living spaces
-        new_number_of_living_spaces = self.amity.rooms["living_space"]
-        # confirm that living space has not been added
-        self.assertTrue((new_number_of_living_spaces - old_number_of_living_spaces) == 0)
+        self.assertNotIn(new_room, [i.name for i in list(self.amity.rooms["living_space"].keys())])
+
 
     def test_add_person_creates_person_successfully(self):
         # get number of people(fellows)
