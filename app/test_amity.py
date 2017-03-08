@@ -69,15 +69,27 @@ class TestAmity(unittest.TestCase):
         self.assertNotIn(new_room, [i.name for i in list(self.amity.rooms["living_space"].keys())])
 
 
-    def test_add_person_creates_person_successfully(self):
+    def test_add_person_creates_fellow_successfully(self):
         # new person
         name = "Dan"
         # get initial number of people
-        length = len(self.amity.people["all_people"])
+        length = len(self.amity.people["fellows"])
         # create a person
         self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Fellow successfully added")
         # get the new number of people
-        new_length = len(self.amity.people["all_people"])
+        new_length = len(self.amity.people["fellows"])
+        # test that person is added
+        self.assertEqual((length + 1), new_length)
+
+    def test_add_person_creates_staff_successfully(self):
+        # new person
+        name = "James"
+        # get initial number of people
+        length = len(self.amity.people["staff"])
+        # create a person
+        self.assertEqual(self.amity.add_person("Dave", "S", "N"), "Staff member successfully added")
+        # get the new number of people
+        new_length = len(self.amity.people["staff"])
         # test that person is added
         self.assertEqual((length + 1), new_length)
 
