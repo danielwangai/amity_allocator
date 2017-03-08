@@ -46,7 +46,7 @@ class Amity(object):
             when list validates correctly returns a string confirming
             successful addition.
         '''
-        result = ""
+        # result = ""
         for room in list_of_rooms:
             if room in self.get_all_rooms(self.rooms['all_rooms']):
                 return "Cannot create room since a room with the same naem exists."
@@ -54,13 +54,13 @@ class Amity(object):
                 office = Office(room)
                 self.rooms['all_rooms'].append(office)
                 self.rooms['office'][office] = []
-                result = "Room successfully added"
+                result = "Office successfully added"
                 print(result)
             elif room_type in ["Living", "living", "L", "l"]:
                 living_space = LivingSpace(room)
                 self.rooms['all_rooms'].append(living_space)
                 self.rooms["living_space"][living_space] = []
-                result = "Room successfully added"
+                result = "Living Space successfully added"
                 print(result)
         return result
 
@@ -84,12 +84,12 @@ class Amity(object):
             new_fellow.wants_accomodation = wants_accomodation
             self.people["all_people"].append(new_fellow)
             self.people["fellows"].append(new_fellow)
-            return "Person successfully added"
+            return "Fellow successfully added"
         elif category.lower() in ["Staff".lower(), "S".lower()]:
             new_staff = Staff(person_name)
             self.people["all_people"].append(new_staff)
             self.people["staff"].append(new_staff)
-            return "Person successfully added"
+            return "Staff member successfully added"
 
     def reallocate_person(self, person_id):
         pass
