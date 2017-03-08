@@ -46,7 +46,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_office in self.amity.rooms["all_rooms"])
         # add room
-        self.assertEqual(self.amity.create_room([new_office], "o"), "Room successfully added")
+        self.assertEqual(self.amity.create_room([new_office], "o"), "Office successfully added")
         # assert that new room was added
         self.assertTrue(new_office in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # try adding the same room again
@@ -60,7 +60,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_room in [i.name for i in list(self.amity.rooms["office"].keys())])
         # add room
-        self.assertEqual(self.amity.create_room([new_room], "o"), "Room successfully added")
+        self.assertEqual(self.amity.create_room([new_room], "o"), "Office successfully added")
         # assert that new office was added
         self.assertIn(new_room, [i.name for i in list(self.amity.rooms["office"].keys())])
         # try creating an office with the same name
@@ -75,7 +75,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         length = len(self.amity.people["all_people"])
         # create a person
-        self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Person successfully added")
+        self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Fellow successfully added")
         # get the new number of people
         new_length = len(self.amity.people["all_people"])
         # test that person is added
@@ -91,7 +91,7 @@ class TestAmity(unittest.TestCase):
         # get people count
         fellows_before = len(self.amity.people["fellows"])
         # load people from file
-        self.assertEqual(self.amity.load_people(file_path), 'People loaded successfully.')
+        self.assertEqual(self.amity.load_people(file_path), 'Fellow successfully added')
         # get count after loading people
         fellows_after = len(self.amity.people["fellow"]["no_accomodation"])
         # assert for increment
