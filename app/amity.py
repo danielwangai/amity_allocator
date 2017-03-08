@@ -79,7 +79,17 @@ class Amity(object):
                 - wants_accomodation - with default value N
             returns string confirming successful addition of person if inputs validate correctly
         '''
-        pass
+        if category.lower() in ["Fellow".lower(), "F".lower()]:
+            new_fellow = Fellow(person_name)
+            new_fellow.wants_accomodation = wants_accomodation
+            self.people["all_people"].append(new_fellow)
+            self.people["fellows"].append(new_fellow)
+            return "Person successfully added"
+        elif category.lower() in ["Staff".lower(), "S".lower()]:
+            new_staff = Staff(person_name)
+            self.people["all_people"].append(new_staff)
+            self.people["staff"].append(new_staff)
+            return "Person successfully added"
 
     def reallocate_person(self, person_id):
         pass
