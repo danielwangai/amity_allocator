@@ -26,7 +26,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_office[0] in self.amity.rooms["all_rooms"])
         # add room
-        self.assertEqual(self.amity.create_room(new_office, "o"), "Office successfully added")
+        self.amity.create_room(new_office, "o")
         # assert that new room was added
         self.assertTrue(new_office[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
@@ -36,7 +36,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_living_space[0] in self.amity.rooms["all_rooms"])
         # add room
-        self.assertEqual(self.amity.create_room(new_living_space, "l"), "Living Space successfully added")
+        self.amity.create_room(new_living_space, "l")
         # assert that new room was added
         self.assertTrue(new_living_space[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
@@ -46,7 +46,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_office in self.amity.rooms["all_rooms"])
         # add room
-        self.assertEqual(self.amity.create_room([new_office], "o"), "Office successfully added")
+        self.amity.create_room([new_office], "o")
         # assert that new room was added
         self.assertTrue(new_office in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # try adding the same room again
@@ -60,7 +60,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_room in [i.name for i in list(self.amity.rooms["office"].keys())])
         # add room
-        self.assertEqual(self.amity.create_room([new_room], "o"), "Office successfully added")
+        self.amity.create_room([new_room], "o")
         # assert that new office was added
         self.assertIn(new_room, [i.name for i in list(self.amity.rooms["office"].keys())])
         # try creating an office with the same name
@@ -75,7 +75,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         length = len(self.amity.people["fellows"])
         # create a person
-        self.assertEqual(self.amity.add_person("Dave", "F", "N"), "Fellow successfully added")
+        self.amity.add_person("Dave", "F", "N")
         # get the new number of people
         new_length = len(self.amity.people["fellows"])
         # test that person is added
@@ -87,7 +87,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         length = len(self.amity.people["staff"])
         # create a person
-        self.assertEqual(self.amity.add_person("Dave", "S", "N"), "Staff member successfully added")
+        self.amity.add_person("Dave", "S", "N")
         # get the new number of people
         new_length = len(self.amity.people["staff"])
         # test that person is added
@@ -103,9 +103,9 @@ class TestAmity(unittest.TestCase):
         # get people count
         fellows_before = len(self.amity.people["fellows"])
         # load people from file
-        self.assertEqual(self.amity.load_people(file_path), 'Fellow successfully added')
+        self.amity.load_people(file_path)
         # get count after loading people
-        fellows_after = len(self.amity.people["fellow"]["no_accomodation"])
+        fellows_after = len(self.amity.people["fellows"])
         # assert for increment
         self.assertEqual((fellows_after - fellows_after), 2)
 
