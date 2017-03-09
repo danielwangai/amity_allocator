@@ -3,6 +3,8 @@ from staff import Staff
 from office import Office
 from living_space import LivingSpace
 
+import random
+
 
 class Amity(object):
 
@@ -46,7 +48,6 @@ class Amity(object):
             when list validates correctly returns a string confirming
             successful addition.
         '''
-        # result = ""
         for room in list_of_rooms:
             if room in self.get_all_rooms(self.rooms['all_rooms']):
                 return "Cannot create room since a room with the same naem exists."
@@ -54,15 +55,10 @@ class Amity(object):
                 office = Office(room)
                 self.rooms['all_rooms'].append(office)
                 self.rooms['office'][office] = []
-                result = "Office successfully added"
-                print(result)
             elif room_type in ["Living", "living", "L", "l"]:
                 living_space = LivingSpace(room)
                 self.rooms['all_rooms'].append(living_space)
                 self.rooms["living_space"][living_space] = []
-                result = "Living Space successfully added"
-                print(result)
-        return result
 
     def get_all_rooms(self, rooms):
         # iterate all rooms
@@ -84,12 +80,10 @@ class Amity(object):
             new_fellow.wants_accomodation = wants_accomodation
             self.people["all_people"].append(new_fellow)
             self.people["fellows"].append(new_fellow)
-            return "Fellow successfully added"
         elif category.lower() in ["Staff".lower(), "S".lower()]:
             new_staff = Staff(person_name)
             self.people["all_people"].append(new_staff)
             self.people["staff"].append(new_staff)
-            return "Staff member successfully added"
 
     def reallocate_person(self, person_id):
         pass
@@ -117,4 +111,7 @@ class Amity(object):
         pass
 
     def load_state(self):
+        pass
+
+    def allocate_room(self, person, list_of_rooms, ):
         pass
