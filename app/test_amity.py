@@ -1,10 +1,10 @@
+import unittest
+
 from amity import Amity
 from fellow import Fellow
 from staff import Staff
 from office import Office
 from living_space import LivingSpace
-
-import unittest
 
 
 class TestAmity(unittest.TestCase):
