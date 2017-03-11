@@ -39,7 +39,9 @@ class Amity(object):
     rooms = {
         "all_rooms": [],
         "office": {},
-        "living_space": {}
+        "living_space": {},
+        "office_waiting_list": [],
+        "living_space_waiting_list": []
     }
 
     def create_room(self, list_of_rooms, room_type):
