@@ -113,5 +113,12 @@ class Amity(object):
     def load_state(self):
         pass
 
-    def allocate_room(self, person, list_of_rooms, ):
-        pass
+    def allocate_room(self, list_of_rooms, room_type):
+        if room_type in ["Office", "office", "O", "o"]:
+            # if room is office
+            # get all office objects with space < 6
+            return [room for room in list_of_rooms if len(list_of_rooms[room]) < 6]
+        elif room_type in ["Living", "living", "L", "l"]:
+            # if room is living space
+            # get all living space objects with space < 4
+            return [room for room in list_of_rooms if len(list_of_rooms[room]) < 4]
