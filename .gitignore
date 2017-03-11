@@ -1,2 +1,4 @@
 *.pyc
 app/__pycache__
+.coverage
+app/.coverage

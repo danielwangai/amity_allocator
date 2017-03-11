@@ -1,5 +1,7 @@
 from person import Person
 
 class Staff(Person):
-    def __init__(self):
-        super(Staff, self).__init__(person_id, name)
+    wants_accomodation = "N"
+    category = "Staff"
+    def __init__(self, name):
+        super(Staff, self).__init__(name)
