@@ -118,8 +118,8 @@ class Amity(object):
         if room_type in ["Office", "office", "O", "o"]:
             # if room is office
             # get all office objects with space < 6
-            return [room for room in list_of_rooms if len(list_of_rooms[room]) < 6]
+            return [room for room in list_of_rooms if len(self.rooms["office"][room]) < 6]
         elif room_type in ["Living", "living", "L", "l"]:
             # if room is living space
             # get all living space objects with space < 4
-            return [room for room in list_of_rooms if len(list_of_rooms[room]) < 4]
+            return [room for room in list_of_rooms if len(self.rooms["living_space"][room]) < 4]
