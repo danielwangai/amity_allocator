@@ -150,6 +150,17 @@ class Amity(object):
             # get all living space objects with space < 4
             return [room for room in list_of_rooms if len(self.rooms["living_space"][room]) < 4]
 
+    def is_allocated(self, person_object, room_type):
+        """
+            checks if a person is allocated to a room:-
+                - checks if fellow is allocated to office and living space
+                - checks if staff is allocated to office
+        """
+        if person_object.category in ["Fellow", "Staff"] and room_type in ["Office", "office", "O", "o"]:
+            return (person_object in self.list_of_persons_allocated_to_offices())
+        elif person_object.category == "Fellow" and room_type in ["Living", "living", "L", "l"]:
+            return (person_object in self.list_of_fellows_allocated_to_living_spaces())
+
     def list_of_persons_allocated_to_offices(self):
         """
             returns a list of persons (Fellows and Staff) allocated to office spaces
