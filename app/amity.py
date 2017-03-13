@@ -149,3 +149,10 @@ class Amity(object):
             # if room is living space
             # get all living space objects with space < 4
             return [room for room in list_of_rooms if len(self.rooms["living_space"][room]) < 4]
+
+    def list_of_persons_allocated_to_offices(self):
+        persons_in_offices = []
+        for i in list(self.rooms["office"].keys()):
+            if len(self.rooms["office"][i]) > 0:
+                persons_in_offices.extend(self.rooms["office"][i])
+        return persons_in_offices
