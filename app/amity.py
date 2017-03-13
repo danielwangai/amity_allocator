@@ -112,6 +112,17 @@ class Amity(object):
             self.people["all_people"].append(new_staff)
             self.people["staff"].append(new_staff)
 
+            # select office object
+            select_office = lambda offices: random.choice(offices) if len(offices) > 0 else "No available office space"
+            # allocate office
+            allocated_office = select_office(self.list_of_available_rooms(list(self.rooms["office"].keys()), "o"))
+            if allocated_office == "No available office space":
+                self.rooms["office_waiting_list"].append(new_staff)
+                return "Sorry, no available office spaces yet. You'll be set on the waiting list"
+            else:
+                print("Staff {0} allocated to {1}".format(new_staff.name, allocated_office.name))
+                self.rooms["office"][allocated_office].append(new_staff)
+
     def reallocate_person(self, person_id):
         pass
 
