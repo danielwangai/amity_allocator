@@ -151,8 +151,21 @@ class Amity(object):
             return [room for room in list_of_rooms if len(self.rooms["living_space"][room]) < 4]
 
     def list_of_persons_allocated_to_offices(self):
+        """
+            returns a list of persons (Fellows and Staff) allocated to office spaces
+        """
         persons_in_offices = []
         for i in list(self.rooms["office"].keys()):
             if len(self.rooms["office"][i]) > 0:
                 persons_in_offices.extend(self.rooms["office"][i])
         return persons_in_offices
+
+    def list_of_fellows_allocated_to_living_spaces(self):
+        """
+            returns a list of fellows allocated to living spaces
+        """
+        fellows_in_living_spaces = []
+        for room in list(self.rooms["living_space"].keys()):
+            if len(self.rooms["living_space"][room]) > 0:
+                fellows_in_living_spaces.extend(self.rooms["living_space"][room])
+        return fellows_in_living_spaces
