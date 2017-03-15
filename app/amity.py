@@ -126,6 +126,16 @@ class Amity(object):
     def reallocate_person(self, person_id):
         pass
 
+    def get_room_from_person_id(self, person_id):
+        result = None
+        for room in list(self.rooms["office"].keys()):
+            if person_id in [person.person_id for person in self.list_of_persons_allocated_to_offices()]:
+                result = room
+        if result == None:
+            return "person id does not exist"
+        else:
+            return result
+
 
     def load_people(self, file_path):
         '''
