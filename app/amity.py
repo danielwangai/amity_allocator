@@ -143,6 +143,21 @@ class Amity(object):
         else:
             return result
 
+    def get_room_from_room_name(self, room_name, room_type):
+        result = None
+        if room_type in ["Office", "office", "O", "o"]:
+            for room in list(self.rooms["office"].keys()):
+                if room_name in [room.name for room in self.list_of_available_rooms(list(self.rooms["office"].keys()), "o")]:
+                    result = room
+        elif room_type in ["Living", "living", "L", "l"]:
+            for room in list(self.rooms["living_space"].keys()):
+                if room_name in [room.name for room in self.list_of_available_rooms(list(self.rooms["living_space"].keys()), "l")]:
+                    result = room
+
+        if result == None:
+            return "room name does not exist"
+        else:
+            return result
 
     def load_people(self, file_path):
         '''
