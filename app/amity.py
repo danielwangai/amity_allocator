@@ -223,3 +223,6 @@ class Amity(object):
             if len(self.rooms["living_space"][room]) > 0:
                 fellows_in_living_spaces.extend(self.rooms["living_space"][room])
         return fellows_in_living_spaces
+
+    def get_person_object_given_person_id(self, person_id):
+        return [person for person in self.people["all_people"] if person.person_id == person_id][0]
