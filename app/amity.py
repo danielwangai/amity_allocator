@@ -126,6 +126,18 @@ class Amity(object):
     def reallocate_person(self, person_id):
         pass
 
+
+    def get_room_from_person_id(self, person_id, room_type):
+        result = None
+        if room_type in ["Office", "office", "O", "o"]:
+            for room in list(self.rooms["office"].keys()):
+                if person_id in [person.person_id for person in self.list_of_persons_allocated_to_offices()]:
+                    result = room
+        elif room_type in ["Living", "living", "L", "l"]:
+            for room in list(self.rooms["living_space"].keys()):
+                if person_id in [person.person_id for person in self.list_of_fellows_allocated_to_living_spaces()]:
+                    result = room
+
     def get_room_from_person_id(self, person_id):
         result = None
         for room in list(self.rooms["office"].keys()):
