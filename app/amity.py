@@ -268,3 +268,15 @@ class Amity(object):
             return "person id does not exist"
         else:
             return person_object
+
+    def get_room_from_room_name_update_all_rooms(self, room_name):
+        result = None
+        all_available_rooms = self.list_of_available_rooms(list(self.rooms["office"].keys()), "o")
+        all_available_rooms.extend(self.list_of_available_rooms(list(self.rooms["living_space"].keys()), "l"))
+        for room in all_available_rooms:
+            if room_name in [room.name for room in all_available_rooms]:
+                result = room
+        if result == None:
+            return "room name does not exist"
+        else:
+            return result
