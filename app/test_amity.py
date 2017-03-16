@@ -1,3 +1,4 @@
+import os.path
 import unittest
 
 from amity import Amity
@@ -237,6 +238,12 @@ class TestAmity(unittest.TestCase):
         # name of inexistent room
         room_name = "asdbakdsjs"
         self.assertEqual(self.amity.print_room(room_name), "The room {0} does not exist".format(room_name))
+
+    def test_print_unallocated_to_office_dumps_to_file_successfully(self):
+        file_name = "test.txt"
+        self.amity.print_unallocated_to_office(file_name)
+        self.assertTrue(os.path.exists(file_name))
+        os.remove(file_name)
 
 if __name__== '__main__':
     unittest.main()
