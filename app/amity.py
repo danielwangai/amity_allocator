@@ -135,7 +135,7 @@ class Amity(object):
                     result = room
         elif room_type in ["Living", "living", "L", "l"]:
             for room in list(self.rooms["living_space"].keys()):
-                if person_id in [person.person_id for person in self.rooms["office"][room]]:
+                if person_id in [person.person_id for person in self.rooms["living_space"][room]]:
                     result = room
 
         if result == None:
