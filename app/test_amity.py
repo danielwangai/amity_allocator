@@ -157,6 +157,16 @@ class TestAmity(unittest.TestCase):
         # self.assertNotIn(person_object, self.amity.rooms["living_space"][current_room])
         self.assertIn(person_object, self.amity.rooms["living_space"][new_room_object])
 
+    def test_reallocate_person_rejects_reallocation_to_office_given_unexistent_person_id(self):
+        person_id = 312312312
+
+        new_room = list(self.amity.rooms["office"].keys())[0]
+        original_number_of_occupants = len(self.amity.rooms["office"][new_room])
+        # print(list(self.amity.rooms["office"].keys())[0])
+        self.assertEqual(self.amity.reallocate_person(person_id, "o", new_room.name), "person with id {0} does not exist".format(person_id))
+        number_after_adding_attempt = len(self.amity.rooms["office"][new_room])
+        self.assertEqual(original_number_of_occupants, number_after_adding_attempt)
+
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
         room_name = "asdbakdsjs"
