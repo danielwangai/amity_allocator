@@ -223,6 +223,11 @@ class TestAmity(unittest.TestCase):
         number_after_adding_attempt = len(self.amity.rooms["living_space"][current_room])
         self.assertEqual(original_number_of_occupants, number_after_adding_attempt)
 
+    def test_print_room_successfully(self):
+        # get room
+        room = list(self.amity.rooms["office"].keys())[0]
+        self.assertEqual(type(self.amity.print_room(room.name)[1]), list)
+
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
         room_name = "asdbakdsjs"
