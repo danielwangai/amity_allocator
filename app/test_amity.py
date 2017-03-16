@@ -11,11 +11,11 @@ class TestAmity(unittest.TestCase):
     def setUp(self):
         self.amity = Amity()
         # office and its allocations
-        for i in ["Narnia", "Krypton", "Platform"]:
+        for i in ["Narnia"]:
             self.new_office = Office(i)
             self.amity.rooms["office"][self.new_office] = []
         # prepulate living spaces
-        for i in ["Python", "Scala", "Go"]:
+        for i in ["Python"]:
             # (self.amity.rooms["living_space"]).append(i)
             self.new_living_space = LivingSpace(i)
             self.amity.rooms["living_space"][self.new_living_space] = []
@@ -98,7 +98,7 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(self.amity.load_people(file_path), 'File doesnt exist')
 
     def test_load_people_loads_people_successfully(self):
-        # assign file path
+    #     # assign file path
         file_path = 'files/test_people.txt'
         # get people count
         fellows_before = len(self.amity.people["fellows"])
@@ -108,6 +108,30 @@ class TestAmity(unittest.TestCase):
         fellows_after = len(self.amity.people["fellows"])
         # assert for increment
         self.assertEqual((fellows_after - fellows_after), 2)
+
+    def test_reallocate_person_reallocates_successfully(self):
+        # create person
+        name = "Dan"
+        # get initial number of people
+        length = len(self.amity.people["fellows"])
+        # create a person
+        self.amity.add_person("Dave", "F", "N")
+        # get the new number of people
+        new_length = len(self.amity.people["fellows"])
+        # test that person is added
+        self.assertEqual((length + 1), new_length)
+        # get person_id
+        person_object = self.amity.people["all_people"][0]
+        # get current_room
+        current_room = list(self.amity.rooms["office"].keys())[0]
+        # assert that person is in room
+        self.assertIn(person_object, self.amity.rooms["office"][current_room])
+        # get new_room
+        self.amity.create_room(["Camelot"], "o")
+        new_room_object = self.amity.get_room_from_room_name("Camelot", "o")
+        self.amity.reallocate_person(person_object.person_id, "o", "Camelot")
+        self.assertNotIn(person_object, self.amity.rooms["office"][current_room])
+        self.assertIn(person_object, self.amity.rooms["office"][new_room_object])
 
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
