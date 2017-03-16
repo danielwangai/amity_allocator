@@ -109,7 +109,7 @@ class TestAmity(unittest.TestCase):
         # assert for increment
         self.assertEqual((fellows_after - fellows_after), 2)
 
-    def test_reallocate_person_reallocates_successfully(self):
+    def test_reallocate_person_reallocates_to_office_successfully(self):
         # create person
         name = "Dan"
         # get initial number of people
