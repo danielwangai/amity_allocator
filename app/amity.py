@@ -225,4 +225,13 @@ class Amity(object):
         return fellows_in_living_spaces
 
     def get_person_object_given_person_id(self, person_id):
-        return [person for person in self.people["all_people"] if person.person_id == person_id][0]
+        # return [person for person in self.people["all_people"] if person.person_id == person_id][0]
+        person_object = None
+        for person in self.people["all_people"]:
+            if person.person_id == person_id:
+                person_object = person
+
+        if person_object == None:
+            return "person id does not exist"
+        else:
+            return person_object
