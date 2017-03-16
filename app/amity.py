@@ -123,8 +123,41 @@ class Amity(object):
                 print("Staff {0} allocated to {1}".format(new_staff.name, allocated_office.name))
                 self.rooms["office"][allocated_office].append(new_staff)
 
-    def reallocate_person(self, person_id):
-        pass
+    def reallocate_person(self, person_id, room_type, new_room):
+        if room_type in ["Office", "office", "O", "o"] and self.get_person_object_given_person_id(person_id) != "person id does not exist":
+            # get current room
+            # get_person_object_given_person_id
+            person_object = self.get_person_object_given_person_id(person_id)
+            current_room = self.get_room_from_person_id(person_id, "o")
+            if self.get_room_from_room_name(new_room, "o") != "room name does not exist":
+                new_room_object = self.get_room_from_room_name(new_room, "o")
+                # remove person from current_room
+                self.rooms["office"][current_room].remove(person_object)
+                # add person to new_room_object
+                self.rooms["office"][new_room_object].append(person_object)
+                print(person_object in self.rooms["office"][current_room])
+                print("-----------------------")
+                print(person_object in self.rooms["office"][new_room_object])
+            else:
+                return ("Room {0} does not exist".format(new_room))
+        elif room_type in ["Living", "living", "L", "l"] and self.get_person_object_given_person_id(person_id) != "person id does not exist":
+            # get current room
+            # get_person_object_given_person_id
+            person_object = self.get_person_object_given_person_id(person_id)
+            current_room = self.get_room_from_person_id(person_id, "l")
+            if self.get_room_from_room_name(new_room, "l") != "room name does not exist":
+                new_room_object = self.get_room_from_room_name(new_room, "l")
+                # remove person from current_room
+                self.rooms["living_space"][current_room].remove(person_object)
+                # add person to new_room_object
+                self.rooms["living_space"][new_room_object].append(person_object)
+                print(person_object in self.rooms["living_space"][current_room])
+                print("-----------------------")
+                print(person_object in self.rooms["living_space"][new_room_object])
+            else:
+                return ("Room {0} does not exist".format(new_room))
+        else:
+            return ("person with id {0} does not exist".format(person_id))
 
 
     def get_room_from_person_id(self, person_id, room_type):
