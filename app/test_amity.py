@@ -133,6 +133,30 @@ class TestAmity(unittest.TestCase):
         self.assertNotIn(person_object, self.amity.rooms["office"][current_room])
         self.assertIn(person_object, self.amity.rooms["office"][new_room_object])
 
+    def test_reallocate_person_reallocates_to_living_space_successfully(self):
+        # create person
+        name = "Dan"
+        # get initial number of people
+        length = len(self.amity.people["fellows"])
+        # create a person
+        self.amity.add_person("Dave", "F", "Y")
+        # get the new number of people
+        new_length = len(self.amity.people["fellows"])
+        # test that person is added
+        self.assertEqual((length + 1), new_length)
+        # get person_id
+        person_object = self.amity.people["all_people"][0]
+        # get current_room
+        current_room = list(self.amity.rooms["living_space"].keys())[0]
+        # assert that person is in room
+        self.assertIn(person_object, self.amity.rooms["living_space"][current_room])
+        # get new_room
+        self.amity.create_room(["Ruby"], "l")
+        new_room_object = self.amity.get_room_from_room_name("Ruby", "l")
+        self.amity.reallocate_person(person_object.person_id, "l", "Ruby")
+        # self.assertNotIn(person_object, self.amity.rooms["living_space"][current_room])
+        self.assertIn(person_object, self.amity.rooms["living_space"][new_room_object])
+
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
         room_name = "asdbakdsjs"
