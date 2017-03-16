@@ -228,6 +228,11 @@ class TestAmity(unittest.TestCase):
         room = list(self.amity.rooms["office"].keys())[0]
         self.assertEqual(type(self.amity.print_room(room.name)[1]), list)
 
+    def test_print_room_does_not_print_when_given_wrong_name(self):
+        # get room
+        room = "I do not exist"
+        self.assertEqual(self.amity.print_room(room), "Room {0} does not exist".format(room))
+
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
         room_name = "asdbakdsjs"
