@@ -200,6 +200,29 @@ class TestAmity(unittest.TestCase):
         number_after_adding_attempt = len(self.amity.rooms["office"][current_room])
         self.assertEqual(original_number_of_occupants, number_after_adding_attempt)
 
+    def test_reallocate_person_rejects_reallocation_to_living_space_given_unexistent_room_name(self):
+        new_room_name = "I do not exist"
+        # create person
+        name = "Dan"
+        # get initial number of people
+        length = len(self.amity.people["fellows"])
+        # create a person
+        self.amity.add_person("Dave", "F", "Y")
+        # get the new number of people
+        new_length = len(self.amity.people["fellows"])
+        # test that person is added
+        self.assertEqual((length + 1), new_length)
+        # get person_id
+        person_object = self.amity.people["all_people"][0]
+        current_room = list(self.amity.rooms["living_space"].keys())[0]
+        # get original number of room occupants
+        original_number_of_occupants = len(self.amity.rooms["living_space"][current_room])
+        print(original_number_of_occupants)
+        # self.assertEqual(self.amity.reallocate_person(person_object.person_id, "o", new_room_name), "Room {0} does not exist".format(new_room_name))
+        self.amity.reallocate_person(person_object.person_id, "l", new_room_name)
+        number_after_adding_attempt = len(self.amity.rooms["living_space"][current_room])
+        self.assertEqual(original_number_of_occupants, number_after_adding_attempt)
+
     def test_print_room_does_not_print_inexistent_room(self):
         # name of inexistent room
         room_name = "asdbakdsjs"
