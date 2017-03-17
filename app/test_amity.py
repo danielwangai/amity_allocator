@@ -19,21 +19,23 @@ class TestAmity(unittest.TestCase):
         # list of new room to be added
         new_office = ["Hogwarts"]
         # assert that new room is not is list of all rooms
-        self.assertFalse(new_office[0] in self.amity.rooms["all_rooms"])
+        self.assertNotIn(new_office[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        # print(self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # add room
         self.amity.create_room({"<name>": new_office, "office": True, "living_space": False})
         # assert that new room was added
-        self.assertTrue(new_office[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        self.assertIn(new_office[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
-    def test_create_room_adds_living_spaces_successfully(self):
+    def test_create_room_adds_living_space_successfully(self):
         # list of new room to be added
         new_living_space = ["PHP"]
         # assert that new room is not is list of all rooms
-        self.assertFalse(new_living_space[0] in self.amity.rooms["all_rooms"])
+        self.assertNotIn(new_living_space[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        # print(self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # add room
         self.amity.create_room({"<name>": new_living_space, "office": False, "living_space": True})
         # assert that new room was added
-        self.assertTrue(new_living_space[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        self.assertIn(new_living_space[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
     def test_create_room_does_not_create_duplicate_rooms(self):
         # new room to be created
