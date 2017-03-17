@@ -44,20 +44,32 @@ class Amity(object):
         "living_space_waiting_list": []
     }
 
-    def create_room(self, list_of_rooms, room_type):
+    def create_room(self, args):
         '''
             accepts a list as an argument containing a list of rooms
             when list validates correctly returns a string confirming
             successful addition.
+
+            args contain - list of room names
+                         - room type - Fellow/Staff
         '''
-        for room in list_of_rooms:
+        for room in args["<room_name>"]:
             if room in self.get_all_rooms(self.rooms['all_rooms']):
-                return "Cannot create room since a room with the same naem exists."
-            if room_type in ["Office", "office", "O", "o"]:
+                # reject adding an already existing room
+                print "Cannot create room named {o} since a room with the same name exists.".format(room)
+            if args["office"]:
+                '''
+                    if room is an office:-
+                        add new Office object and create an empty list to hold at most 6 occupants (Fellows and/or Staff)
+                '''
                 office = Office(room)
                 self.rooms['all_rooms'].append(office)
                 self.rooms['office'][office] = []
-            elif room_type in ["Living", "living", "L", "l"]:
+            elif args["living_space"]:
+                '''
+                    if room is an living_space:-
+                        add new LivingSpace object and create an empty list to hold at most 4 occupants (Fellows Only)
+                '''
                 living_space = LivingSpace(room)
                 self.rooms['all_rooms'].append(living_space)
                 self.rooms["living_space"][living_space] = []
