@@ -31,7 +31,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_living_space[0] in self.amity.rooms["all_rooms"])
         # add room
-        self.amity.create_room(new_living_space, "l")
+        self.amity.create_room({"<name>": new_living_space, "office": False, "living_space": True})
         # assert that new room was added
         self.assertTrue(new_living_space[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
