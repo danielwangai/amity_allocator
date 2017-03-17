@@ -41,15 +41,17 @@ class TestAmity(unittest.TestCase):
         # new room to be created
         new_office = "Valhalla"
         # assert that new room is not is list of all rooms
-        self.assertFalse(new_office in self.amity.rooms["all_rooms"])
-        # add room
-        self.amity.create_room([new_office], "o")
+        self.assertNotIn(new_office[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        # # add room
+        self.amity.create_room({"<name>": [new_office], "office": True, "living_space": False})
+        original_number_of_rooms = len(self.amity.rooms["all_rooms"])
         # assert that new room was added
-        self.assertTrue(new_office in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
-        # try adding the same room again
-        self.assertEqual(self.amity.create_room([new_office], "o"), "Cannot create room since a room with the same naem exists.")
-        # confirm that the room has not been added again
-        self.assertIn(new_office, self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        self.assertIn([new_office][0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        # # try adding the same room again
+        self.amity.create_room({"<name>": [new_office], "office": True, "living_space": False})
+        number_of_rooms_after_duplication_attempt = len(self.amity.rooms["all_rooms"])
+
+        self.assertEqual(original_number_of_rooms, number_of_rooms_after_duplication_attempt)
 
     def test_create_room_does_not_create_office_and_living_space_with_same_name(self):
         # new room to create
