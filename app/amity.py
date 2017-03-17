@@ -53,7 +53,7 @@ class Amity(object):
             args contain - list of room names
                          - room type - Fellow/Staff
         '''
-        for room in args["<room_name>"]:
+        for room in args["<name>"]:
             if room in self.get_all_rooms(self.rooms['all_rooms']):
                 # reject adding an already existing room
                 print("Cannot create room named {0} since a room with the same name exists.".format(room))
