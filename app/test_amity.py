@@ -11,15 +11,9 @@ from living_space import LivingSpace
 class TestAmity(unittest.TestCase):
     def setUp(self):
         self.amity = Amity()
-        # office and its allocations
-        for i in ["Narnia"]:
-            self.new_office = Office(i)
-            self.amity.rooms["office"][self.new_office] = []
-        # prepulate living spaces
-        for i in ["Python"]:
-            # (self.amity.rooms["living_space"]).append(i)
-            self.new_living_space = LivingSpace(i)
-            self.amity.rooms["living_space"][self.new_living_space] = []
+        self.amity.create_room({"<name>": ["Narnia"], "office": True, "living_space": False})
+        self.amity.create_room({"<name>": ["Python"], "office": False, "living_space": True})
+
 
     def test_create_room_adds_offices_successfully(self):
         # list of new room to be added
@@ -27,7 +21,7 @@ class TestAmity(unittest.TestCase):
         # assert that new room is not is list of all rooms
         self.assertFalse(new_office[0] in self.amity.rooms["all_rooms"])
         # add room
-        self.amity.create_room(new_office, "o")
+        self.amity.create_room({"<name>": new_office, "office": True, "living_space": False})
         # assert that new room was added
         self.assertTrue(new_office[0] in self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
 
