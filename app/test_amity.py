@@ -41,12 +41,12 @@ class TestAmity(unittest.TestCase):
         # new room to be created
         new_office = "Valhalla"
         # assert that new room is not is list of all rooms
-        self.assertNotIn(new_office[0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        self.assertNotIn(new_office, self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # # add room
         self.amity.create_room({"<name>": [new_office], "office": True, "living_space": False})
         original_number_of_rooms = len(self.amity.rooms["all_rooms"])
         # assert that new room was added
-        self.assertIn([new_office][0], self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        self.assertIn(new_office, self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
         # # try adding the same room again
         self.amity.create_room({"<name>": [new_office], "office": True, "living_space": False})
         number_of_rooms_after_duplication_attempt = len(self.amity.rooms["all_rooms"])
@@ -55,17 +55,21 @@ class TestAmity(unittest.TestCase):
 
     def test_create_room_does_not_create_office_and_living_space_with_same_name(self):
         # new room to create
-        new_room = "Oculus"
-        # assert that new room is not is list of all rooms
-        self.assertFalse(new_room in [i.name for i in list(self.amity.rooms["office"].keys())])
+        new_office = "Oculus"
+        # # assert that new room is not is list of all rooms
+        self.assertFalse(new_office in [i.name for i in list(self.amity.rooms["office"].keys())])
         # add room
-        self.amity.create_room([new_room], "o")
-        # assert that new office was added
-        self.assertIn(new_room, [i.name for i in list(self.amity.rooms["office"].keys())])
-        # try creating an office with the same name
-        self.assertEqual(self.amity.create_room([new_room], "l"), "Cannot create room since a room with the same naem exists.")
-
-        self.assertNotIn(new_room, [i.name for i in list(self.amity.rooms["living_space"].keys())])
+        self.amity.create_room({"<name>": [new_office], "office": True, "living_space": False})
+        # assert that new room was added
+        self.assertIn(new_office, self.amity.get_all_rooms(self.amity.rooms["all_rooms"]))
+        # assert new room not is living space list
+        new_living_space = "Oculus"
+        # assert that new room is not is list of all rooms
+        self.assertFalse(new_living_space in [i.name for i in list(self.amity.rooms["living_space"].keys())])
+        # attempt add
+        self.amity.create_room({"<name>": [new_living_space], "office": False, "living_space": True})
+        # confirm that oculus was is not in the list of living spaces
+        self.assertNotIn(new_living_space, [i.name for i in list(self.amity.rooms["living_space"].keys())])
 
 
     def test_add_person_creates_fellow_successfully(self):
