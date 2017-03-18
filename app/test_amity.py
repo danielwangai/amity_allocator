@@ -83,16 +83,14 @@ class TestAmity(unittest.TestCase):
         self.assertEqual((initial_number_of_fellows + 1), new_number_of_fellows)
 
     def test_add_person_creates_staff_successfully(self):
-        # new person
-        name = "James"
         # get initial number of people
-        length = len(self.amity.people["staff"])
+        initial_number_of_fellows = len(self.amity.people["staff"])
         # create a person
-        self.amity.add_person("Dave", "S", "N")
+        self.amity.add_person({"<first_name>": "Daniel", "<last_name>": "Maina", "Fellow": False, "Staff": True, "wants_accomodation": "N"})
         # get the new number of people
-        new_length = len(self.amity.people["staff"])
+        new_number_of_fellows = len(self.amity.people["staff"])
         # test that person is added
-        self.assertEqual((length + 1), new_length)
+        self.assertEqual((initial_number_of_fellows + 1), new_number_of_fellows)
 
     def test_load_people_file_does_not_exist(self):
         file_path = '/path/to/no where'
