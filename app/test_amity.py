@@ -73,16 +73,14 @@ class TestAmity(unittest.TestCase):
 
 
     def test_add_person_creates_fellow_successfully(self):
-        # new person
-        name = "Dan"
         # get initial number of people
-        length = len(self.amity.people["fellows"])
+        initial_number_of_fellows = len(self.amity.people["fellows"])
         # create a person
-        self.amity.add_person("Dave", "F", "N")
+        self.amity.add_person({"<first_name>": "Daniel", "<last_name>": "Maina", "Fellow": True, "Staff": False, "wants_accomodation": "Y"})
         # get the new number of people
-        new_length = len(self.amity.people["fellows"])
+        new_number_of_fellows = len(self.amity.people["fellows"])
         # test that person is added
-        self.assertEqual((length + 1), new_length)
+        self.assertEqual((initial_number_of_fellows + 1), new_number_of_fellows)
 
     def test_add_person_creates_staff_successfully(self):
         # new person
