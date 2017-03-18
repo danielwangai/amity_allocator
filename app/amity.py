@@ -54,25 +54,30 @@ class Amity(object):
                          - room type - Fellow/Staff
         '''
         for room in args["<name>"]:
-            if room in self.get_all_rooms(self.rooms['all_rooms']):
-                # reject adding an already existing room
-                print("Cannot create room named {0} since a room with the same name exists.".format(room))
             if args["office"]:
-                '''
-                    if room is an office:-
-                        add new Office object and create an empty list to hold at most 6 occupants (Fellows and/or Staff)
-                '''
-                office = Office(room)
-                self.rooms['all_rooms'].append(office)
-                self.rooms['office'][office] = []
+                if room in self.get_all_rooms(self.rooms['all_rooms']):
+                    # reject adding an already existing room
+                    print("Cannot create room named {0} since a room with the same name exists.".format(room))
+                else:
+                    '''
+                        if room is an office:-
+                            add new Office object and create an empty list to hold at most 6 occupants (Fellows and/or Staff)
+                    '''
+                    office = Office(room)
+                    self.rooms['all_rooms'].append(office)
+                    self.rooms['office'][office] = []
             elif args["living_space"]:
-                '''
-                    if room is an living_space:-
-                        add new LivingSpace object and create an empty list to hold at most 4 occupants (Fellows Only)
-                '''
-                living_space = LivingSpace(room)
-                self.rooms['all_rooms'].append(living_space)
-                self.rooms["living_space"][living_space] = []
+                if room in self.get_all_rooms(self.rooms['all_rooms']):
+                    # reject adding an already existing room
+                    print("Cannot create room named {0} since a room with the same name exists.".format(room))
+                else:
+                    '''
+                        if room is an living_space:-
+                            add new LivingSpace object and create an empty list to hold at most 4 occupants (Fellows Only)
+                    '''
+                    living_space = LivingSpace(room)
+                    self.rooms['all_rooms'].append(living_space)
+                    self.rooms["living_space"][living_space] = []
 
     def get_all_rooms(self, rooms):
         # iterate all rooms
@@ -316,4 +321,4 @@ class Amity(object):
         if result == None:
             return "room name does not exist"
         else:
-            return result
+            return resul
