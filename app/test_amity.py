@@ -110,6 +110,15 @@ class TestAmity(unittest.TestCase):
         # assert that the staff object is allocated an office
         self.assertIn(new_fellow_object, self.amity.list_of_persons_allocated_to_offices())
 
+    def test_add_person_allocates_fellow_to_living_space(self):
+        all_people = self.amity.people["all_people"]
+        # add fellow
+        self.amity.add_person({"<first_name>": "Daniel", "<last_name>": "Maina", "Fellow": True, "Staff": False, "wants_accomodation": "Y"})
+        # get object of added fellow
+        new_fellow_object = all_people[-1]
+        # assert that the fellow object is allocated an office
+        self.assertIn(new_fellow_object, self.amity.list_of_fellows_allocated_to_living_spaces())
+
     def test_load_people_file_does_not_exist(self):
         file_path = '/path/to/no where'
         self.assertEqual(self.amity.load_people(file_path), 'File doesnt exist')
