@@ -147,8 +147,36 @@ class TestAmity(unittest.TestCase):
         last_person = self.amity.people["all_people"][-1]
         # confirm that new person has not been added to office
         self.assertNotIn(last_person, self.amity.rooms["office"][office])
-        # check that the last person 
+        # check that the last person is in office waiting list
         self.assertIn(last_person, self.amity.rooms["office_waiting_list"])
+
+    def test_add_person_adds_fellow_to_living_space_waiting_list_if_living_spaces_are_full(self):
+        '''
+            currently only one living space - Ruby - exists
+            add fellow to living_space till full capacity (4)
+            attempt to add more
+            test that it rejects
+        '''
+        # get living space
+        living_space = list(self.amity.rooms["living_space"].keys())[0]
+        list_of_fellows = [
+            ["Daniel", "Maina", True, False, "Y"],
+            ["Dan", "Wachira", True, False, "Y"],
+            ["Larry", "W", True, False, "Y"],
+            ["David", "White", True, False, "Y"]
+        ]
+
+        for fellow in list_of_fellows:
+            self.amity.add_person({"<first_name>": fellow[0], "<last_name>": fellow[1],
+                "Fellow": fellow[2], "Staff": fellow[3], "<wants_accomodation>": fellow[4]})
+        # attempt to add another fellow
+        self.amity.add_person({"<first_name>": "Last", "<last_name>": "Person", "Fellow": True, "Staff": False, "<wants_accomodation>": "Y"})
+        last_person = self.amity.people["all_people"][-1]
+        # confirm that new person has not been added to office
+        self.assertNotIn(last_person, self.amity.rooms["living_space"][living_space])
+
+        # check that the last person
+        self.assertIn(last_person, self.amity.rooms["living_space_waiting_list"])
 
     def test_load_people_file_does_not_exist(self):
         file_path = '/path/to/no where'
