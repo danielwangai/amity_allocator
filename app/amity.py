@@ -224,11 +224,16 @@ class Amity(object):
         else:
             return result
 
-    def load_people(self, file_path):
+    def print_unallocated_to_office(self):
         '''
-            Takes path to file as argument and populates people in specific lists
+            prints out all people - Fellows and Staff - that have not been allocated
+            an office
         '''
-        pass
+        # get all person objects from the waiting list
+        unallocations = self.rooms["office_waiting_list"]
+        print("The following is a list of persons unallocated to offices\n")
+        for person in unallocations:
+            print("{0}, {1} - {2}".format(person.first_name, person.last_name, person.category))
 
     def print_unallocated(self):
         pass
