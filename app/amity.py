@@ -325,6 +325,32 @@ class Amity(object):
                 persons_in_living_space.append(name)
             print(', '.join(persons_in_living_space))
 
+    def print_room(self, args):
+        '''
+            takes room name as argument and if exists returns list of occupants
+        '''
+        room_name = args["<room_name>"]
+        occupants = []
+        offices = list(self.rooms["office"].keys())
+        living_spaces = list(self.rooms["living_space"].keys())
+
+        if room_name in [room.name for room in offices]:
+            room_object = [room for room in list(self.rooms["office"].keys()) if room.name == room_name][0]
+            occupants.extend(self.rooms["office"][room_object])
+        elif room_name in [room.name for room in living_spaces]:
+            room_object = [room for room in list(self.rooms["living_space"].keys()) if room.name == room_name][0]
+            occupants.extend(self.rooms["living_space"][room_object])
+        elif room_name not in [room.name for room in offices] or room_name in [room.name for room in living_spaces]:
+            '''
+                if room name does not exist
+            '''
+            print("Room {0} does not exist".format(room_name))
+        if len(occupants) > 0:
+            print("The occupants of the - {0} - are".format(room_name))
+            print(", ".join([occupant.first_name for occupant in occupants]))
+        else:
+            print("The room {0} has no occupants currently".format(room_name))
+
     def list_of_persons_allocated_to_offices(self):
         """
             returns a list of persons (Fellows and Staff) allocated to office spaces
