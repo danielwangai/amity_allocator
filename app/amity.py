@@ -297,6 +297,20 @@ class Amity(object):
         for person in unallocations:
             print("{0}, {1} - {2}".format(person.first_name, person.last_name, person.category))
 
+    def print_office_allocations(self):
+        '''
+            Prints out all people allocated to rooms
+        '''
+        list_of_offices = list(self.rooms["office"].keys())
+        for office in list_of_offices:
+            print(office.name)
+            print("---------------------------")
+            persons_in_office = []
+            for person in self.rooms["office"][office]:
+                name = person.first_name+ " "+ person.last_name
+                persons_in_office.append(name)
+            print(', '.join(persons_in_office))
+
     def list_of_persons_allocated_to_offices(self):
         """
             returns a list of persons (Fellows and Staff) allocated to office spaces
