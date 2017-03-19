@@ -1,9 +1,9 @@
 import random
 
-from fellow import Fellow
-from staff import Staff
-from office import Office
-from living_space import LivingSpace
+from .fellow import Fellow
+from .staff import Staff
+from .office import Office
+from .living_space import LivingSpace
 
 
 class Amity(object):
