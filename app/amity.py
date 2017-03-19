@@ -311,6 +311,20 @@ class Amity(object):
                 persons_in_office.append(name)
             print(', '.join(persons_in_office))
 
+    def print_living_space_allocations(self):
+        '''
+            Prints living spaces and people allocated to them
+        '''
+        list_of_living_spaces = list(self.rooms["living_space"].keys())
+        for living_space in list_of_living_spaces:
+            print(living_space.name)
+            print("---------------------------")
+            persons_in_living_space = []
+            for person in self.rooms["living_space"][living_space]:
+                name = person.first_name+ " "+ person.last_name
+                persons_in_living_space.append(name)
+            print(', '.join(persons_in_living_space))
+
     def list_of_persons_allocated_to_offices(self):
         """
             returns a list of persons (Fellows and Staff) allocated to office spaces
