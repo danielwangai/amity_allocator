@@ -66,6 +66,7 @@ class Amity(object):
                     office = Office(room)
                     self.rooms['all_rooms'].append(office)
                     self.rooms['office'][office] = []
+                    print("Office - {0} - successfully created".format(room))
             elif args["living_space"]:
                 if room in self.get_all_rooms(self.rooms['all_rooms']):
                     # reject adding an already existing room
@@ -78,6 +79,7 @@ class Amity(object):
                     living_space = LivingSpace(room)
                     self.rooms['all_rooms'].append(living_space)
                     self.rooms["living_space"][living_space] = []
+                    print("Living Space - {0} - successfully created".format(room))
 
     def get_all_rooms(self, rooms):
         # iterate all rooms
