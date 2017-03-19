@@ -288,6 +288,15 @@ class Amity(object):
         elif person_object.category == "Fellow" and room_type in ["Living", "living", "L", "l"]:
             return (person_object in self.list_of_fellows_allocated_to_living_spaces())
 
+    def print_fellows_unallocated_to_living_space(self):
+        '''
+            prints out a list of fellows lacking accomodation who are in the waiting list
+        '''
+        unallocations = self.rooms["living_space_waiting_list"]
+        print("The following is a list of fellows unallocated to living spaces")
+        for person in unallocations:
+            print("{0}, {1} - {2}".format(person.first_name, person.last_name, person.category))
+
     def list_of_persons_allocated_to_offices(self):
         """
             returns a list of persons (Fellows and Staff) allocated to office spaces
