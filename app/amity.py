@@ -121,9 +121,11 @@ class Amity(object):
                         self.rooms["living_space_waiting_list"].append(new_fellow)
                         return "Sorry, no available living space slots yet. You've been set on the waiting list"
                     else:
+                        print("{0} {1} id - {2}".format(new_fellow.first_name, new_fellow.last_name, new_fellow.person_id))
                         print("{0} {1} allocated to {2}".format(new_fellow.first_name, new_fellow.last_name, allocated_living_space.name))
                         self.rooms["living_space"][allocated_living_space].append(new_fellow)
             else:
+                print("{0} {1} id - {2}".format(new_fellow.first_name, new_fellow.last_name, new_fellow.person_id))
                 print("{0} {1} allocated to {2}".format(new_fellow.first_name, new_fellow.last_name, allocated_office.name))
                 self.rooms["office"][allocated_office].append(new_fellow)
 
@@ -136,6 +138,7 @@ class Amity(object):
                         self.rooms["living_space_waiting_list"].append(new_fellow)
                         return "Sorry, no available living space slots yet. You've been set on the waiting list"
                     else:
+                        print("{0} {1} id - {2}".format(new_fellow.first_name, new_fellow.last_name, new_fellow.person_id))
                         print("{0} {1} allocated to {2}".format(new_fellow.first_name, new_fellow.last_name, allocated_living_space.name))
                         self.rooms["living_space"][allocated_living_space].append(new_fellow)
 
@@ -152,6 +155,7 @@ class Amity(object):
                 self.rooms["office_waiting_list"].append(new_staff)
                 return "Sorry, no available office spaces yet. You'll be set on the waiting list"
             else:
+                print("{0} {1} id - {2}".format(new_staff.first_name, new_staff.last_name, new_staff.person_id))
                 print("Staff {0} {1} allocated to {2}".format(new_staff.first_name, new_staff.last_name, allocated_office.name))
                 self.rooms["office"][allocated_office].append(new_staff)
 
@@ -171,7 +175,7 @@ class Amity(object):
                 print("-----------------------")
                 print(person_object in self.rooms["office"][new_room_object])
             else:
-                return ("Room {0} does not exist".format(new_room))
+                print("Room {0} does not exist".format(new_room))
         elif room_type in ["Living", "living", "L", "l"] and self.get_person_object_given_person_id(person_id) != "person id does not exist":
             # get current room
             # get_person_object_given_person_id
@@ -187,9 +191,9 @@ class Amity(object):
                 print("-----------------------")
                 print(person_object in self.rooms["living_space"][new_room_object])
             else:
-                return ("Room {0} does not exist".format(new_room))
+                print("Room {0} does not exist".format(new_room))
         else:
-            return ("person with id {0} does not exist".format(person_id))
+            print("person with id {0} does not exist".format(person_id))
 
 
     def get_room_from_person_id(self, person_id, room_type):
