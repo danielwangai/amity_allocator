@@ -244,26 +244,6 @@ class Amity(object):
     def print_allocations(self):
         pass
 
-    def print_room(self, room_name):
-        '''
-            takes room name as argument and if exists returns list of occupants
-        '''
-        occupants = []
-        all_rooms = []
-        all_rooms.extend((self.rooms["office"].keys()))
-        all_rooms.extend((self.rooms["living_space"].keys()))
-        if room_name in [room.name for room in all_rooms]:
-            # for room in all_rooms:
-            #     occupants.extend(self.rooms["office"][])
-            all_rooms_dictionary = self.rooms["office"]
-            all_rooms_dictionary.update(self.rooms["living_space"])
-            room_object = self.get_room_from_room_name_update_all_rooms(room_name)
-            # return(all_rooms_dictionary)
-            occupants.extend(all_rooms_dictionary[room_object])
-            return room_name, occupants
-        else:
-            return "Room {0} does not exist".format(room_name)
-
     def save_state(self):
         pass
 
