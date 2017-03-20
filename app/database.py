@@ -1,28 +1,59 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
+import sqlite3
 
-Base = declarative_base()
+class Database(object):
+    def __init__(self, db):
+        self.conn = sqlite3.connect(db)
+
+    def cursor(self):
+        return self.conn.cursor()
+
+    def commit(self):
+        return self.conn.commit()
+
+    def create(self):
+        cursor = self.cursor()
+        create_room = '''
+            CREATE TABLE IF NOT EXISTS room(
+                id INTEGER PRIMARY KEY,
+                name VARCHAR(30),
+                room_type VARCHAR(30)
+            );
+        '''
+        cursor.execute(create_room)
+
+        create_person = '''
+            CREATE TABLE IF NOT EXISTS person(
+                id INTEGER PRIMARY KEY,
+                first_name VARCHAR(30),
+                last_name VARCHAR(30),
+                category VARCHAR(30)
+            );
+        '''
+        cursor.execute(create_person)
+
+        allocation = """
+            CREATE TABLE IF NOT EXISTS allocations (
+            allocation_id INTEGER PRIMARY KEY,
+            person_id INTEGER,
+            room_id INTEGER,
+            FOREIGN KEY (person_id) REFERENCES employee(person_id),
+            FOREIGN KEY (room_id) REFERENCES room(room_id),
+            unique (person_id, room_id));"""
+        cursor.execute(allocation)
+
+        unallocated = """
+            CREATE TABLE IF NOT EXISTS unallocated (
+            unallocated_id INTEGER PRIMARY KEY,
+            person_id INTEGER,
+            FOREIGN KEY (person_id) REFERENCES employee(person_id),
+            unique (person_id));"""
+        cursor.execute(unallocated)
 
 
-class Person(Base):
-    __tablename__ = 'person'
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String(250), nullable=False)
-    last_name = Column(String(250), nullable=False)
-    category = Column(String(250), nullable=False)
+    def close_connection(self):
+        return self.conn.close()
 
-class Room(Base):
-    __tablename__ = 'room'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250))
-    room_type = Column(String(250))
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
-
-engine = create_engine('sqlite:///amity.db')
-
-Base.metadata.create_all(engine)
+db = Database("test.db")
+db.create()
