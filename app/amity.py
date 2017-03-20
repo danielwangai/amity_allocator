@@ -231,9 +231,12 @@ class Amity(object):
         '''
         # get all person objects from the waiting list
         unallocations = self.rooms["office_waiting_list"]
-        print("The following is a list of persons unallocated to offices\n")
-        for person in unallocations:
-            print("{0}, {1} - {2}".format(person.first_name, person.last_name, person.category))
+        if len(unallocations) > 0:
+            print("The following is a list of persons with no office allocations\n")
+            for person in unallocations:
+                print("{0}, {1} - {2}".format(person.first_name, person.last_name, person.category))
+        else:
+            print("The are no unallocated people.")
 
     def print_unallocated(self):
         pass
