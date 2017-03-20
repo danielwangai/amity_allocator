@@ -5,6 +5,7 @@ interactive command application.
 Usage:
     amity create_room (living_space|office) <name>...
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
+    amity print_unallocated_to_office
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -69,6 +70,11 @@ class Amity(cmd.Cmd):
     def do_add_person(self, args):
         """Usage: add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>"""
         amity.add_person(args)
+
+    @docopt_cmd
+    def do_print_unallocated_to_office(self, args):
+        """Usage: print_unallocated_to_office"""
+        amity.print_unallocated_to_office()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
