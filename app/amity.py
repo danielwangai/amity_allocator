@@ -279,12 +279,21 @@ class Amity(object):
                         continue
 
 
-        # save room data
+        # save office data
         print('Saving office...')
         for room in list(self.rooms["office"].keys()):
             try:
                 cursor.execute("INSERT INTO room VALUES (?, ?, ?);",
-                           (room.room_id, room.name, 'Office'))
+                           (room.room_id, room.name, 'office'))
+            except sqlite3.IntegrityError:
+                continue
+
+        # save living_space data
+        print('Saving Living Space...')
+        for room in list(self.rooms["living_space"].keys()):
+            try:
+                cursor.execute("INSERT INTO room VALUES (?, ?, ?);",
+                           (room.room_id, room.name, 'living_space'))
             except sqlite3.IntegrityError:
                 continue
         db.commit()
