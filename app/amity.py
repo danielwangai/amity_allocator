@@ -250,9 +250,6 @@ class Amity(object):
 
     def save_state(self, db_name=None):
         # save people data
-        self.save_people(db_name=None)
-
-    def save_people(self, db_name=None):
         if db_name is not None:
             db_name = db_name + '.db'
         else:
@@ -280,6 +277,16 @@ class Amity(object):
                                    (i.person_id, i.first_name, i.last_name, i.category))
                     except sqlite3.IntegrityError:
                         continue
+
+
+        # save room data
+        print('Saving office...')
+        for room in list(self.rooms["office"].keys()):
+            try:
+                cursor.execute("INSERT INTO room VALUES (?, ?, ?);",
+                           (room.room_id, room.name, 'Office'))
+            except sqlite3.IntegrityError:
+                continue
         db.commit()
 
     def load_state(self):
