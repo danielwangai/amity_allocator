@@ -1,11 +1,11 @@
 import os.path
 import unittest
 
-from amity import Amity
-from fellow import Fellow
-from staff import Staff
-from office import Office
-from living_space import LivingSpace
+from .amity import Amity
+from .fellow import Fellow
+from .staff import Staff
+from .office import Office
+from .living_space import LivingSpace
 
 
 class TestAmity(unittest.TestCase):
