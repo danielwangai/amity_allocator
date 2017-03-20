@@ -7,6 +7,7 @@ Usage:
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
     amity print_unallocated_to_office
     amity print_room <room_name>
+    amity print_unallocated_living_space
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -81,6 +82,11 @@ class Amity(cmd.Cmd):
     def do_print_room(self, args):
         """Usage: print_room <room_name>"""
         amity.print_room(args)
+
+    @docopt_cmd
+    def do_print_unallocated_living_space(self, args):
+        """Usage: print_unallocated_living_space"""
+        amity.print_fellows_unallocated_to_living_space()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
