@@ -4,6 +4,7 @@ This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
     amity create_room (living_space|office) <name>...
+    amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -49,14 +50,14 @@ def docopt_cmd(func):
     return fn
 
 
-class KanBan(cmd.Cmd):
+class Amity(cmd.Cmd):
 
     def intro():
         print('------------------------------------------------------------------------------')
         print('------------------------------------------------------------------------------')
 
     intro = intro()
-    prompt = '(KanBan) '
+    prompt = '(Amity) '
     file = None
 
     @docopt_cmd
@@ -64,6 +65,10 @@ class KanBan(cmd.Cmd):
         """Usage: create_room (living_space|office) <name>..."""
         amity.create_room(args)
 
+    @docopt_cmd
+    def do_add_person(self, args):
+        """Usage: add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>"""
+        amity.add_person(args)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
@@ -75,6 +80,6 @@ class KanBan(cmd.Cmd):
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
-    KanBan().cmdloop()
+    Amity().cmdloop()
 
 print(opt)
