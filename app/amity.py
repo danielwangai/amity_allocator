@@ -286,13 +286,17 @@ class Amity(object):
         '''
         list_of_offices = list(self.rooms["office"].keys())
         for office in list_of_offices:
-            print(office.name)
-            print("---------------------------")
-            persons_in_office = []
-            for person in self.rooms["office"][office]:
-                name = person.first_name+ " "+ person.last_name
-                persons_in_office.append(name)
-            print(', '.join(persons_in_office))
+            if len(self.rooms["office"][office]) > 0:
+                print(office.name)
+                print("---------------------------")
+                persons_in_office = []
+                for person in self.rooms["office"][office]:
+                    name = person.first_name+ " "+ person.last_name
+                    persons_in_office.append(name)
+                print(', '.join(persons_in_office))
+                print("\n")
+            else:
+                print("{0} - has no occupants currently".format(office.name))
 
     def print_living_space_allocations(self):
         '''
@@ -300,13 +304,17 @@ class Amity(object):
         '''
         list_of_living_spaces = list(self.rooms["living_space"].keys())
         for living_space in list_of_living_spaces:
-            print(living_space.name)
-            print("---------------------------")
-            persons_in_living_space = []
-            for person in self.rooms["living_space"][living_space]:
-                name = person.first_name+ " "+ person.last_name
-                persons_in_living_space.append(name)
-            print(', '.join(persons_in_living_space))
+            if len(self.rooms["living_space"][living_space]) > 0:
+                print(living_space.name)
+                print("---------------------------")
+                persons_in_living_space = []
+                for person in self.rooms["living_space"][living_space]:
+                    name = person.first_name+ " "+ person.last_name
+                    persons_in_living_space.append(name)
+                print(', '.join(persons_in_living_space))
+                print("\n")
+            else:
+                print("{0} - has no occupants currently\n".format(living_space.name))
 
     def print_room(self, args):
         '''
