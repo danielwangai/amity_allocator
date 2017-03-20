@@ -12,7 +12,7 @@ class Database(object):
     def commit(self):
         return self.conn.commit()
 
-    def create(self):
+    def create_tables(self):
         cursor = self.cursor()
         create_room = '''
             CREATE TABLE IF NOT EXISTS room(
@@ -55,5 +55,5 @@ class Database(object):
     def close_connection(self):
         return self.conn.close()
 
-db = Database("test.db")
-db.create()
+# db = Database("test.db")
+# db.create()

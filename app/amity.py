@@ -4,6 +4,7 @@ from .fellow import Fellow
 from .staff import Staff
 from .office import Office
 from .living_space import LivingSpace
+from .database import Database
 
 
 class Amity(object):
@@ -246,8 +247,40 @@ class Amity(object):
     def print_allocations(self):
         pass
 
-    def save_state(self):
-        pass
+
+    def save_state(self, db_name=None):
+        # save people data
+        self.save_people(db_name=None)
+
+    def save_people(self, db_name=None):
+        if db_name is not None:
+            db_name = db_name + '.db'
+        else:
+            db_name = 'amity.db'
+
+        # try:
+        db = Database(db_name)
+        db.create_tables()
+        cursor = db.cursor()
+
+        # Save all people
+        print('Saving...')
+        for key, value in self.people.items():
+            if key == "fellows":
+                for i in value:
+                    try:
+                        cursor.execute("INSERT INTO person VALUES (?, ?, ?, ?);",
+                                   (i.person_id, i.first_name, i.last_name, i.category))
+                    except sqlite3.IntegrityError:
+                        continue
+            if key == "staff":
+                for i in value:
+                    try:
+                        cursor.execute("INSERT INTO person VALUES (?, ?, ?, ?);",
+                                   (i.person_id, i.first_name, i.last_name, i.category))
+                    except sqlite3.IntegrityError:
+                        continue
+        db.commit()
 
     def load_state(self):
         pass

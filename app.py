@@ -11,6 +11,7 @@ Usage:
     amity print_office_allocations
     amity print_living_space_allocations
     amity reallocate_person <person_id> <room_type> <new_room>
+    amity save_state [--db=sqlite_database]
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -105,6 +106,12 @@ class Amity(cmd.Cmd):
     def do_reallocate_person(self, args):
         """Usage: reallocate_person <person_id> <room_type> <new_room>"""
         amity.reallocate_person(int(args['<person_id>']), args['<room_type>'], args['<new_room>'])
+
+    @docopt_cmd
+    def do_save_state(self, args):
+        """Usage: save_state [--db=sqlite_database]"""
+        # print(args['--db'])
+        amity.save_state(args['--db'])
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
