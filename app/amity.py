@@ -356,6 +356,22 @@ class Amity(object):
                 staff.person_id = person[0]
                 self.people["all_people"].append(staff)
                 self.people["staff"].append(fellow)
+        # load rooms
+        cursor.execute("SELECT * FROM room")
+        rooms = cursor.fetchall()
+        for room in rooms:
+            if room[2] == "office":
+                office = Office(room[1])
+                office.room_id = room[0]
+                # save offices to data structures
+                self.rooms["all_rooms"].append(office)
+                self.rooms["office"][office] = []
+            elif room[2] == "living_space":
+                living_space = LivingSpace(room[1])
+                living_space.room_id = room[0]
+                # save living_spaces to data structures
+                self.rooms["all_rooms"].append(living_space)
+                self.rooms["living_space"][living_space] = []
 
     def list_of_available_rooms(self, list_of_rooms, room_type):
         if room_type in ["Office", "office", "O", "o"]:
