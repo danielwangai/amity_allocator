@@ -323,8 +323,8 @@ class Amity(object):
 
             try:
                 print(type(person.person_id))
-                cursor.execute("INSERT INTO unallocated (person_id) VALUES(?)",
-                           (person.person_id,))
+                cursor.execute("INSERT INTO unallocated (person_id, missing_room) VALUES(?, ?)",
+                           (person.person_id, "office"))
             except sqlite3.IntegrityError:
                 continue
 
@@ -383,7 +383,19 @@ class Amity(object):
                 self.rooms["office"][current_room].append(person_object)
             elif type(current_room) == LivingSpace:
                 self.rooms["living_space"][current_room].append(person_object)
-        print("All allocated people loaded successfully")
+        # print("All allocated people loaded successfully")
+
+        # get unallocated
+        cursor.execute("SELECT * FROM unallocated")
+        allocated_people = cursor.fetchall()
+        for person in allocated_people:
+            if person[1] == "office":
+                person_object = self.get_person_object_given_person_id(person[2])
+                self.rooms["office_waiting_list"].append(person_object)
+            elif person[1] == "living_space":
+                person_object = self.get_person_object_given_person_id(person[1])
+                self.rooms["living_space_waiting_list"].append(person_object)
+            print(self.rooms["office_waiting_list"])
 
 
     def list_of_available_rooms(self, list_of_rooms, room_type):

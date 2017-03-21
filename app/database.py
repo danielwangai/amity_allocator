@@ -46,6 +46,7 @@ class Database(object):
         unallocated = """
             CREATE TABLE IF NOT EXISTS unallocated (
             unallocated_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            missing_room VARCHAR(30),
             person_id INTEGER,
             FOREIGN KEY (person_id) REFERENCES person(person_id),
             unique (person_id));"""
