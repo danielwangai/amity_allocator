@@ -1,5 +1,6 @@
 import random
 import sqlite3
+import os
 
 from .fellow import Fellow
 from .staff import Staff
@@ -317,14 +318,25 @@ class Amity(object):
                 except sqlite3.IntegrityError:
                     continue
 
-        # save allcations - living spaces
+        # save unallocated people to office waiting lists
         print("Saving people unallocated to offices")
         for person in self.rooms["office_waiting_list"]:
 
             try:
-                print(type(person.person_id))
+                # print(type(person.person_id))
                 cursor.execute("INSERT INTO unallocated (person_id, missing_room) VALUES(?, ?)",
-                           (person.person_id, "office"))
+                           (person.person_id, "s", ))
+            except sqlite3.IntegrityError:
+                continue
+
+        # save unallocated people to office waiting lists
+        print("Saving people unallocated to living spaces")
+        for person in self.rooms["living_space_waiting_list"]:
+
+            try:
+                # print(type(person.person_id))
+                cursor.execute("INSERT INTO unallocated (person_id, missing_room) VALUES(?, ?)",
+                           (person.person_id, "living_space", ))
             except sqlite3.IntegrityError:
                 continue
 
@@ -355,7 +367,7 @@ class Amity(object):
                 staff = Staff(person[1], person[2])
                 staff.person_id = person[0]
                 self.people["all_people"].append(staff)
-                self.people["staff"].append(fellow)
+                self.people["staff"].append(staff)
         # load rooms
         cursor.execute("SELECT * FROM room")
         rooms = cursor.fetchall()
@@ -378,7 +390,7 @@ class Amity(object):
         for person in allocated_people:
             current_room = [room for room in self.rooms["all_rooms"] if room.room_id == person[2]][0]
             person_object = self.get_person_object_given_person_id(person[1])
-            print(person_object)
+            # print(person_object)
             if type(current_room) == Office:
                 self.rooms["office"][current_room].append(person_object)
             elif type(current_room) == LivingSpace:
@@ -395,8 +407,11 @@ class Amity(object):
             elif person[1] == "living_space":
                 person_object = self.get_person_object_given_person_id(person[1])
                 self.rooms["living_space_waiting_list"].append(person_object)
-            print(self.rooms["office_waiting_list"])
+        # print(self.rooms["office_waiting_list"])
 
+        os.remove(db_name)
+        # for i in self.rooms["living_space_waiting_list"]:
+        #     print(i.first_name)
 
     def list_of_available_rooms(self, list_of_rooms, room_type):
         if room_type in ["Office", "office", "O", "o"]:
