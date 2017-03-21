@@ -327,23 +327,6 @@ class Amity(object):
                            (person.person_id,))
             except sqlite3.IntegrityError:
                 continue
-            # print (person)
-        # # for person in self.rooms["office_waiting_list"]:
-        #     # try:
-        #     #     cursor.execute("INSERT INTO unallocated(person_id) VALUES(?);",
-        #     #                (int(person.person_id)))
-        #     # except sqlite3.IntegrityError:
-        #     #     continue
-        #     # print("unallocated - {0}".person.first_name)
-        # for person in self.rooms["office_waiting_list"]:
-        #     # print("unallocated - {0}".format(person.first_name))
-        #     try:
-        #         cursor.execute("INSERT INTO unallocated(person_id) VALUES(?);",
-        #                    (person.__dict__['person_id']))
-        #     except sqlite3.IntegrityError:
-        #         continue
-        #     # print(person.__dict__['person_id'])
-        #     # print(type(person.__dict__['person_id']))
 
         db.commit()
 
