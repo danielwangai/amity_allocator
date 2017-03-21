@@ -24,6 +24,9 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
+from pyfiglet import figlet_format
+from termcolor import cprint
+
 from app import amity
 
 
@@ -61,8 +64,7 @@ def docopt_cmd(func):
 class Amity(cmd.Cmd):
 
     def intro():
-        print('------------------------------------------------------------------------------')
-        print('------------------------------------------------------------------------------')
+        cprint(figlet_format("Amity", font="univers"), "blue")
 
     intro = intro()
     prompt = '(Amity) '
