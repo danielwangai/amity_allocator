@@ -306,6 +306,16 @@ class Amity(object):
                                (person.person_id, room.room_id))
                 except sqlite3.IntegrityError:
                     continue
+
+        # save allcations - living spaces
+        print("Saving living space allocations")
+        for room in list(self.rooms["living_space"].keys()):
+            for person in self.rooms["living_space"][room]:
+                try:
+                    cursor.execute("INSERT INTO allocations(person_id) VALUES(?);",
+                               (person.person_id))
+                except sqlite3.IntegrityError:
+                    continue
         db.commit()
 
     def load_state(self):
