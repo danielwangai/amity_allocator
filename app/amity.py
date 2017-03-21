@@ -312,10 +312,39 @@ class Amity(object):
         for room in list(self.rooms["living_space"].keys()):
             for person in self.rooms["living_space"][room]:
                 try:
-                    cursor.execute("INSERT INTO allocations(person_id) VALUES(?);",
-                               (person.person_id))
+                    cursor.execute("INSERT INTO allocations(person_id, room_id) VALUES(?, ?);",
+                               (person.person_id, room.room_id))
                 except sqlite3.IntegrityError:
                     continue
+
+        # save allcations - living spaces
+        print("Saving people unallocated to offices")
+        for person in self.rooms["office_waiting_list"]:
+
+            try:
+                print(type(person.person_id))
+                cursor.execute("INSERT INTO unallocated (person_id) VALUES(?)",
+                           (person.person_id,))
+            except sqlite3.IntegrityError:
+                continue
+            # print (person)
+        # # for person in self.rooms["office_waiting_list"]:
+        #     # try:
+        #     #     cursor.execute("INSERT INTO unallocated(person_id) VALUES(?);",
+        #     #                (int(person.person_id)))
+        #     # except sqlite3.IntegrityError:
+        #     #     continue
+        #     # print("unallocated - {0}".person.first_name)
+        # for person in self.rooms["office_waiting_list"]:
+        #     # print("unallocated - {0}".format(person.first_name))
+        #     try:
+        #         cursor.execute("INSERT INTO unallocated(person_id) VALUES(?);",
+        #                    (person.__dict__['person_id']))
+        #     except sqlite3.IntegrityError:
+        #         continue
+        #     # print(person.__dict__['person_id'])
+        #     # print(type(person.__dict__['person_id']))
+
         db.commit()
 
     def load_state(self):

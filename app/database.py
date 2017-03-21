@@ -38,7 +38,7 @@ class Database(object):
             allocation_id INTEGER PRIMARY KEY AUTOINCREMENT,
             person_id INTEGER,
             room_id INTEGER,
-            FOREIGN KEY (person_id) REFERENCES employee(person_id),
+            FOREIGN KEY (person_id) REFERENCES person(person_id),
             FOREIGN KEY (room_id) REFERENCES room(room_id),
             unique (person_id, room_id));"""
         cursor.execute(allocation)
@@ -47,7 +47,7 @@ class Database(object):
             CREATE TABLE IF NOT EXISTS unallocated (
             unallocated_id INTEGER PRIMARY KEY AUTOINCREMENT,
             person_id INTEGER,
-            FOREIGN KEY (person_id) REFERENCES employee(person_id),
+            FOREIGN KEY (person_id) REFERENCES person(person_id),
             unique (person_id));"""
         cursor.execute(unallocated)
 
