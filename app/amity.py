@@ -330,8 +330,32 @@ class Amity(object):
 
         db.commit()
 
-    def load_state(self):
-        pass
+    def load_state(self, args):
+        # get db
+        db_name = args["<db>"]
+        db = Database(db_name)
+        db.create_tables()
+        cursor = db.cursor()
+
+        # fetch people
+        print('Loading people')
+        cursor.execute("SELECT * from person")
+        people = cursor.fetchall()
+        # print(people)
+        for person in people:
+            # populate db
+            if person[3] == 'Fellow':
+                fellow = Fellow(person[1], person[2])
+                fellow.person_id = person[0]
+                # add to data structures
+                self.people["all_people"].append(fellow)
+                self.people["fellows"].append(fellow)
+
+            elif person[3] == 'Staff':
+                staff = Staff(person[1], person[2])
+                staff.person_id = person[0]
+                self.people["all_people"].append(staff)
+                self.people["staff"].append(fellow)
 
     def list_of_available_rooms(self, list_of_rooms, room_type):
         if room_type in ["Office", "office", "O", "o"]:
