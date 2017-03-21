@@ -35,7 +35,7 @@ class Database(object):
 
         allocation = """
             CREATE TABLE IF NOT EXISTS allocations (
-            allocation_id INTEGER PRIMARY KEY,
+            allocation_id INTEGER PRIMARY KEY AUTOINCREMENT,
             person_id INTEGER,
             room_id INTEGER,
             FOREIGN KEY (person_id) REFERENCES employee(person_id),
@@ -45,7 +45,7 @@ class Database(object):
 
         unallocated = """
             CREATE TABLE IF NOT EXISTS unallocated (
-            unallocated_id INTEGER PRIMARY KEY,
+            unallocated_id INTEGER PRIMARY KEY AUTOINCREMENT,
             person_id INTEGER,
             FOREIGN KEY (person_id) REFERENCES employee(person_id),
             unique (person_id));"""

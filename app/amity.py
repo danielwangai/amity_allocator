@@ -1,4 +1,5 @@
 import random
+import sqlite3
 
 from .fellow import Fellow
 from .staff import Staff
@@ -296,6 +297,15 @@ class Amity(object):
                            (room.room_id, room.name, 'living_space'))
             except sqlite3.IntegrityError:
                 continue
+        # save allcations - offices
+        print("Saving office allocations")
+        for room in list(self.rooms["office"].keys()):
+            for person in self.rooms["office"][room]:
+                try:
+                    cursor.execute("INSERT INTO allocations(person_id, room_id) VALUES(?, ?);",
+                               (person.person_id, room.room_id))
+                except sqlite3.IntegrityError:
+                    continue
         db.commit()
 
     def load_state(self):
