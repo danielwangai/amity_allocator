@@ -127,8 +127,7 @@ class Amity(object):
                                  offices) > 0 else "No available office space"
                              )
             # allocate office
-            allocated_office = select_office(self.list_of_available_rooms(
-                list(self.rooms["office"].keys()), "o"))
+            allocated_office = select_office(self.list_of_available_rooms("o"))
 
             if allocated_office == "No available office space":
                 cprint("{0}\n".format(allocated_office), "red")
@@ -145,8 +144,7 @@ class Amity(object):
                                            )
                     # allocate living_space
                     allocated_living_space = select_living_space(
-                        self.list_of_available_rooms
-                        (list(self.rooms["living_space"].keys()), "l"))
+                        self.list_of_available_rooms("l"))
 
                     cprint(allocated_living_space, "green")
                     # if there are no available living spaces
@@ -193,8 +191,7 @@ class Amity(object):
                                            "No available living space slots")
                     # allocate living_space
                     allocated_living_space = select_living_space(
-                        self.list_of_available_rooms(
-                            list(self.rooms["living_space"].keys()), "l"))
+                        self.list_of_available_rooms("l"))
                     if allocated_living_space == "No available \
                     living space slots":
                         (self.rooms["living_space_waiting_list"].
@@ -226,8 +223,7 @@ class Amity(object):
                              "No available office space"
                              )
             # allocate office
-            allocated_office = select_office(self.list_of_available_rooms(
-                list(self.rooms["office"].keys()), "o"))
+            allocated_office = select_office(self.list_of_available_rooms("o"))
             if allocated_office == "No available office space":
                 # add to waiting list if office not available
                 cprint("{0}\n".format(allocated_office), "red")
@@ -515,17 +511,17 @@ class Amity(object):
 
         os.remove(db_name)
 
-    def list_of_available_rooms(self, list_of_rooms, room_type):
+    def list_of_available_rooms(self, room_type):
         """To list all available rooms slots."""
         if room_type in ["Office", "office", "O", "o"]:
             # if room is office
             # get all office objects with space < 6
-            return ([room for room in list_of_rooms
+            return ([room for room in list(self.rooms["office"].keys())
                      if len(self.rooms["office"][room]) < 6])
         elif room_type in ["Living", "living", "L", "l"]:
             # if room is living space
             # get all living space objects with space < 4
-            return ([room for room in list_of_rooms
+            return ([room for room in list(self.rooms["living_space"].keys())
                      if len(self.rooms["living_space"][room]) < 4])
 
     def is_allocated(self, person_object, room_type):
@@ -660,10 +656,8 @@ class Amity(object):
     def get_room_object_from_room_name_for_available_rooms(self, room_name):
         """To return room object given valid room name."""
         result = None
-        all_available_rooms = (self.list_of_available_rooms(
-            list(self.rooms["office"].keys()), "o"))
-        all_available_rooms.extend(self.list_of_available_rooms(
-            list(self.rooms["living_space"].keys()), "l"))
+        all_available_rooms = (self.list_of_available_rooms("o"))
+        all_available_rooms.extend(self.list_of_available_rooms("l"))
         for room in all_available_rooms:
             if room_name in [room.name for room in all_available_rooms]:
                 result = room
