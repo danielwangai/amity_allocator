@@ -1,9 +1,13 @@
+"""This file contains the definition of living space sublcass."""
+
 from .rooms import Room
 
+
 class LivingSpace(Room):
-    '''
-        LivingSpace has slots for at most 4 people(Fellows ONLY)
-    '''
+    """Class inherits from Room class."""
+
     room_capacity = 6
-    def init(self):
+
+    def __init__(self, name):
+        """Override the init method of Ro superclass."""
         super(LivingSpace, self).__init__(name)

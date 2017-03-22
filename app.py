@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-"""
+"""#!/usr/bin/env python .
+
 This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
@@ -11,6 +11,8 @@ Usage:
     amity print_office_allocations
     amity print_living_space_allocations
     amity reallocate_person <person_id> <room_type> <new_room>
+    amity save_state [--db=sqlite_database]
+    amity load_state <db>
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -22,14 +24,19 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
+from pyfiglet import figlet_format
+from termcolor import cprint
+
 from app import amity
 
 
 def docopt_cmd(func):
+    """To provide a decorator used to simplify the try/except block.
+
+    and pass the result of the docopt parsing to the called action.
+
     """
-    This decorator is used to simplify the try/except block and pass the result
-    of the docopt parsing to the called action.
-    """
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -57,10 +64,11 @@ def docopt_cmd(func):
 
 
 class Amity(cmd.Cmd):
+    """Define contain methods/commands for docopt interface on terminal."""
 
     def intro():
-        print('------------------------------------------------------------------------------')
-        print('------------------------------------------------------------------------------')
+        """Contain introductory message when in interactive mode."""
+        cprint(figlet_format("Amity", font="univers"), "blue")
 
     intro = intro()
     prompt = '(Amity) '
@@ -104,7 +112,19 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage: reallocate_person <person_id> <room_type> <new_room>"""
-        amity.reallocate_person(int(args['<person_id>']), args['<room_type>'], args['<new_room>'])
+        amity.reallocate_person(int(args['<person_id>']),
+                                args['<room_type>'], args['<new_room>'])
+
+    @docopt_cmd
+    def do_save_state(self, args):
+        """Usage: save_state [--db=sqlite_database]"""
+        # print(args['--db'])
+        amity.save_state(args['--db'])
+
+    @docopt_cmd
+    def do_load_state(self, args):
+        """Usage: load_state <db>"""
+        amity.load_state(args)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
