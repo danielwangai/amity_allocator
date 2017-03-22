@@ -163,10 +163,10 @@ class Amity(object):
                                                          new_fellow.last_name,
                                                          new_fellow.person_id),
                                "green")
-                        cprint("{0} {1} allocated to {2}".format(
-                            new_fellow.first_name,
-                            new_fellow.last_name, allocated_living_space.name),
-                            "green")
+                        cprint("{0} {1} allocated to {2} (living space)".format
+                               (new_fellow.first_name,
+                                new_fellow.last_name, allocated_living_space.name),
+                               "green")
 
                         (self.rooms["living_space"][allocated_living_space].
                             append(new_fellow))
@@ -177,7 +177,7 @@ class Amity(object):
                        .format(new_fellow.first_name,
                                new_fellow.last_name,
                                new_fellow.person_id), "green")
-                cprint("{0} {1} allocated to {2}".
+                cprint("{0} {1} allocated to {2} (office)".
                        format(new_fellow.first_name,
                               new_fellow.last_name,
                               allocated_office.name), "green")
@@ -205,7 +205,7 @@ class Amity(object):
                                                          new_fellow.last_name,
                                                          new_fellow.person_id),
                                "green")
-                        cprint("{0} {1} allocated to {2}".format(
+                        cprint("{0} {1} allocated to {2} (living space)".format(
                             new_fellow.first_name,
                             new_fellow.last_name, allocated_living_space.name),
                             "green")
@@ -236,11 +236,13 @@ class Amity(object):
                 return ("Sorry, no available office spaces yet."
                         "You'll be set on the waiting list")
             else:
+                if wants_accomodation == "Yes":
+                    cprint("Staff cannot get living space\n", "red")
                 # if office is availabl, allocate staff.
                 cprint("{0} {1} id - {2}".format(new_staff.first_name,
                                                  new_staff.last_name,
                                                  new_staff.person_id), "green")
-                cprint("Staff {0} {1} allocated to {2}".format(
+                cprint("Staff {0} {1} allocated to {2} (office)".format(
                     new_staff.first_name,
                     new_staff.last_name, allocated_office.name), "green")
 
