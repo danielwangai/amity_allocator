@@ -11,8 +11,6 @@ can:-
 
 """
 import random
-import sqlite3
-import os
 
 from termcolor import cprint
 
@@ -128,6 +126,7 @@ class Amity(object):
                              )
             # allocate office
             allocated_office = select_office(self.list_of_available_rooms("o"))
+            print(allocated_office)
 
             if allocated_office == "No available office space":
                 cprint("{0}\n".format(allocated_office), "red")
@@ -192,24 +191,24 @@ class Amity(object):
                     # allocate living_space
                     allocated_living_space = select_living_space(
                         self.list_of_available_rooms("l"))
-                    if allocated_living_space == "No available \
-                    living space slots":
+                    if (allocated_living_space == "No available"
+                                                  "living space slots"):
                         (self.rooms["living_space_waiting_list"].
                          append(new_fellow))
-                        return "Sorry, no available living space slots yet.\
-                         You've been set on the waiting list"
+                        return ("Sorry, no available living space slots yet"
+                                "You've been set on the waiting list")
                     else:
                         cprint("{0} {1} id - {2}".format(new_fellow.first_name,
                                                          new_fellow.last_name,
                                                          new_fellow.person_id),
                                "green")
-                        cprint("{0} {1} allocated to {2} (living space)".
+                        cprint("{0} {1} allocated to (living space)".
                                format(new_fellow.first_name,
-                                      new_fellow.last_name,
-                                      allocated_living_space.name),
+                                      new_fellow.last_name),
                                "green")
-                        (self.rooms["living_space"][allocated_living_space]
-                         .append(new_fellow))
+                        cprint("{0}".format(allocated_living_space), "blue")
+                        # (self.rooms["living_space"][allocated_living_space]
+                        #  .append(new_fellow))
 
         elif person_type == "Staff":
             new_staff = Staff(firstname, lastname)
@@ -341,116 +340,21 @@ class Amity(object):
 
     def save_state(self, db_name=None):
         """To persist data to the database."""
-        # save people data
-        if db_name is not None:
-            db_name = db_name + '.db'
-        else:
-            db_name = 'amity.db'
-
-        # try:
         db = Database(db_name)
-        db.create_tables()
-        cursor = db.cursor()
-
-        # Save all people
-        cprint('Saving...', "red")
-        for key, value in self.people.items():
-            if key == "fellows":
-                for i in value:
-                    try:
-                        cursor.execute("INSERT INTO person VALUES \
-                                        (?, ?, ?, ?);",
-                                       (i.person_id, i.first_name,
-                                        i.last_name, i.category))
-                    except sqlite3.IntegrityError:
-                        continue
-            if key == "staff":
-                for i in value:
-                    try:
-                        cursor.execute("INSERT INTO person VALUES \
-                        (?, ?, ?, ?);",
-                                       (i.person_id, i.first_name,
-                                        i.last_name, i.category))
-                    except sqlite3.IntegrityError:
-                        continue
-
-        # save office data
-        cprint('Saving office...', "red")
-        for room in list(self.rooms["office"].keys()):
-            try:
-                cursor.execute("INSERT INTO room VALUES (?, ?, ?);",
-                               (room.room_id, room.name, 'office'))
-            except sqlite3.IntegrityError:
-                continue
-
-        # save living_space data
-        cprint('Saving Living Space...', "red")
-        for room in list(self.rooms["living_space"].keys()):
-            try:
-                cursor.execute("INSERT INTO room VALUES (?, ?, ?);",
-                               (room.room_id, room.name, 'living_space'))
-            except sqlite3.IntegrityError:
-                continue
-        # save allcations - offices
-        cprint("Saving office allocations", "red")
-        for room in list(self.rooms["office"].keys()):
-            for person in self.rooms["office"][room]:
-                try:
-                    cursor.execute("INSERT INTO allocations(person_id, room_id)\
-                     VALUES(?, ?);",
-                                   (person.person_id, room.room_id))
-                except sqlite3.IntegrityError:
-                    continue
-
-        # save allcations - living spaces
-        cprint("Saving living space allocations", "red")
-        for room in list(self.rooms["living_space"].keys()):
-            for person in self.rooms["living_space"][room]:
-                try:
-                    cursor.execute("INSERT INTO allocations(person_id, room_id)\
-                     VALUES(?, ?);",
-                                   (person.person_id, room.room_id))
-                except sqlite3.IntegrityError:
-                    continue
-
-        # save unallocated people to office waiting lists
-        cprint("Saving people unallocated to offices", "red")
-        for person in self.rooms["office_waiting_list"]:
-
-            try:
-                # print(type(person.person_id))
-                cursor.execute("INSERT INTO unallocated (person_id,\
-                 missing_room) VALUES(?, ?)",
-                               (person.person_id, "s", ))
-            except sqlite3.IntegrityError:
-                continue
-
-        # save unallocated people to office waiting lists
-        cprint("Saving people unallocated to living spaces", "red")
-        for person in self.rooms["living_space_waiting_list"]:
-
-            try:
-                # print(type(person.person_id))
-                cursor.execute("INSERT INTO unallocated (person_id,\
-                 missing_room) VALUES(?, ?)",
-                               (person.person_id, "living_space", ))
-            except sqlite3.IntegrityError:
-                continue
-
-        db.commit()
+        db.save_state(db_name, self.people, self.rooms)
 
     def load_state(self, db_name):
         """To fetch data saved in the database and load them to amity."""
         # get db
         db = Database(db_name)
-        db.create_tables()
-        cursor = db.cursor()
+        collected_data = db.load_state(db_name, self.people, self.rooms)
+        # print(collected_data)
 
-        # fetch people
-        cprint('Loading people', "red")
-        cursor.execute("SELECT * from person")
-        people = cursor.fetchall()
-        # print(people)
+        people = collected_data[0]
+        self.populate_people(people)
+
+    def populate_people(self, people):
+        """To populate people dictionary during load state database."""
         for person in people:
             # populate db
             if person[3] == 'Fellow':
@@ -465,64 +369,20 @@ class Amity(object):
                 staff.person_id = person[0]
                 self.people["all_people"].append(staff)
                 self.people["staff"].append(staff)
-        # load rooms
-        cursor.execute("SELECT * FROM room")
-        rooms = cursor.fetchall()
-        for room in rooms:
-            if room[2] == "office":
-                office = Office(room[1])
-                office.room_id = room[0]
-                # save offices to data structures
-                self.rooms["all_rooms"].append(office)
-                self.rooms["office"][office] = []
-            elif room[2] == "living_space":
-                living_space = LivingSpace(room[1])
-                living_space.room_id = room[0]
-                # save living_spaces to data structures
-                self.rooms["all_rooms"].append(living_space)
-                self.rooms["living_space"][living_space] = []
-        # get allocated
-        cursor.execute("SELECT * FROM allocations")
-        allocated_people = cursor.fetchall()
-        for person in allocated_people:
-            current_room = [room for room in self.rooms["all_rooms"]
-                            if room.room_id == person[2]][0]
-            person_object = self.get_person_object_given_person_id(person[1])
-            # print(person_object)
-            if type(current_room) == Office:
-                self.rooms["office"][current_room].append(person_object)
-            elif type(current_room) == LivingSpace:
-                self.rooms["living_space"][current_room].append(person_object)
-        # print("All allocated people loaded successfully")
-
-        # get unallocated
-        cursor.execute("SELECT * FROM unallocated")
-        allocated_people = cursor.fetchall()
-        for person in allocated_people:
-            if person[1] == "office":
-                person_object = (self.get_person_object_given_person_id(
-                    person[2]))
-                self.rooms["office_waiting_list"].append(person_object)
-            elif person[1] == "living_space":
-                person_object = (self.get_person_object_given_person_id(
-                    person[1]))
-                self.rooms["living_space_waiting_list"].append(person_object)
-        # print(self.rooms["office_waiting_list"])
-
-        os.remove(db_name)
+        print(self.people["all_people"])
 
     def list_of_available_rooms(self, room_type):
         """To list all available rooms slots."""
         if room_type in ["Office", "office", "O", "o"]:
             # if room is office
             # get all office objects with space < 6
-            return ([room for room in list(self.rooms["office"].keys())
-                     if len(self.rooms["office"][room]) < 6])
+            return [room for room in list(self.rooms["office"].keys()) if
+                    len(self.rooms["office"][room]) < 6]
         elif room_type in ["Living", "living", "L", "l"]:
             # if room is living space
             # get all living space objects with space < 4
-            return ([room for room in list(self.rooms["living_space"].keys())
-                     if len(self.rooms["living_space"][room]) < 4])
+            return [room for room in list(self.rooms["living_space"].keys()) if
+                    len(self.rooms["living_space"][room]) < 4]
 
     def is_allocated(self, person_object, room_type):
         """To check if a person is allocated to a room."""
@@ -656,8 +516,10 @@ class Amity(object):
     def get_room_object_from_room_name_for_available_rooms(self, room_name):
         """To return room object given valid room name."""
         result = None
-        all_available_rooms = (self.list_of_available_rooms("o"))
-        all_available_rooms.extend(self.list_of_available_rooms("l"))
+        all_available_rooms = (self.list_of_available_rooms(
+            list(self.rooms["office"].keys()), "o"))
+        all_available_rooms.extend(self.list_of_available_rooms(
+            list(self.rooms["office"].keys()), "l"))
         for room in all_available_rooms:
             if room_name in [room.name for room in all_available_rooms]:
                 result = room
