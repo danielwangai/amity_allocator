@@ -178,13 +178,36 @@ class Database(object):
         cprint('Loading people', "red")
         cursor.execute("SELECT * from person")
         people = cursor.fetchall()
+
+        # load rooms
         cursor.execute("SELECT * FROM room")
         rooms = cursor.fetchall()
 
+        # get allocated
         cursor.execute("SELECT * FROM allocations")
         allocated_people = cursor.fetchall()
+        # for person in allocated_people:
+        #     current_room = [room for room in rooms["all_rooms"]
+        #                     if room.room_id == person[2]][0]
+        #     person_object = get_person_object_given_person_id(person[1])
+        #     # print(person_object)
+        #     if type(current_room) == Office:
+        #         rooms["office"][current_room].append(person_object)
+        #     elif type(current_room) == LivingSpace:
+        #         rooms["living_space"][current_room].append(person_object)
+        # print("All allocated people loaded successfully")
 
+        # get unallocated
         cursor.execute("SELECT * FROM unallocated")
         unallocated_people = cursor.fetchall()
-
+        # for person in allocated_people:
+        #     if person[1] == "office":
+        #         person_object = (get_person_object_given_person_id(
+        #             person[2]))
+        #         rooms["office_waiting_list"].append(person_object)
+        #     elif person[1] == "living_space":
+        #         person_object = (get_person_object_given_person_id(
+        #             person[1]))
+        #         rooms["living_space_waiting_list"].append(person_object)
+        # print(self.rooms["office_waiting_list"])
         return people, rooms, allocated_people, unallocated_people

@@ -353,6 +353,8 @@ class Amity(object):
         people = collected_data[0]
         self.populate_people(people)
 
+        self.populate_rooms(collected_data[1])
+
     def populate_people(self, people):
         """To populate people dictionary during load state database."""
         for person in people:
@@ -370,6 +372,23 @@ class Amity(object):
                 self.people["all_people"].append(staff)
                 self.people["staff"].append(staff)
         print(self.people["all_people"])
+
+    def populate_rooms(self, rooms):
+        """To populate rooms dictionary during load state database."""
+        for room in rooms:
+            if room[2] == "office":
+                office = Office(room[1])
+                office.room_id = room[0]
+                # save offices to data structures
+                self.rooms["all_rooms"].append(office)
+                self.rooms["office"][office] = []
+            elif room[2] == "living_space":
+                living_space = LivingSpace(room[1])
+                living_space.room_id = room[0]
+                # save living_spaces to data structures
+                self.rooms["all_rooms"].append(living_space)
+                self.rooms["living_space"][living_space] = []
+        print(self.rooms["all_rooms"])
 
     def list_of_available_rooms(self, room_type):
         """To list all available rooms slots."""
