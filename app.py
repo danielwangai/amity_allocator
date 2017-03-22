@@ -89,7 +89,17 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_add_person(self, args):
         """Usage: add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>"""
-        amity.add_person(args)
+        person_type = None
+        if args["Fellow"]:
+            person_type = "Fellow"
+        else:
+            person_type = "Staff"
+        first_name = args["<first_name>"]
+        last_name = args["<last_name>"]
+        wants_accomodation = ("Yes" if args.get("<wants_accomodation>") is
+                              "Y" else "No")
+        amity.add_person(person_type, first_name,
+                         last_name, wants_accomodation)
 
     @docopt_cmd
     def do_print_unallocated_to_office(self, args):

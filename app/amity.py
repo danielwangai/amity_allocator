@@ -108,47 +108,54 @@ class Amity(object):
             room_names.append(room.name)
         return room_names
 
-    def add_person(self, args):
+    def add_person(self, person_type, firstname, lastname, wants_accomodation):
         """To add a person and allocate them to an available room.
 
         Fellow can get both office and living space(optional).
         Staff only entitled to office space alone
 
         """
-        wants_accomodation = ("Yes" if args.get("<wants_accomodation>") is
-                              "Y" else "No")
-        if args["Fellow"]:
-            new_fellow = Fellow(args["<first_name>"], args["<last_name>"])
+        if person_type == "Fellow":
+            new_fellow = Fellow(firstname, lastname)
             new_fellow.wants_accomodation = wants_accomodation
             self.people["all_people"].append(new_fellow)
             self.people["fellows"].append(new_fellow)
 
             # select office object
-            def select_office(offices): return random.choice(
-                offices) if len(offices) > 0 else "No available office space"
-            # allocate office)
+            select_office = (lambda offices:
+                             random.choice(offices) if len(
+                                 offices) > 0 else "No available office space"
+                             )
+            # allocate office
             allocated_office = select_office(self.list_of_available_rooms(
                 list(self.rooms["office"].keys()), "o"))
 
             if allocated_office == "No available office space":
+                cprint("{0}\n".format(allocated_office), "red")
+                cprint("{0} {1} has been put in waiting list\n".format(
+                    new_fellow.first_name, new_fellow.last_name), "green")
                 self.rooms["office_waiting_list"].append(new_fellow)
 
-                if args.get("<wants_accomodation>") is "Y":
+                if wants_accomodation is "Y":
                     # select living space
                     select_living_space = (lambda living_spaces:
                                            random.choice(living_spaces) if len(
                                                living_spaces) > 0 else
-                                           "No available living space slots")
+                                           "No available living space slots"
+                                           )
                     # allocate living_space
                     allocated_living_space = select_living_space(
                         self.list_of_available_rooms
                         (list(self.rooms["living_space"].keys()), "l"))
 
                     cprint(allocated_living_space, "green")
-                    if allocated_living_space == "No available \
-                    living space slots":
+                    # if there are no available living spaces
+                    if (allocated_living_space ==
+                            "No available living space slots"):
+                        # add person to living space waiting list
                         (self.rooms["living_space_waiting_list"].
                          append(new_fellow))
+
                         return ("Sorry, no available living space slots yet.\
                          You've been set on the waiting list")
                     else:
@@ -161,9 +168,11 @@ class Amity(object):
                             new_fellow.last_name, allocated_living_space.name),
                             "green")
 
-                        self.rooms["living_space"][allocated_living_space].\
-                            append(new_fellow)
+                        (self.rooms["living_space"][allocated_living_space].
+                            append(new_fellow))
             else:
+                # if office space is available, allocate fellow to both
+                # an office and a living space
                 cprint("{0} {1} id - {2}"
                        .format(new_fellow.first_name,
                                new_fellow.last_name,
@@ -172,9 +181,10 @@ class Amity(object):
                        format(new_fellow.first_name,
                               new_fellow.last_name,
                               allocated_office.name), "green")
+                # add person to a slot in the allocated office
                 self.rooms["office"][allocated_office].append(new_fellow)
 
-                if args.get("<wants_accomodation>") is "Y":
+                if wants_accomodation == "Yes":
                     # select living space
                     select_living_space = (lambda living_spaces:
                                            random.choice(living_spaces) if len(
@@ -202,28 +212,38 @@ class Amity(object):
                         (self.rooms["living_space"][allocated_living_space]
                          .append(new_fellow))
 
-        elif args["Staff"]:
-            new_staff = Staff(args["<first_name>"], args["<last_name>"])
+        elif person_type == "Staff":
+            new_staff = Staff(firstname, lastname)
             self.people["all_people"].append(new_staff)
             self.people["staff"].append(new_staff)
 
             # select office object
-            def select_office(offices): return random.choice(
-                offices) if len(offices) > 0 else "No available office space"
+            select_office = (lambda offices:
+                             random.choice(offices) if len(
+                                 offices) > 0 else
+                             "No available office space"
+                             )
             # allocate office
             allocated_office = select_office(self.list_of_available_rooms(
                 list(self.rooms["office"].keys()), "o"))
             if allocated_office == "No available office space":
+                # add to waiting list if office not available
+                cprint("{0}\n".format(allocated_office), "red")
+                cprint("{0} {1} has been put in waiting list\n".format(
+                    new_staff.first_name, new_staff.last_name), "green")
                 self.rooms["office_waiting_list"].append(new_staff)
-                return "Sorry, no available office spaces yet. \
-                You'll be set on the waiting list"
+
+                return ("Sorry, no available office spaces yet."
+                        "You'll be set on the waiting list")
             else:
+                # if office is availabl, allocate staff.
                 cprint("{0} {1} id - {2}".format(new_staff.first_name,
                                                  new_staff.last_name,
                                                  new_staff.person_id), "green")
                 cprint("Staff {0} {1} allocated to {2}".format(
                     new_staff.first_name,
                     new_staff.last_name, allocated_office.name), "green")
+
                 self.rooms["office"][allocated_office].append(new_staff)
 
     def reallocate_person(self, person_id, room_type, new_room):
