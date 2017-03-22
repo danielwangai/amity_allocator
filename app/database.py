@@ -190,14 +190,5 @@ class Database(object):
         # get unallocated
         cursor.execute("SELECT * FROM unallocated")
         unallocated_people = cursor.fetchall()
-        # for person in allocated_people:
-        #     if person[1] == "office":
-        #         person_object = (get_person_object_given_person_id(
-        #             person[2]))
-        #         rooms["office_waiting_list"].append(person_object)
-        #     elif person[1] == "living_space":
-        #         person_object = (get_person_object_given_person_id(
-        #             person[1]))
-        #         rooms["living_space_waiting_list"].append(person_object)
-        # print(self.rooms["office_waiting_list"])
+
         return people, rooms, allocated_people, unallocated_people

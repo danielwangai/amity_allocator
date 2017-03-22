@@ -355,6 +355,7 @@ class Amity(object):
 
         self.populate_rooms(collected_data[1])
         self.populate_allocated_people(collected_data[2])
+        self.populate_unallocated_people(collected_data[3])
 
     def populate_people(self, people):
         """To populate people dictionary during load state database."""
@@ -402,6 +403,18 @@ class Amity(object):
                 self.rooms["office"][current_room].append(person_object)
             elif type(current_room) == LivingSpace:
                 self.rooms["living_space"][current_room].append(person_object)
+
+    def populate_unallocated_people(self, unallocated_people):
+        """To populate unallocated people."""
+        for person in unallocated_people:
+            if person[1] == "office":
+                person_object = (self.get_person_object_given_person_id(
+                    person[2]))
+                self.rooms["office_waiting_list"].append(person_object)
+            elif person[1] == "living_space":
+                person_object = (self.get_person_object_given_person_id(
+                    person[1]))
+                self.rooms["living_space_waiting_list"].append(person_object)
 
     def list_of_available_rooms(self, room_type):
         """To list all available rooms slots."""
