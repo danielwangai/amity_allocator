@@ -186,16 +186,6 @@ class Database(object):
         # get allocated
         cursor.execute("SELECT * FROM allocations")
         allocated_people = cursor.fetchall()
-        # for person in allocated_people:
-        #     current_room = [room for room in rooms["all_rooms"]
-        #                     if room.room_id == person[2]][0]
-        #     person_object = get_person_object_given_person_id(person[1])
-        #     # print(person_object)
-        #     if type(current_room) == Office:
-        #         rooms["office"][current_room].append(person_object)
-        #     elif type(current_room) == LivingSpace:
-        #         rooms["living_space"][current_room].append(person_object)
-        # print("All allocated people loaded successfully")
 
         # get unallocated
         cursor.execute("SELECT * FROM unallocated")
