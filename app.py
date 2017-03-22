@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-"""
+"""#!/usr/bin/env python .
+
 This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
@@ -31,10 +31,12 @@ from app import amity
 
 
 def docopt_cmd(func):
+    """To provide a decorator used to simplify the try/except block.
+
+    and pass the result of the docopt parsing to the called action.
+
     """
-    This decorator is used to simplify the try/except block and pass the result
-    of the docopt parsing to the called action.
-    """
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -62,8 +64,10 @@ def docopt_cmd(func):
 
 
 class Amity(cmd.Cmd):
+    """Define contain methods/commands for docopt interface on terminal."""
 
     def intro():
+        """Contain introductory message when in interactive mode."""
         cprint(figlet_format("Amity", font="univers"), "blue")
 
     intro = intro()
@@ -108,7 +112,8 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage: reallocate_person <person_id> <room_type> <new_room>"""
-        amity.reallocate_person(int(args['<person_id>']), args['<room_type>'], args['<new_room>'])
+        amity.reallocate_person(int(args['<person_id>']),
+                                args['<room_type>'], args['<new_room>'])
 
     @docopt_cmd
     def do_save_state(self, args):

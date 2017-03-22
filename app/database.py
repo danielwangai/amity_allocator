@@ -1,18 +1,33 @@
-import os
-import sys
+"""This file defines database structure and methods to manipulate data."""
 import sqlite3
 
+
 class Database(object):
+    """This class defines database structure and methods.
+
+    The methods aid in data manipulation.
+    """
+
     def __init__(self, db):
+        """To initialize with database connection."""
         self.conn = sqlite3.connect(db)
 
     def cursor(self):
+        """To aid in database functions.
+
+        - traversal
+        - retreival
+        - update
+        - delete
+        """
         return self.conn.cursor()
 
     def commit(self):
+        """To persist data permanently to database."""
         return self.conn.commit()
 
     def create_tables(self):
+        """Method contains the schema for creating the tables."""
         cursor = self.cursor()
         create_room = '''
             CREATE TABLE IF NOT EXISTS room(
@@ -52,9 +67,6 @@ class Database(object):
             unique (person_id));"""
         cursor.execute(unallocated)
 
-
     def close_connection(self):
+        """Method to close connection to databse."""
         return self.conn.close()
-
-# db = Database("test.db")
-# db.create()
