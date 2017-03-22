@@ -165,7 +165,8 @@ class Amity(object):
                                "green")
                         cprint("{0} {1} allocated to {2} (living space)".format
                                (new_fellow.first_name,
-                                new_fellow.last_name, allocated_living_space.name),
+                                new_fellow.last_name,
+                                allocated_living_space.name),
                                "green")
 
                         (self.rooms["living_space"][allocated_living_space].
@@ -205,10 +206,11 @@ class Amity(object):
                                                          new_fellow.last_name,
                                                          new_fellow.person_id),
                                "green")
-                        cprint("{0} {1} allocated to {2} (living space)".format(
-                            new_fellow.first_name,
-                            new_fellow.last_name, allocated_living_space.name),
-                            "green")
+                        cprint("{0} {1} allocated to {2} (living space)".
+                               format(new_fellow.first_name,
+                                      new_fellow.last_name,
+                                      allocated_living_space.name),
+                               "green")
                         (self.rooms["living_space"][allocated_living_space]
                          .append(new_fellow))
 
@@ -448,10 +450,9 @@ class Amity(object):
 
         db.commit()
 
-    def load_state(self, args):
+    def load_state(self, db_name):
         """To fetch data saved in the database and load them to amity."""
         # get db
-        db_name = args["<db>"]
         db = Database(db_name)
         db.create_tables()
         cursor = db.cursor()
@@ -596,9 +597,8 @@ class Amity(object):
         else:
             cprint("No living space exist", "red")
 
-    def print_room(self, args):
+    def print_room(self, room_name):
         """To return a list of room occupants."""
-        room_name = args["<room_name>"]
         occupants = []
         offices = list(self.rooms["office"].keys())
         living_spaces = list(self.rooms["living_space"].keys())

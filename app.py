@@ -109,7 +109,8 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_print_room(self, args):
         """Usage: print_room <room_name>"""
-        amity.print_room(args)
+        room_name = args["<room_name>"]
+        amity.print_room(room_name)
 
     @docopt_cmd
     def do_print_unallocated_living_space(self, args):
@@ -141,7 +142,8 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: load_state <db>"""
-        amity.load_state(args)
+        db_name = args["<db>"]
+        amity.load_state(db_name)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
