@@ -259,9 +259,9 @@ class Amity(object):
             # get_person_object_given_person_id
             person_object = self.get_person_object_given_person_id(person_id)
             current_room = self.get_room_from_person_id(person_id, "o")
-            if (self.get_room_from_room_name(new_room, "o")
+            if (self.get_room_object_from_room_name(new_room)
                     != "room name does not exist"):
-                new_room_object = self.get_room_from_room_name(new_room, "o")
+                new_room_object = self.get_room_object_from_room_name(new_room)
                 # remove person from current_room
                 self.rooms["office"][current_room].remove(person_object)
                 # add person to new_room_object
@@ -278,9 +278,9 @@ class Amity(object):
             # get_person_object_given_person_id
             person_object = self.get_person_object_given_person_id(person_id)
             current_room = self.get_room_from_person_id(person_id, "l")
-            if (self.get_room_from_room_name(new_room, "l") !=
+            if (self.get_room_object_from_room_name(new_room) !=
                     "room name does not exist"):
-                new_room_object = self.get_room_from_room_name(new_room, "l")
+                new_room_object = self.get_room_object_from_room_name(new_room)
                 # remove person from current_room
                 self.rooms["living_space"][current_room].remove(person_object)
                 # add person to new_room_object
@@ -313,24 +313,17 @@ class Amity(object):
         else:
             return "person id does not exist"
 
-    def get_room_from_room_name(self, room_name, room_type):
+    def get_room_object_from_room_name_for_all_rooms(self, room_name):
         """To return room object given valid room name."""
         result = None
-        if room_type in ["Office", "office", "O", "o"]:
-            for room in list(self.rooms["office"].keys()):
-                if (room_name in [room.name for room in
-                                  self.list_of_available_rooms(
-                                      list(self.rooms["office"].keys()),
-                                      "o")]):
-                    result = room
-        elif room_type in ["Living", "living", "L", "l"]:
-            for room in list(self.rooms["living_space"].keys()):
-                if (room_name in [room.name for room in
-                                  self.list_of_available_rooms(
-                                      list(self.rooms["living_space"].keys()),
-                                      "l")]):
-                    result = room
+        all_rooms = []
+        all_rooms.extend(list(self.rooms["office"].keys()))
+        all_rooms.extend(list(self.rooms["living_space"].keys()))
 
+        for room in all_rooms:
+            if (room_name in [room.name for room in all_rooms if
+                              room.name == room_name]):
+                result = room
         if result:
             return result
         else:
@@ -664,7 +657,7 @@ class Amity(object):
         else:
             return "person id does not exist"
 
-    def get_room_from_room_name_update_all_rooms(self, room_name):
+    def get_room_object_from_room_name_for_available_rooms(self, room_name):
         """To return room object given valid room name."""
         result = None
         all_available_rooms = (self.list_of_available_rooms(
