@@ -62,34 +62,32 @@ class Amity(object):
         "living_space_waiting_list": []
     }
 
-    def create_room(self, args):
+    def create_room(self, room_type, list_of_rooms):
         """To accept a list as an argument containing a list of rooms."""
-        for room in args["<name>"]:
-            if args["office"]:
+        for room in list_of_rooms:
+            if room_type == "office":
                 if room in self.get_all_rooms(self.rooms['all_rooms']):
                     # reject adding an already existing room
-                    print(
-                        "Cannot create room named {0} since a room with the same\
-                            name exists.".format(room))
+                    cprint(
+                        "Cannot create room named {0} since a room with the"
+                        " same name exists.".format(room), "red")
                 else:
-
                     '''
                         if room is an office:-
                             add new Office object and create an empty list to \
                                 hold at most 6 occupants (Fellows and/or Staff)
                     '''
-
                     office = Office(room)
                     self.rooms['all_rooms'].append(office)
                     self.rooms['office'][office] = []
                     cprint("Office - {0} - successfully created".format(room),
                            "green")
-            elif args["living_space"]:
+            elif room_type == "living_space":
                 if room in self.get_all_rooms(self.rooms['all_rooms']):
                     # reject adding an already existing room
                     cprint(
-                        "Cannot create room named {0} since a room with the \
-                            same name exists.".format(room), "red")
+                        "Cannot create room named {0} since a room with the"
+                        "same name exists.".format(room), "red")
                 else:
                     '''
                         if room is an living_space:-
@@ -99,8 +97,8 @@ class Amity(object):
                     living_space = LivingSpace(room)
                     self.rooms['all_rooms'].append(living_space)
                     self.rooms["living_space"][living_space] = []
-                    cprint("Living Space - {0} - successfully created\
-                        ".format(room), "green")
+                    cprint("Living Space - {0} - successfully created".format(
+                        room), "green")
 
     def get_all_rooms(self, rooms):
         """To return a list of room names."""

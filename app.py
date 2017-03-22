@@ -3,7 +3,7 @@
 This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
-    amity create_room (living_space|office) <name>...
+    amity create_room (living_space|office) <room_name>...
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
     amity print_unallocated_to_office
     amity print_room <room_name>
@@ -76,8 +76,15 @@ class Amity(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, args):
-        """Usage: create_room (living_space|office) <name>..."""
-        amity.create_room(args)
+        """Usage: create_room (living_space|office) <room_name>..."""
+        room_type = None
+        if args["office"]:
+            room_type = "office"
+        else:
+            room_type = "living_space"
+        print(args["<room_name>"])
+
+        amity.create_room(room_type, args["<room_name>"])
 
     @docopt_cmd
     def do_add_person(self, args):
