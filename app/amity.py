@@ -107,13 +107,15 @@ class Amity(object):
             room_names.append(room.name)
         return room_names
 
-    def add_person(self, person_type, firstname, lastname, wants_accomodation):
+    def add_person(self, person_type, firstname, lastname, wants_accomodation="N"):
         """To add a person and allocate them to an available room.
 
         Fellow can get both office and living space(optional).
         Staff only entitled to office space alone
 
         """
+        wants_accomodation = ("Yes" if wants_accomodation is
+                              "Y" else "No")
         if person_type == "Fellow":
             new_fellow = Fellow(firstname, lastname)
             new_fellow.wants_accomodation = wants_accomodation
