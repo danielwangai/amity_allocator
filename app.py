@@ -5,9 +5,8 @@ interactive command application.
 Usage:
     amity create_room (living_space|office) <room_name>...
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
-    amity print_unallocated_to_office
     amity print_room <room_name>
-    amity print_unallocated_living_space
+    amity print_unallocated
     amity print_office_allocations
     amity print_living_space_allocations
     amity reallocate_person <person_id> <room_type> <new_room>
@@ -102,20 +101,15 @@ class Amity(cmd.Cmd):
                          last_name, wants_accomodation)
 
     @docopt_cmd
-    def do_print_unallocated_to_office(self, args):
-        """Usage: print_unallocated_to_office"""
-        amity.print_unallocated_to_office()
-
-    @docopt_cmd
     def do_print_room(self, args):
         """Usage: print_room <room_name>"""
         room_name = args["<room_name>"]
         amity.print_room(room_name)
 
     @docopt_cmd
-    def do_print_unallocated_living_space(self, args):
-        """Usage: print_unallocated_living_space"""
-        amity.print_fellows_unallocated_to_living_space()
+    def do_print_unallocated(self, arg):
+        """Usage: print_unallocated"""
+        amity.print_unallocated()
 
     @docopt_cmd
     def do_print_office_allocations(self, args):

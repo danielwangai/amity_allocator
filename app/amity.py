@@ -282,20 +282,6 @@ class Amity(object):
         else:
             return "room name does not exist"
 
-    def print_unallocated_to_office(self):
-        """To print out persons allocated to offices."""
-        # get all person objects from the waiting list
-        unallocations = self.rooms["office_waiting_list"]
-        if len(unallocations) > 0:
-            print("The following is a list of\
-             persons with no office allocations\n")
-            for person in unallocations:
-                cprint("{0}, {1} - {2}".format(person.first_name,
-                                               person.last_name,
-                                               person.category), "green")
-        else:
-            cprint("The are no unallocated people.", "red")
-
     def save_state(self, db_name=None):
         """To persist data to the database."""
         db = Database(db_name)
@@ -398,14 +384,30 @@ class Amity(object):
             return (person_object in
                     self.list_of_fellows_allocated_to_living_spaces())
 
-    def print_fellows_unallocated_to_living_space(self):
-        """To print out a list of fellows lacking accomodation."""
-        unallocations = self.rooms["living_space_waiting_list"]
-        cprint("The following is a list of"
-               "fellows unallocated to living spaces", "red")
-        for person in unallocations:
-            cprint("{0}, {1} - {2}".format(person.first_name, person.last_name,
-                                           person.category), "blue")
+    def print_unallocated(self):
+        """To print out a list of people space."""
+        unallocated_office = self.rooms["office_waiting_list"]
+        unallocated_living_space = self.rooms["living_space_waiting_list"]
+        if len(unallocated_office) > 0:
+            cprint("The following are people lacking space.", "red")
+            cprint("---------------------------------------", "white")
+            for person in unallocated_office:
+                cprint("{0}, {1} - {2}".format(person.first_name,
+                                               person.last_name,
+                                               person.category), "blue")
+        else:
+            cprint("There are no persons lacking living space.", "red")
+
+        cprint("\n")
+        if len(unallocated_living_space) > 0:
+            cprint("The following are people lacking living space.", "red")
+            cprint("----------------------------------------------", "white")
+            for person in unallocated_living_space:
+                cprint("{0}, {1} - {2}".format(person.first_name,
+                                               person.last_name,
+                                               person.category), "blue")
+        else:
+            cprint("There are no persons lacking living space.", "red")
 
     def print_office_allocations(self):
         """To print out all people allocated to rooms."""
