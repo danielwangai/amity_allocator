@@ -288,6 +288,25 @@ class Amity(object):
         db = Database(db_name)
         db.save_state(db_name, self.people, self.rooms)
 
+    def load_people(self, text_file):
+        """To fetch data from text file to and load into amity."""
+        with open(text_file, "r") as f:
+            output = f.read()
+            raw_data = output.split("\n")
+            for i in raw_data:
+                row = i.split(" ")
+
+                # person_type, firstname, lastname, wants_accomodation
+                # wants_accomodation = ("Yes" if row[3] is
+                #                       "Y" else "No")
+                if len(row) > 3:
+                    self.add_person("Yes", row[0], row[1],
+                                    row[2].capitalize())
+                else:
+                    self.add_person("No", row[0], row[1],
+                                    row[2].capitalize())
+                # print(row)
+
     def load_state(self, db_name):
         """To fetch data saved in the database and load them to amity."""
         # get db

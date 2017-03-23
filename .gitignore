@@ -3,3 +3,4 @@ app/__pycache__
 .coverage
 app/.coverage
 *.db
+*.txt

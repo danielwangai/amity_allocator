@@ -11,6 +11,7 @@ Usage:
     amity reallocate_person <person_id> <room_type> <new_room>
     amity save_state [--db=sqlite_database]
     amity load_state <db>
+    amity load_state <text_file>
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -132,6 +133,11 @@ class Amity(cmd.Cmd):
         """Usage: load_state <db>"""
         db_name = args["<db>"]
         amity.load_state(db_name)
+
+    @docopt_cmd
+    def do_load_people(self, args):
+        """Usage: load_state <text_file>"""
+        amity.load_people(args["<text_file>"])
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
