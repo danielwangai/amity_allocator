@@ -7,6 +7,7 @@ Usage:
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
     amity print_room <room_name>
     amity print_unallocated
+    amity print_allocations [--file=text_file]
     amity print_office_allocations
     amity print_living_space_allocations
     amity reallocate_person <person_id> <room_type> <new_room>
@@ -115,6 +116,11 @@ class Amity(cmd.Cmd):
     def do_print_office_allocations(self, args):
         """Usage: print_office_allocations"""
         amity.print_office_allocations()
+
+    @docopt_cmd
+    def do_print_allocations(self, args):
+        """Usage: print_allocations [--file=text_file]"""
+        amity.print_allocations(args["--file"])
 
     @docopt_cmd
     def do_print_living_space_allocations(self, args):

@@ -10,6 +10,7 @@ can:-
     load state - fetch saved data from database
 
 """
+import os
 import random
 
 from termcolor import cprint
@@ -424,7 +425,6 @@ class Amity(object):
                         name = person.first_name + " " + person.last_name
                         persons_in_office.append(name)
                     cprint(', '.join(persons_in_office), "red")
-                    print("\n")
                 else:
                     print("{0} - has no occupants currently".
                           format(office.name))
@@ -445,12 +445,56 @@ class Amity(object):
                         name = person.first_name + " " + person.last_name
                         persons_in_living_space.append(name)
                     cprint(', '.join(persons_in_living_space), "red")
-                    print("\n")
                 else:
                     cprint("{0} - has no occupants currently\n".
                            format(living_space.name), "red")
         else:
             cprint("No living space exist", "red")
+
+    def print_allocations(self, text_file=None):
+        """To print living spaces and people allocated to them."""
+        if text_file:
+            list_of_offices = list(self.rooms["office"].keys())
+            list_of_living_spaces = list(self.rooms["living_space"].keys())
+
+            if not list_of_offices and not list_of_living_spaces:
+                cprint("There are no allocations")
+            else:
+                with open(text_file, 'w') as output:
+                    if list_of_offices:
+                        output.write("People allocated to offices\n")
+                        for i in list_of_offices:
+                            output.write("{0}\n\n".format(i.name))
+                            output.write("---------------------------"
+                                         "--------------\n")
+                            persons_in_office = []
+                            for person in self.rooms["office"][i]:
+                                name = (person.first_name + " " +
+                                        person.last_name)
+                                persons_in_office.append(name)
+                            output.write("{0}\n".format(', '.join(
+                                persons_in_office)))
+                    else:
+                        cprint("There are no office allocations.")
+
+                    if list_of_living_spaces:
+                        output.write("Fellows allocated to living spaces\n")
+                        for i in list_of_living_spaces:
+                            output.write("{0}\n\n".format(i.name))
+                            output.write("-------------------------"
+                                         "----------------\n")
+                            persons_in_living_spaces = []
+                            for person in self.rooms["living_space"][i]:
+                                name = (person.first_name + " "
+                                        + person.last_name)
+                                persons_in_living_spaces.append(name)
+                            output.write("{0}\n".format(', '.join(
+                                persons_in_living_spaces)))
+                    else:
+                        cprint("There are no living space allocations.")
+        else:
+            self.print_office_allocations()
+            self.print_living_space_allocations()
 
     def print_room(self, room_name):
         """To return a list of room occupants."""
