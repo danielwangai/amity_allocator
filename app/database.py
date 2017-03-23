@@ -150,12 +150,12 @@ class Database(object):
                 # print(type(person.person_id))
                 cursor.execute("INSERT INTO unallocated (person_id,\
                  missing_room) VALUES(?, ?)",
-                               (person.person_id, "s", ))
+                               (person.person_id, "office", ))
             except sqlite3.IntegrityError:
                 continue
 
         # save unallocated people to office waiting lists
-        cprint("Saving people unallocated to living spaces", "red")
+        cprint("Saving people unallocated to living offices", "red")
         for person in rooms["living_space_waiting_list"]:
 
             try:

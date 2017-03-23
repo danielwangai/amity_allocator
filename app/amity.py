@@ -300,6 +300,7 @@ class Amity(object):
         self.populate_rooms(collected_data[1])
         self.populate_allocated_people(collected_data[2])
         self.populate_unallocated_people(collected_data[3])
+        print(collected_data[1])
 
     def populate_people(self, people):
         """To populate people dictionary during load state database."""
@@ -357,7 +358,7 @@ class Amity(object):
                 self.rooms["office_waiting_list"].append(person_object)
             elif person[1] == "living_space":
                 person_object = (self.get_person_object_given_person_id(
-                    person[1]))
+                    person[2]))
                 self.rooms["living_space_waiting_list"].append(person_object)
 
     def list_of_available_rooms(self, room_type):
@@ -388,7 +389,7 @@ class Amity(object):
         """To print out a list of people space."""
         unallocated_office = self.rooms["office_waiting_list"]
         unallocated_living_space = self.rooms["living_space_waiting_list"]
-        if len(unallocated_office) > 0:
+        if unallocated_office:
             cprint("The following are people lacking space.", "red")
             cprint("---------------------------------------", "white")
             for person in unallocated_office:
@@ -399,7 +400,7 @@ class Amity(object):
             cprint("There are no persons lacking living space.", "red")
 
         cprint("\n")
-        if len(unallocated_living_space) > 0:
+        if unallocated_living_space:
             cprint("The following are people lacking living space.", "red")
             cprint("----------------------------------------------", "white")
             for person in unallocated_living_space:
