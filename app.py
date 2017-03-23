@@ -6,7 +6,7 @@ Usage:
     amity create_room (living_space|office) <room_name>...
     amity add_person (Fellow|Staff) <first_name> <last_name> <wants_accomodation>
     amity print_room <room_name>
-    amity print_unallocated
+    amity print_unallocated [--file=text_file]
     amity print_allocations [--file=text_file]
     amity reallocate_person <person_id> <room_type> <new_room>
     amity save_state [--db=sqlite_database]
@@ -106,9 +106,9 @@ class Amity(cmd.Cmd):
         amity.print_room(room_name)
 
     @docopt_cmd
-    def do_print_unallocated(self, arg):
-        """Usage: print_unallocated"""
-        amity.print_unallocated()
+    def do_print_unallocated(self, args):
+        """Usage: print_unallocated [--file=text_file]"""
+        amity.print_unallocated(args['--file'])
 
     @docopt_cmd
     def do_print_allocations(self, args):

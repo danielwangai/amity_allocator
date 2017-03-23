@@ -386,31 +386,6 @@ class Amity(object):
             return (person_object in
                     self.list_of_fellows_allocated_to_living_spaces())
 
-    def print_unallocated(self):
-        """To print out a list of people space."""
-        unallocated_office = self.rooms["office_waiting_list"]
-        unallocated_living_space = self.rooms["living_space_waiting_list"]
-        if unallocated_office:
-            cprint("The following are people lacking space.", "red")
-            cprint("---------------------------------------", "white")
-            for person in unallocated_office:
-                cprint("{0}, {1} - {2}".format(person.first_name,
-                                               person.last_name,
-                                               person.category), "blue")
-        else:
-            cprint("There are no persons lacking living space.", "red")
-
-        cprint("\n")
-        if unallocated_living_space:
-            cprint("The following are people lacking living space.", "red")
-            cprint("----------------------------------------------", "white")
-            for person in unallocated_living_space:
-                cprint("{0}, {1} - {2}".format(person.first_name,
-                                               person.last_name,
-                                               person.category), "blue")
-        else:
-            cprint("There are no persons lacking living space.", "red")
-
     def print_office_allocations(self):
         """To print out all people allocated to rooms."""
         list_of_offices = list(self.rooms["office"].keys())
@@ -493,8 +468,55 @@ class Amity(object):
                     else:
                         cprint("There are no living space allocations.")
         else:
-            self.print_office_allocations()
+            self.lackingoffice_allocations()
             self.print_living_space_allocations()
+
+    def print_unallocated(self, text_file=None):
+        """To print out a list of people space."""
+        unallocated_office = self.rooms["office_waiting_list"]
+        unallocated_living_space = self.rooms["living_space_waiting_list"]
+
+        if text_file:
+            if not unallocated_office and not unallocated_living_space:
+                cprint("There are no unallocations")
+            else:
+                with open(text_file, 'w') as output:
+                    if unallocated_office:
+                        output.write("People lacking offices\n")
+                        for i in unallocated_office:
+                            output.write("{0}\n".format(
+                                i.first_name + " " + i.last_name))
+                    else:
+                        cprint("There are no office unallocations.", "white")
+                    if unallocated_living_space:
+                        output.write("People lacking offices\n")
+                        for i in unallocated_living_space:
+                            output.write("{0}\n".format(
+                                i.first_name + " " + i.last_name))
+                    else:
+                        cprint("There are no living space"
+                               " unallocations.", "white")
+        else:
+            if unallocated_office:
+                cprint("The following are people lacking space.", "red")
+                cprint("---------------------------------------", "white")
+                for person in unallocated_office:
+                    cprint("{0}, {1} - {2}".format(person.first_name,
+                                                   person.last_name,
+                                                   person.category), "blue")
+            else:
+                cprint("There are no persons lacking living space.", "red")
+
+            cprint("\n")
+            if unallocated_living_space:
+                cprint("The following are people lacking living space.", "red")
+                cprint("----------------------------------------------", "white")
+                for person in unallocated_living_space:
+                    cprint("{0}, {1} - {2}".format(person.first_name,
+                                                   person.last_name,
+                                                   person.category), "blue")
+            else:
+                cprint("There are no persons lacking living space.", "red")
 
     def print_room(self, room_name):
         """To return a list of room occupants."""
