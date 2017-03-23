@@ -471,6 +471,25 @@ class Amity(object):
             self.lackingoffice_allocations()
             self.print_living_space_allocations()
 
+    def dump_unallocated_to_file(self, text_file, office, living_space):
+        """To dump unallocated people to text file."""
+        with open(text_file, 'w') as output:
+            if office:
+                output.write("People lacking offices\n")
+                for i in office:
+                    output.write("{0}\n".format(
+                        i.first_name + " " + i.last_name))
+            else:
+                cprint("There are no office unallocations.", "white")
+            if living_space:
+                output.write("People lacking living spaces\n")
+                for i in living_space:
+                    output.write("{0}\n".format(
+                        i.first_name + " " + i.last_name))
+            else:
+                cprint("There are no living space"
+                       " unallocations.", "white")
+
     def print_unallocated(self, text_file=None):
         """To print out a list of people space."""
         unallocated_office = self.rooms["office_waiting_list"]
@@ -480,22 +499,8 @@ class Amity(object):
             if not unallocated_office and not unallocated_living_space:
                 cprint("There are no unallocations")
             else:
-                with open(text_file, 'w') as output:
-                    if unallocated_office:
-                        output.write("People lacking offices\n")
-                        for i in unallocated_office:
-                            output.write("{0}\n".format(
-                                i.first_name + " " + i.last_name))
-                    else:
-                        cprint("There are no office unallocations.", "white")
-                    if unallocated_living_space:
-                        output.write("People lacking offices\n")
-                        for i in unallocated_living_space:
-                            output.write("{0}\n".format(
-                                i.first_name + " " + i.last_name))
-                    else:
-                        cprint("There are no living space"
-                               " unallocations.", "white")
+                self.dump_unallocated_to_file(text_file, unallocated_office,
+                                              unallocated_living_space)
         else:
             if unallocated_office:
                 cprint("The following are people lacking space.", "red")
@@ -510,7 +515,7 @@ class Amity(object):
             cprint("\n")
             if unallocated_living_space:
                 cprint("The following are people lacking living space.", "red")
-                cprint("----------------------------------------------", "white")
+                cprint("---------------------------------------", "white")
                 for person in unallocated_living_space:
                     cprint("{0}, {1} - {2}".format(person.first_name,
                                                    person.last_name,
