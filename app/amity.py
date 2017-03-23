@@ -10,7 +10,6 @@ can:-
     load state - fetch saved data from database
 
 """
-import os
 import random
 
 from termcolor import cprint
@@ -99,15 +98,8 @@ class Amity(object):
                     cprint("Living Space - {0} - successfully created".format(
                         room), "green")
 
-    def get_all_rooms(self, rooms):
-        """To return a list of room names."""
-        # iterate all rooms
-        room_names = []
-        for room in rooms:
-            room_names.append(room.name)
-        return room_names
-
-    def add_person(self, person_type, firstname, lastname, wants_accomodation="N"):
+    def add_person(self, person_type, firstname, lastname,
+                   wants_accomodation="N"):
         """To add a person and allocate them to an available room.
 
         Fellow can get both office and living space(optional).
@@ -147,6 +139,215 @@ class Amity(object):
                 self.handle_office_allocations(new_staff, allocated_office)
                 self.handle_living_space_accomodation(new_staff,
                                                       wants_accomodation)
+
+    def reallocate_person(self, person_id, room_type, new_room):
+        """To reallocate a person from one current room to the other."""
+        if (room_type in ["Office", "office", "O", "o"] and
+                self.get_person_object_given_person_id(person_id)
+                != "person id does not exist"):
+            # get current room
+            # get_person_object_given_person_id
+            person_object = self.get_person_object_given_person_id(person_id)
+            current_room = self.get_room_from_person_id(person_id, "o")
+            if (self.get_room_object_from_room_name(new_room)
+                    != "room name does not exist"):
+                new_room_object = self.get_room_object_from_room_name(new_room)
+                # remove person from current_room
+                self.rooms["office"][current_room].remove(person_object)
+                # add person to new_room_object
+                self.rooms["office"][new_room_object].append(person_object)
+                print("Reallocated {0} {1} from {2} to {3}\n".format
+                      (person_object.first_name, person_object.last_name,
+                       current_room.name, new_room_object.name))
+            else:
+                print("Room {0} does not exist\n".format(new_room))
+        elif (room_type in ["Living", "living", "L", "l"] and
+              self.get_person_object_given_person_id(person_id) !=
+              "person id does not exist"):
+            # get current room
+            # get_person_object_given_person_id
+            person_object = self.get_person_object_given_person_id(person_id)
+            current_room = self.get_room_from_person_id(person_id, "l")
+            if (self.get_room_object_from_room_name(new_room) !=
+                    "room name does not exist"):
+                new_room_object = self.get_room_object_from_room_name(new_room)
+                # remove person from current_room
+                self.rooms["living_space"][current_room].remove(person_object)
+                # add person to new_room_object
+                (self.rooms["living_space"]
+                 [new_room_object].append(person_object))
+                print("Reallocated {0} {1} from {2} to {3}\n".format(
+                    person_object.first_name, person_object.last_name,
+                    current_room.name, new_room_object.name))
+            else:
+                print("Room {0} does not exist\n".format(new_room))
+        else:
+            print("person with id {0} does not exist\n".format(person_id))
+
+    def save_state(self, db_name=None):
+        """To persist data to the database."""
+        db = Database(db_name)
+        db.save_state(db_name, self.people, self.rooms)
+
+    def load_people(self, text_file):
+        """To fetch data from text file to and load into amity."""
+        with open(text_file, "r") as f:
+            output = f.read()
+            raw_data = output.split("\n")
+            for i in raw_data:
+                row = i.split(" ")
+
+                # person_type, firstname, lastname, wants_accomodation
+                # wants_accomodation = ("Yes" if row[3] is
+                #                       "Y" else "No")
+                if len(row) > 3:
+                    self.add_person("Yes", row[0], row[1],
+                                    row[2].capitalize())
+                else:
+                    self.add_person("No", row[0], row[1],
+                                    row[2].capitalize())
+                # print(row)
+
+    def load_state(self, db_name):
+        """To fetch data saved in the database and load them to amity."""
+        # get db
+        db = Database(db_name)
+        collected_data = db.load_state(db_name, self.people, self.rooms)
+        # print(collected_data)
+
+        people = collected_data[0]
+        self.populate_people(people)
+
+        self.populate_rooms(collected_data[1])
+        self.populate_allocated_people(collected_data[2])
+        self.populate_unallocated_people(collected_data[3])
+        print(collected_data[1])
+
+    def print_unallocated(self, text_file=None):
+        """To print out a list of people space."""
+        unallocated_office = self.rooms["office_waiting_list"]
+        unallocated_living_space = self.rooms["living_space_waiting_list"]
+
+        if text_file:
+            if not unallocated_office and not unallocated_living_space:
+                cprint("There are no unallocations")
+            else:
+                self.dump_unallocated_to_file(text_file, unallocated_office,
+                                              unallocated_living_space)
+        else:
+            if unallocated_office:
+                cprint("The following are people lacking space.", "red")
+                cprint("---------------------------------------", "white")
+                for person in unallocated_office:
+                    cprint("{0}, {1} - {2}".format(person.first_name,
+                                                   person.last_name,
+                                                   person.category), "blue")
+            else:
+                cprint("There are no persons lacking living space.", "red")
+
+            cprint("\n")
+            if unallocated_living_space:
+                cprint("The following are people lacking living space.", "red")
+                cprint("---------------------------------------", "white")
+                for person in unallocated_living_space:
+                    cprint("{0}, {1} - {2}".format(person.first_name,
+                                                   person.last_name,
+                                                   person.category), "blue")
+            else:
+                cprint("There are no persons lacking living space.", "red")
+
+    def print_allocations(self, text_file=None):
+        """To print living spaces and people allocated to them."""
+        if text_file:
+            list_of_offices = list(self.rooms["office"].keys())
+            list_of_living_spaces = list(self.rooms["living_space"].keys())
+
+            if not list_of_offices and not list_of_living_spaces:
+                cprint("There are no allocations")
+            else:
+                with open(text_file, 'w') as output:
+                    if list_of_offices:
+                        output.write("People allocated to offices\n")
+                        for i in list_of_offices:
+                            output.write("{0}\n\n".format(i.name))
+                            output.write("---------------------------"
+                                         "--------------\n")
+                            persons_in_office = []
+                            for person in self.rooms["office"][i]:
+                                name = (person.first_name + " " +
+                                        person.last_name)
+                                persons_in_office.append(name)
+                            output.write("{0}\n".format(', '.join(
+                                persons_in_office)))
+                    else:
+                        cprint("There are no office allocations.")
+
+                    if list_of_living_spaces:
+                        output.write("Fellows allocated to living spaces\n")
+                        for i in list_of_living_spaces:
+                            output.write("{0}\n\n".format(i.name))
+                            output.write("-------------------------"
+                                         "----------------\n")
+                            persons_in_living_spaces = []
+                            for person in self.rooms["living_space"][i]:
+                                name = (person.first_name + " "
+                                        + person.last_name)
+                                persons_in_living_spaces.append(name)
+                            output.write("{0}\n".format(', '.join(
+                                persons_in_living_spaces)))
+                    else:
+                        cprint("There are no living space allocations.")
+        else:
+            self.lackingoffice_allocations()
+            self.print_living_space_allocations()
+
+    def print_room(self, room_name):
+        """To return a list of room occupants."""
+        occupants = []
+        offices = list(self.rooms["office"].keys())
+        living_spaces = list(self.rooms["living_space"].keys())
+
+        if room_name in [room.name for room in offices]:
+            room_object = [room for room in list(
+                self.rooms["office"].keys()) if room.name == room_name][0]
+            occupants.extend(self.rooms["office"][room_object])
+            if len(occupants) > 0:
+                cprint("The occupants of the - {0} - are".
+                       format(room_name), "red")
+                cprint(", ".join([occupant.first_name for
+                                  occupant in occupants]), "red")
+            else:
+                cprint("The room {0} has no occupants currently".
+                       format(room_name), "red")
+        elif room_name in [room.name for room in living_spaces]:
+            room_object = [room for room in list(
+                self.rooms["living_space"].keys())
+                if room.name == room_name][0]
+            occupants.extend(self.rooms["living_space"][room_object])
+            if len(occupants) > 0:
+                cprint("The occupants of the - {0} - are".
+                       format(room_name), "red")
+                cprint(", ".join([occupant.first_name
+                                  for occupant in occupants]), "red")
+            else:
+                cprint("The room {0} has no occupants currently".
+                       format(room_name), "red")
+        elif (room_name not in [room.name for room in offices] or
+              room_name in [room.name for room in living_spaces]):
+            '''
+                if room name does not exist
+            '''
+            cprint("Room {0} does not exist".format(room_name), "red")
+
+    # Amity helper method begin here."""
+
+    def get_all_rooms(self, rooms):
+        """To return a list of room names."""
+        # iterate all rooms
+        room_names = []
+        for room in rooms:
+            room_names.append(room.name)
+        return room_names
 
     def handle_no_available_office_space(self, person_object):
         """To handle cases of no office space."""
@@ -206,50 +407,6 @@ class Amity(object):
                 self.list_of_available_rooms("l"))
             return allocated_living_space
 
-    def reallocate_person(self, person_id, room_type, new_room):
-        """To reallocate a person from one current room to the other."""
-        if (room_type in ["Office", "office", "O", "o"] and
-                self.get_person_object_given_person_id(person_id)
-                != "person id does not exist"):
-            # get current room
-            # get_person_object_given_person_id
-            person_object = self.get_person_object_given_person_id(person_id)
-            current_room = self.get_room_from_person_id(person_id, "o")
-            if (self.get_room_object_from_room_name(new_room)
-                    != "room name does not exist"):
-                new_room_object = self.get_room_object_from_room_name(new_room)
-                # remove person from current_room
-                self.rooms["office"][current_room].remove(person_object)
-                # add person to new_room_object
-                self.rooms["office"][new_room_object].append(person_object)
-                print("Reallocated {0} {1} from {2} to {3}\n".format
-                      (person_object.first_name, person_object.last_name,
-                       current_room.name, new_room_object.name))
-            else:
-                print("Room {0} does not exist\n".format(new_room))
-        elif (room_type in ["Living", "living", "L", "l"] and
-              self.get_person_object_given_person_id(person_id) !=
-              "person id does not exist"):
-            # get current room
-            # get_person_object_given_person_id
-            person_object = self.get_person_object_given_person_id(person_id)
-            current_room = self.get_room_from_person_id(person_id, "l")
-            if (self.get_room_object_from_room_name(new_room) !=
-                    "room name does not exist"):
-                new_room_object = self.get_room_object_from_room_name(new_room)
-                # remove person from current_room
-                self.rooms["living_space"][current_room].remove(person_object)
-                # add person to new_room_object
-                (self.rooms["living_space"]
-                 [new_room_object].append(person_object))
-                print("Reallocated {0} {1} from {2} to {3}\n".format(
-                    person_object.first_name, person_object.last_name,
-                    current_room.name, new_room_object.name))
-            else:
-                print("Room {0} does not exist\n".format(new_room))
-        else:
-            print("person with id {0} does not exist\n".format(person_id))
-
     def get_room_from_person_id(self, person_id, room_type):
         """To return current room of a person given a valid person id."""
         result = None
@@ -284,45 +441,6 @@ class Amity(object):
             return result
         else:
             return "room name does not exist"
-
-    def save_state(self, db_name=None):
-        """To persist data to the database."""
-        db = Database(db_name)
-        db.save_state(db_name, self.people, self.rooms)
-
-    def load_people(self, text_file):
-        """To fetch data from text file to and load into amity."""
-        with open(text_file, "r") as f:
-            output = f.read()
-            raw_data = output.split("\n")
-            for i in raw_data:
-                row = i.split(" ")
-
-                # person_type, firstname, lastname, wants_accomodation
-                # wants_accomodation = ("Yes" if row[3] is
-                #                       "Y" else "No")
-                if len(row) > 3:
-                    self.add_person("Yes", row[0], row[1],
-                                    row[2].capitalize())
-                else:
-                    self.add_person("No", row[0], row[1],
-                                    row[2].capitalize())
-                # print(row)
-
-    def load_state(self, db_name):
-        """To fetch data saved in the database and load them to amity."""
-        # get db
-        db = Database(db_name)
-        collected_data = db.load_state(db_name, self.people, self.rooms)
-        # print(collected_data)
-
-        people = collected_data[0]
-        self.populate_people(people)
-
-        self.populate_rooms(collected_data[1])
-        self.populate_allocated_people(collected_data[2])
-        self.populate_unallocated_people(collected_data[3])
-        print(collected_data[1])
 
     def populate_people(self, people):
         """To populate people dictionary during load state database."""
@@ -447,51 +565,6 @@ class Amity(object):
         else:
             cprint("No living space exist", "red")
 
-    def print_allocations(self, text_file=None):
-        """To print living spaces and people allocated to them."""
-        if text_file:
-            list_of_offices = list(self.rooms["office"].keys())
-            list_of_living_spaces = list(self.rooms["living_space"].keys())
-
-            if not list_of_offices and not list_of_living_spaces:
-                cprint("There are no allocations")
-            else:
-                with open(text_file, 'w') as output:
-                    if list_of_offices:
-                        output.write("People allocated to offices\n")
-                        for i in list_of_offices:
-                            output.write("{0}\n\n".format(i.name))
-                            output.write("---------------------------"
-                                         "--------------\n")
-                            persons_in_office = []
-                            for person in self.rooms["office"][i]:
-                                name = (person.first_name + " " +
-                                        person.last_name)
-                                persons_in_office.append(name)
-                            output.write("{0}\n".format(', '.join(
-                                persons_in_office)))
-                    else:
-                        cprint("There are no office allocations.")
-
-                    if list_of_living_spaces:
-                        output.write("Fellows allocated to living spaces\n")
-                        for i in list_of_living_spaces:
-                            output.write("{0}\n\n".format(i.name))
-                            output.write("-------------------------"
-                                         "----------------\n")
-                            persons_in_living_spaces = []
-                            for person in self.rooms["living_space"][i]:
-                                name = (person.first_name + " "
-                                        + person.last_name)
-                                persons_in_living_spaces.append(name)
-                            output.write("{0}\n".format(', '.join(
-                                persons_in_living_spaces)))
-                    else:
-                        cprint("There are no living space allocations.")
-        else:
-            self.lackingoffice_allocations()
-            self.print_living_space_allocations()
-
     def dump_unallocated_to_file(self, text_file, office, living_space):
         """To dump unallocated people to text file."""
         with open(text_file, 'w') as output:
@@ -510,77 +583,6 @@ class Amity(object):
             else:
                 cprint("There are no living space"
                        " unallocations.", "white")
-
-    def print_unallocated(self, text_file=None):
-        """To print out a list of people space."""
-        unallocated_office = self.rooms["office_waiting_list"]
-        unallocated_living_space = self.rooms["living_space_waiting_list"]
-
-        if text_file:
-            if not unallocated_office and not unallocated_living_space:
-                cprint("There are no unallocations")
-            else:
-                self.dump_unallocated_to_file(text_file, unallocated_office,
-                                              unallocated_living_space)
-        else:
-            if unallocated_office:
-                cprint("The following are people lacking space.", "red")
-                cprint("---------------------------------------", "white")
-                for person in unallocated_office:
-                    cprint("{0}, {1} - {2}".format(person.first_name,
-                                                   person.last_name,
-                                                   person.category), "blue")
-            else:
-                cprint("There are no persons lacking living space.", "red")
-
-            cprint("\n")
-            if unallocated_living_space:
-                cprint("The following are people lacking living space.", "red")
-                cprint("---------------------------------------", "white")
-                for person in unallocated_living_space:
-                    cprint("{0}, {1} - {2}".format(person.first_name,
-                                                   person.last_name,
-                                                   person.category), "blue")
-            else:
-                cprint("There are no persons lacking living space.", "red")
-
-    def print_room(self, room_name):
-        """To return a list of room occupants."""
-        occupants = []
-        offices = list(self.rooms["office"].keys())
-        living_spaces = list(self.rooms["living_space"].keys())
-
-        if room_name in [room.name for room in offices]:
-            room_object = [room for room in list(
-                self.rooms["office"].keys()) if room.name == room_name][0]
-            occupants.extend(self.rooms["office"][room_object])
-            if len(occupants) > 0:
-                cprint("The occupants of the - {0} - are".
-                       format(room_name), "red")
-                cprint(", ".join([occupant.first_name for
-                                  occupant in occupants]), "red")
-            else:
-                cprint("The room {0} has no occupants currently".
-                       format(room_name), "red")
-        elif room_name in [room.name for room in living_spaces]:
-            room_object = [room for room in list(
-                self.rooms["living_space"].keys())
-                if room.name == room_name][0]
-            occupants.extend(self.rooms["living_space"][room_object])
-            if len(occupants) > 0:
-                cprint("The occupants of the - {0} - are".
-                       format(room_name), "red")
-                cprint(", ".join([occupant.first_name
-                                  for occupant in occupants]), "red")
-            else:
-                cprint("The room {0} has no occupants currently".
-                       format(room_name), "red")
-        elif (room_name not in [room.name for room in offices] or
-              room_name in [room.name for room in living_spaces]):
-            '''
-                if room name does not exist
-            '''
-            cprint("Room {0} does not exist".format(room_name), "red")
 
     def list_of_persons_allocated_to_offices(self):
         """To return a list of persons allocated to office spaces."""
