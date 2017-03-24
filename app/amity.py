@@ -265,41 +265,53 @@ class Amity(object):
             if not list_of_offices and not list_of_living_spaces:
                 cprint("There are no allocations")
             else:
-                with open(text_file, 'w') as output:
-                    if list_of_offices:
-                        output.write("People allocated to offices\n")
-                        for i in list_of_offices:
-                            output.write("{0}\n\n".format(i.name))
-                            output.write("---------------------------"
-                                         "--------------\n")
-                            persons_in_office = []
-                            for person in self.rooms["office"][i]:
-                                name = (person.first_name + " " +
-                                        person.last_name)
-                                persons_in_office.append(name)
-                            output.write("{0}\n".format(', '.join(
-                                persons_in_office)))
-                    else:
-                        cprint("There are no office allocations.")
-
-                    if list_of_living_spaces:
-                        output.write("Fellows allocated to living spaces\n")
-                        for i in list_of_living_spaces:
-                            output.write("{0}\n\n".format(i.name))
-                            output.write("-------------------------"
-                                         "----------------\n")
-                            persons_in_living_spaces = []
-                            for person in self.rooms["living_space"][i]:
-                                name = (person.first_name + " "
-                                        + person.last_name)
-                                persons_in_living_spaces.append(name)
-                            output.write("{0}\n".format(', '.join(
-                                persons_in_living_spaces)))
-                    else:
-                        cprint("There are no living space allocations.")
+                self.dump_allocated_to_text_file(
+                    text_file,
+                    list_of_offices,
+                    list_of_living_spaces)
         else:
-            self.lackingoffice_allocations()
+            self.print_office_allocations()
             self.print_living_space_allocations()
+
+    def dump_allocated_to_text_file(self, text_file, list_of_offices,
+                                    list_of_living_spaces):
+        """A helper method to dump allocations to text file."""
+        with open(text_file, 'w') as output:
+            if list_of_offices:
+                output.write("People allocated to offices\n")
+                for i in list_of_offices:
+                    output.write("{0}\n\n".format(i.name))
+                    output.write("---------------------------"
+                                 "--------------\n")
+                    persons_in_office = []
+                    for person in self.rooms["office"][i]:
+                        name = (person.first_name + " " +
+                                person.last_name)
+                        persons_in_office.append(name)
+                    output.write("{0}\n".format(', '.join(
+                        persons_in_office)))
+                cprint("Office allocations successfully dumped to {}.".format(
+                    text_file), "white")
+            else:
+                cprint("There are no office allocations.")
+
+            if list_of_living_spaces:
+                output.write("Fellows allocated to living spaces\n")
+                for i in list_of_living_spaces:
+                    output.write("{0}\n\n".format(i.name))
+                    output.write("-------------------------"
+                                 "----------------\n")
+                    persons_in_living_spaces = []
+                    for person in self.rooms["living_space"][i]:
+                        name = (person.first_name + " "
+                                + person.last_name)
+                        persons_in_living_spaces.append(name)
+                    output.write("{0}\n".format(', '.join(
+                        persons_in_living_spaces)))
+                cprint("Living space allocations successfully dumped to {}.".
+                       format(text_file), "white")
+            else:
+                cprint("There are no living space allocations.")
 
     def print_room(self, room_name):
         """To return a list of room occupants."""
