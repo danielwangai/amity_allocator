@@ -10,6 +10,7 @@ can:-
     load state - fetch saved data from database
 
 """
+import os
 import random
 
 from termcolor import cprint
@@ -190,17 +191,22 @@ class Amity(object):
 
     def load_people(self, text_file):
         """To fetch data from text file to and load into amity."""
-        with open(text_file, "r") as f:
-            output = f.read()
-            raw_data = output.split("\n")
-            for i in raw_data:
-                row = i.split(" ")
-                if len(row) > 3:
-                    self.add_person("Yes", row[0], row[1],
-                                    row[2].capitalize())
-                else:
-                    self.add_person("No", row[0], row[1],
-                                    row[2].capitalize())
+        if os.path.isfile(text_file):
+            with open(text_file, "r") as f:
+                output = f.read()
+                raw_data = output.split("\n")
+                for i in raw_data:
+                    row = i.split(" ")
+                    if len(row) > 3:
+                        self.add_person("Yes", row[0], row[1],
+                                        row[2].capitalize())
+                    else:
+                        self.add_person("No", row[0], row[1],
+                                        row[2].capitalize())
+            return "File found"
+        else:
+            cprint("File does not exist.", "red")
+            return "File does not exist."
 
     def load_state(self, db_name):
         """To fetch data saved in the database and load them to amity."""
