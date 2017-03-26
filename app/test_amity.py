@@ -498,9 +498,14 @@ class TestAmity(unittest.TestCase):
                          "Data load from {} success".format("amity.db"))
 
     def test_load_people_rejects_load_if_file_not_found(self):
-        """To test that load_state rejects loading people if file not found."""
+        """To test load_people rejects loading people if file not found."""
         self.assertEqual(self.amity.load_people("i_am_not_here.txt"),
                          "File does not exist.")
+
+    def test_load_people_loads_successfully_from_file(self):
+        """To test that load_people loads successfully."""
+        self.assertEqual(self.amity.load_people("text.txt"),
+                         "File found")
 
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
