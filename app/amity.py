@@ -207,8 +207,9 @@ class Amity(object):
         # get db
         db = Database(db_name)
         collected_data = db.load_state(db_name, self.people, self.rooms)
-        if (collected_data[0] and collected_data[1] and collected_data[2]
-                and collected_data[3]):
+        if (not collected_data[0] and not collected_data[1] and
+                not collected_data[2] and not collected_data[3]):
+                # test if is memptu
             cprint("No data in {}".format(db_name), "red")
             return "No data in {}".format(db_name)
         else:
