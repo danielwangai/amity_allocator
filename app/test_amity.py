@@ -98,9 +98,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         initial_number_of_fellows = len(self.amity.people["fellows"])
         # create a person
-        self.amity.add_person({"<first_name>": "Daniel",
-                               "<last_name>": "Maina", "Fellow": True,
-                               "Staff": False, "wants_accomodation": "Y"})
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
         # get the new number of people
         new_number_of_fellows = len(self.amity.people["fellows"])
         # test that person is added
@@ -112,10 +110,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         initial_number_of_fellows = len(self.amity.people["staff"])
         # create a person
-        self.amity.add_person({"<first_name>": "Daniel",
-                               "<last_name>": "Maina",
-                               "Fellow": False, "Staff": True,
-                               "wants_accomodation": "N"})
+        self.amity.add_person("Staff", "David", "Ngugi", "N")
         # get the new number of people
         new_number_of_fellows = len(self.amity.people["staff"])
         # test that person is added
