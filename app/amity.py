@@ -223,9 +223,11 @@ class Amity(object):
         if text_file:
             if not unallocated_office and not unallocated_living_space:
                 cprint("There are no unallocations")
+                return "There are no unallocations"
             else:
                 self.dump_unallocated_to_file(text_file, unallocated_office,
                                               unallocated_living_space)
+                return "Successfully dumped unallocated people to file."
         else:
             if unallocated_office:
                 cprint("The following are people lacking space.", "red")
@@ -247,6 +249,8 @@ class Amity(object):
                                                    person.category), "blue")
             else:
                 cprint("There are no persons lacking living space.", "red")
+
+            return "Successfully printed unallocated people to screen."
 
     def print_allocations(self, text_file=None):
         """To print living spaces and people allocated to them."""
