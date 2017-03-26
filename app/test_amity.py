@@ -487,6 +487,11 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(self.amity.print_unallocated("test_file.txt"),
                          "Successfully dumped unallocated people to file.")
 
+    def test_load_state_prints_error_if_empty_db(self):
+        """To test if method prints error message if empty db."""
+        self.assertEqual(self.amity.load_state("no_db.db"),
+                         "Data load from {} success".format("no_db.db"))
+
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
         file_name = "test.txt"
