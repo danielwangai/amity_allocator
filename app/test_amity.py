@@ -448,6 +448,13 @@ class TestAmity(unittest.TestCase):
         (self.assertEqual(self.amity.print_room(room),
                           "Office printed successfuly."))
 
+    def test_print_room_prints_existing_occupants_in_living_space(self):
+        """To test if method prints office occupants."""
+        room = "Python"
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        (self.assertEqual(self.amity.print_room(room),
+                          "Living Space printed successfuly."))
+
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
         file_name = "test.txt"
