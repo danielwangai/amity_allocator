@@ -470,6 +470,23 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(self.amity.print_unallocated(),
                          "Successfully printed unallocated people to screen.")
 
+    def test_print_unallocated_dumps_empty_file_if_no_unallocations(self):
+        """To test if method dumps empty file when no unallocations."""
+        self.assertEqual(self.amity.print_unallocated("test_file.txt"),
+                         "There are no unallocations")
+
+    def test_print_unallocated_dumps_to_file_if_unallocations(self):
+        """To test if method dumps empty file when no unallocations."""
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Y")
+
+        self.assertEqual(self.amity.print_unallocated("test_file.txt"),
+                         "Successfully dumped unallocated people to file.")
+
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
         file_name = "test.txt"
