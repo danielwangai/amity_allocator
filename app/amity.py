@@ -140,49 +140,69 @@ class Amity(object):
                 self.handle_living_space_accomodation(new_staff,
                                                       wants_accomodation)
 
-    def reallocate_person(self, person_id, room_type, new_room):
+    def reallocate_person(self, person_id, new_room):
         """To reallocate a person from one current room to the other."""
-        if (room_type in ["Office", "office", "O", "o"] and
-                self.get_person_object_given_person_id(person_id)
-                != "person id does not exist"):
-            # get current room
-            # get_person_object_given_person_id
-            person_object = self.get_person_object_given_person_id(person_id)
-            current_room = self.get_room_from_person_id(person_id, "o")
-            if (self.get_room_object_from_room_name(new_room)
-                    != "room name does not exist"):
-                new_room_object = self.get_room_object_from_room_name(new_room)
-                # remove person from current_room
-                self.rooms["office"][current_room].remove(person_object)
-                # add person to new_room_object
-                self.rooms["office"][new_room_object].append(person_object)
-                print("Reallocated {0} {1} from {2} to {3}\n".format
-                      (person_object.first_name, person_object.last_name,
-                       current_room.name, new_room_object.name))
-            else:
-                print("Room {0} does not exist\n".format(new_room))
-        elif (room_type in ["Living", "living", "L", "l"] and
-              self.get_person_object_given_person_id(person_id) !=
-              "person id does not exist"):
-            # get current room
-            # get_person_object_given_person_id
-            person_object = self.get_person_object_given_person_id(person_id)
-            current_room = self.get_room_from_person_id(person_id, "l")
-            if (self.get_room_object_from_room_name(new_room) !=
-                    "room name does not exist"):
-                new_room_object = self.get_room_object_from_room_name(new_room)
-                # remove person from current_room
-                self.rooms["living_space"][current_room].remove(person_object)
-                # add person to new_room_object
-                (self.rooms["living_space"]
-                 [new_room_object].append(person_object))
-                print("Reallocated {0} {1} from {2} to {3}\n".format(
-                    person_object.first_name, person_object.last_name,
-                    current_room.name, new_room_object.name))
-            else:
-                print("Room {0} does not exist\n".format(new_room))
+        # get person_object from person id
+        person_object = self.get_person_object_given_person_id(person_id)
+        new_room_object = (self.
+                           get_room_object_from_room_name_for_available_rooms(
+                               new_room))
+        if person_object == "person id does not exist":
+            cprint("person id does not exist", "red")
         else:
-            print("person with id {0} does not exist\n".format(person_id))
+            if new_room_object == "room name does not exist":
+                cprint("room name does not exist", "red")
+            else:
+                if type(new_room_object) == Office:
+                    current_room = self.get_room_from_person_id(
+                        person_id, "o")
+                    if current_room == "person id does not exist":
+                        (cprint("{} has no current office space, "
+                                "hence canot reallocate".format(
+                                    person_object.first_name
+                                )))
+                    else:
+                        if current_room == new_room_object:
+                            cprint("Cannot reallocate to same room.", "red")
+                        else:
+                            # remove from current office
+                            (self.rooms["office"][current_room].remove(
+                                person_object))
+                            # append to new room
+                            (self.rooms["office"][new_room_object].append(
+                                person_object))
+                            cprint("{} {} has been reallocated from "
+                                   "office {} to {}".
+                                   format(person_object.first_name,
+                                          person_object.last_name,
+                                          current_room.name,
+                                          new_room_object.name)
+                                   )
+                elif type(new_room_object) == LivingSpace:
+                    current_room = self.get_room_from_person_id(
+                        person_id, "l")
+                    if current_room == "person id does not exist":
+                        (cprint("{} has no current living space, "
+                                "hence canot reallocate".format(
+                                    person_object.first_name
+                                )))
+                    else:
+                        if current_room == new_room_object:
+                            cprint("Cannot reallocate to same room.", "red")
+                        else:
+                            # remove from current office
+                            (self.rooms["living_space"][current_room].remove(
+                                person_object))
+                            # append to new room
+                            (self.rooms["living_space"][new_room_object].
+                             append(person_object))
+                            cprint("{} {} has been reallocated from"
+                                   " living space {} to {}".
+                                   format(person_object.first_name,
+                                          person_object.last_name,
+                                          current_room.name,
+                                          new_room_object.name)
+                                   )
 
     def save_state(self, db_name=None):
         """To persist data to the database."""
@@ -342,16 +362,17 @@ class Amity(object):
         # put to waiting list
         self.people["all_people"].append(person_object)
         self.rooms["office_waiting_list"].append(person_object)
-        print("{0} {1} has been put to office waiting list".format(
-            person_object.first_name, person_object.last_name))
+        print("{0} {1} id {2} has been put to office waiting list".format(
+            person_object.first_name, person_object.last_name,
+            person_object.person_id))
 
     def handle_office_allocations(self, person_object, allocated_office):
         """To handle office allocation."""
         self.rooms["office"][allocated_office].append(person_object)
         self.people["all_people"].append(person_object)
-        cprint("{} {} allocated to {} (office)".format(
+        cprint("{} {} id {} allocated to {} (office)".format(
             person_object.first_name, person_object.last_name,
-            allocated_office.name), "blue")
+            person_object.person_id, allocated_office.name), "blue")
 
     def handle_living_space_accomodation(self, person_object, accomodation):
         """To handle living space allocation."""
@@ -364,18 +385,19 @@ class Amity(object):
                     self.rooms["living_space_waiting_list"].append(
                         person_object)
                     self.people["all_people"].append(person_object)
-                    cprint("{0} {1} has been put to living space waiting"
+                    cprint("{0} {1} id {2} has been put to living space waiting"
                            "list".format(
                                person_object.first_name,
-                               person_object.last_name), "white")
+                               person_object.last_name,
+                               person_object.person_id), "white")
                 else:
                     # allocated living space
                     (self.rooms["living_space"][living_space].
                      append(person_object))
                     self.people["all_people"].append(person_object)
-                    cprint("{} {} allocated to {} (living space)".format(
+                    cprint("{} {} id {} allocated to {} (living space)".format(
                         person_object.first_name, person_object.last_name,
-                        living_space.name), "blue")
+                        person_object.person_id, living_space.name), "blue")
             else:
                 cprint("Staff not entitled to living space.", "red")
 
@@ -603,10 +625,8 @@ class Amity(object):
     def get_room_object_from_room_name_for_available_rooms(self, room_name):
         """To return room object given valid room name."""
         result = None
-        all_available_rooms = (self.list_of_available_rooms(
-            list(self.rooms["office"].keys()), "o"))
-        all_available_rooms.extend(self.list_of_available_rooms(
-            list(self.rooms["office"].keys()), "l"))
+        all_available_rooms = (self.list_of_available_rooms("o"))
+        all_available_rooms.extend(self.list_of_available_rooms("l"))
         for room in all_available_rooms:
             if room_name in [room.name for room in all_available_rooms]:
                 result = room

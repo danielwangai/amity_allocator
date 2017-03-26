@@ -8,7 +8,7 @@ Usage:
     amity print_room <room_name>
     amity print_unallocated [--file=text_file]
     amity print_allocations [--file=text_file]
-    amity reallocate_person <person_id> <room_type> <new_room>
+    amity reallocate_person <person_id> <new_room>
     amity save_state [--db=sqlite_database]
     amity load_state <db>
     amity load_state <text_file>
@@ -116,9 +116,8 @@ class Amity(cmd.Cmd):
 
     @docopt_cmd
     def do_reallocate_person(self, args):
-        """Usage: reallocate_person <person_id> <room_type> <new_room>"""
-        amity.reallocate_person(int(args['<person_id>']),
-                                args['<room_type>'], args['<new_room>'])
+        """Usage: reallocate_person <person_id> <new_room>"""
+        amity.reallocate_person(int(args['<person_id>']), args['<new_room>'])
 
     @docopt_cmd
     def do_save_state(self, args):
