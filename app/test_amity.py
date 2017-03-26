@@ -54,15 +54,13 @@ class TestAmity(unittest.TestCase):
         self.assertNotIn(new_office, self.amity.get_all_rooms(
             self.amity.rooms["all_rooms"]))
         # # add room
-        self.amity.create_room({"<name>": [new_office], "office": True,
-                                "living_space": False})
+        self.amity.create_room("office", [new_office])
         original_number_of_rooms = len(self.amity.rooms["all_rooms"])
         # assert that new room was added
         self.assertIn(new_office, self.amity.get_all_rooms(
             self.amity.rooms["all_rooms"]))
         # # try adding the same room again
-        self.amity.create_room({"<name>": [new_office], "office": True,
-                                "living_space": False})
+        self.amity.create_room("office", [new_office])
         number_of_rooms_after_duplication_attempt = len(
             self.amity.rooms["all_rooms"])
 
@@ -80,8 +78,7 @@ class TestAmity(unittest.TestCase):
         self.assertFalse(new_office in [i.name for i in list(
             self.amity.rooms["office"].keys())])
         # add room
-        self.amity.create_room({"<name>": [new_office], "office": True,
-                                "living_space": False})
+        self.amity.create_room("office", [new_office])
         # assert that new room was added
         self.assertIn(new_office, self.amity.get_all_rooms(
             self.amity.rooms["all_rooms"]))
@@ -91,8 +88,7 @@ class TestAmity(unittest.TestCase):
         self.assertFalse(new_living_space in [i.name for i in list(
             self.amity.rooms["living_space"].keys())])
         # attempt add
-        self.amity.create_room({"<name>": [new_living_space],
-                                "office": False, "living_space": True})
+        self.amity.create_room("living_space", [new_office])
         # confirm that oculus was is not in the list of living spaces
         self.assertNotIn(new_living_space, [i.name for i in list(
             self.amity.rooms["living_space"].keys())])
