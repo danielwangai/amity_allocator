@@ -428,18 +428,25 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(self.amity.print_room(room),
                          "Room {0} does not exist.".format(room))
 
-    def test_print_room_prints_existing_office_with_no_occupants(self):
-        """To test if method prints existing office."""
+    def test_print_room_prints_error_for_office_with_no_occupants(self):
+        """To test if method prints error message for empty office."""
         room = "Narnia"
         (self.assertEqual(self.amity.print_room(room),
                           "There are no occupants in the {} currently.".format(
             room)))
 
-    def test_print_room_prints_existing_living_space_with_no_occupants(self):
-        """To test if method prints existing office."""
+    def test_print_room_prints_error_for_livingspace_with_no_occupants(self):
+        """To test if method prints error message for empty living space."""
         room = "Python"
         (self.assertEqual(self.amity.print_room(room),
                           "There are no occupants in the room currently."))
+
+    def test_print_room_prints_existing_occupants_in_office(self):
+        """To test if method prints office occupants."""
+        room = "Narnia"
+        self.amity.add_person("Fellow", "Daniel", "Maina", "N")
+        (self.assertEqual(self.amity.print_room(room),
+                          "Office printed successfuly."))
 
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
