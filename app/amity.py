@@ -207,13 +207,19 @@ class Amity(object):
         # get db
         db = Database(db_name)
         collected_data = db.load_state(db_name, self.people, self.rooms)
-        people = collected_data[0]
-        self.populate_people(people)
+        if (collected_data[0] and collected_data[1] and collected_data[2]
+                and collected_data[3]):
+            cprint("No data in {}".format(db_name), "red")
+            return "No data in {}".format(db_name)
+        else:
+            people = collected_data[0]
+            self.populate_people(people)
 
-        self.populate_rooms(collected_data[1])
-        self.populate_allocated_people(collected_data[2])
-        self.populate_unallocated_people(collected_data[3])
-        print(collected_data[1])
+            self.populate_rooms(collected_data[1])
+            self.populate_allocated_people(collected_data[2])
+            self.populate_unallocated_people(collected_data[3])
+            print(collected_data[1])
+            return "Data load from {} success".format(db_name)
 
     def print_unallocated(self, text_file=None):
         """To print out a list of people space."""
