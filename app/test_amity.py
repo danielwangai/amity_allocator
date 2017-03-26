@@ -143,10 +143,7 @@ class TestAmity(unittest.TestCase):
         """To test if add_person allocates fellow to living_space."""
         all_people = self.amity.people["all_people"]
         # add fellow
-        self.amity.add_person({"<first_name>": "Daniel",
-                               "<last_name>": "Maina",
-                               "Fellow": True, "Staff": False,
-                               "wants_accomodation": "Y"})
+        self.amity.add_person("Fellow", "Daniel", "Maina", "Yg")
         # get object of added fellow
         new_fellow_object = all_people[-1]
         # assert that the fellow object is allocated an office
