@@ -314,6 +314,7 @@ class Amity(object):
         """To handle cases of no office space."""
         print("No available office space")
         # put to waiting list
+        self.people["all_people"].append(person_object)
         self.rooms["office_waiting_list"].append(person_object)
         print("{0} {1} has been put to office waiting list".format(
             person_object.first_name, person_object.last_name))
@@ -321,6 +322,7 @@ class Amity(object):
     def handle_office_allocations(self, person_object, allocated_office):
         """To handle office allocation."""
         self.rooms["office"][allocated_office].append(person_object)
+        self.people["all_people"].append(person_object)
         cprint("{} {} allocated to {} (office)".format(
             person_object.first_name, person_object.last_name,
             allocated_office.name), "blue")
@@ -335,6 +337,7 @@ class Amity(object):
                     cprint("No available living space", "red")
                     self.rooms["living_space_waiting_list"].append(
                         person_object)
+                    self.people["all_people"].append(person_object)
                     cprint("{0} {1} has been put to living space waiting"
                            "list".format(
                                person_object.first_name,
@@ -343,6 +346,7 @@ class Amity(object):
                     # allocated living space
                     (self.rooms["living_space"][living_space].
                      append(person_object))
+                    self.people["all_people"].append(person_object)
                     cprint("{} {} allocated to {} (living space)".format(
                         person_object.first_name, person_object.last_name,
                         living_space.name), "blue")

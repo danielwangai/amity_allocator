@@ -15,7 +15,7 @@ class TestAmity(unittest.TestCase):
         """To set up test variables."""
         self.amity = Amity()
         self.amity.create_room("office", ["Narnia"])
-        self.amity.create_room("living_space", ["Pythongs"])
+        self.amity.create_room("living_space", ["Python"])
 
     def test_create_room_adds_offices_successfully(self):
         """To test if create_room adds office(s) successfully."""
@@ -121,10 +121,7 @@ class TestAmity(unittest.TestCase):
         """To test if add_person allocates fellow to office."""
         all_people = self.amity.people["all_people"]
         # add fellow
-        self.amity.add_person({"<first_name>": "Daniel",
-                               "<last_name>": "Maina",
-                               "Fellow": True, "Staff": False,
-                               "wants_accomodation": "N"})
+        self.amity.add_person("Fellow", "Daniel", "Maina", "N")
         # get object of added fellow
         new_fellow_object = all_people[-1]
         # assert that the fellow object is allocated an office
@@ -135,10 +132,7 @@ class TestAmity(unittest.TestCase):
         """To test if add_person allocates staff to office."""
         all_people = self.amity.people["all_people"]
         # add staff
-        self.amity.add_person({"<first_name>": "Daniel",
-                               "<last_name>": "Maina",
-                               "Fellow": False, "Staff": True,
-                               "wants_accomodation": "N"})
+        self.amity.add_person("Staff", "Daniel", "Maina", "N")
         # get object of added staff
         new_fellow_object = all_people[-1]
         # assert that the staff object is allocated an office
