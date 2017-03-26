@@ -255,15 +255,18 @@ class Amity(object):
             list_of_living_spaces = list(self.rooms["living_space"].keys())
 
             if not list_of_offices and not list_of_living_spaces:
-                cprint("There are no allocations")
+                cprint("There are no allocations.")
+                return "There are no allocations."
             else:
                 self.dump_allocated_to_text_file(
                     text_file,
                     list_of_offices,
                     list_of_living_spaces)
+                return "Successfully dumped to file."
         else:
             self.print_office_allocations()
             self.print_living_space_allocations()
+            return "Allocations successfully printed to screen."
 
     def print_room(self, room_name):
         """To return a list of room occupants."""
