@@ -460,6 +460,11 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(self.amity.print_allocations(),
                          "Allocations successfully printed to screen.")
 
+    def test_print_allocations_prints_successfully_dumps_to_file(self):
+        """To test if method prints allocations to screen."""
+        self.assertEqual(self.amity.print_allocations("test_file.txt"),
+                         "Successfully dumped to file.")
+
     def test_print_unallocated_to_office_dumps_to_file_successfully(self):
         """To test if method dumps room allocations to txt file."""
         file_name = "test.txt"
