@@ -279,9 +279,12 @@ class Amity(object):
                        format(room_name), "red")
                 cprint(", ".join([occupant.first_name for
                                   occupant in occupants]), "red")
+                return "Office printed successfuly."
             else:
                 cprint("The room {0} has no occupants currently".
                        format(room_name), "red")
+                return ("There are no occupants in the {} currently.".format(
+                    room_name))
         elif room_name in [room.name for room in living_spaces]:
             room_object = [room for room in list(
                 self.rooms["living_space"].keys())
@@ -292,13 +295,16 @@ class Amity(object):
                        format(room_name), "red")
                 cprint(", ".join([occupant.first_name
                                   for occupant in occupants]), "red")
+                return "Living Space printed successfuly."
             else:
                 cprint("The room {0} has no occupants currently".
                        format(room_name), "red")
+                return "There are no occupants in the room currently."
         elif (room_name not in [room.name for room in offices] or
               room_name in [room.name for room in living_spaces]):
             # if room name does not exist
             cprint("Room {0} does not exist".format(room_name), "red")
+            return "Room {} does not exist.".format(room_name)
 
     # Amity helper method begin here."""
 

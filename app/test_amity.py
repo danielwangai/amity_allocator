@@ -411,18 +411,27 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(original_number_of_occupants,
                          number_after_adding_attempt)
 
-    def test_print_room_successfully(self):
+    def test_print_room_does_not_print_inexistent_room(self):
         """To test if method prints rooms and occupants successfully."""
         # get room
-        room = list(self.amity.rooms["office"].keys())[0]
-        self.assertEqual(type(self.amity.print_room(room.name)[1]), list)
+        # room = list(self.amity.rooms["office"].keys())[0]
+        # self.assertEqual(type(self.amity.print_room(room.name)[1]), list)
+        room_name = "I don't exist!!!"
+        self.assertEqual(self.amity.print_room(room_name), "The room does not exist.")
 
     def test_print_room_does_not_print_when_given_wrong_name(self):
         """To test if method prints invalid message given wrong name."""
         # get room
         room = "I do not exist"
         self.assertEqual(self.amity.print_room(room),
-                         "Room {0} does not exist".format(room))
+                         "Room {0} does not exist.".format(room))
+
+    def test_print_room_prints_existing_office_with_no_occupants(self):
+        """To test if method prints existing office."""
+        room = "Narnia"
+        (self.assertEqual(self.amity.print_room(room),
+                          "There are no occupants in the {} currently.".format(
+            room)))
 
     def test_print_room_does_not_print_inexistent_room(self):
         """To test if method prints invalid message given wrong name."""
