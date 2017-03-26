@@ -14,10 +14,8 @@ class TestAmity(unittest.TestCase):
     def setUp(self):
         """To set up test variables."""
         self.amity = Amity()
-        self.amity.create_room({"<name>": ["Narnia"], "office": True,
-                                "living_space": False})
-        self.amity.create_room({"<name>": ["Python"], "office": False,
-                                "living_space": True})
+        self.amity.create_room("office", ["Narnia"])
+        self.amity.create_room("living_space", ["Python"])
 
     def test_create_room_adds_offices_successfully(self):
         """To test if create_room adds office(s) successfully."""
