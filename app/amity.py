@@ -151,9 +151,11 @@ class Amity(object):
         if person_object == "person id does not exist":
             cprint("person id does not exist.", "red")
             return "person id does not exist."
+        elif new_room not in self.get_all_rooms(self.rooms['all_rooms']):
+            cprint("Room does not exist.", "red")
         elif new_room_object == "room name does not exist":
-            cprint("room name does not exist.", "red")
-            return "room name does not exist."
+            cprint("The room {} has no space.".format(new_room), "red")
+            return "The room {} has no space.".format(new_room)
         else:
             if (type(person_object) == Staff and
                     type(new_room_object) == LivingSpace):
