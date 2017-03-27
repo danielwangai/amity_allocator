@@ -13,6 +13,7 @@ Usage:
     amity load_state <db>
     amity load_state <text_file>
     amity print_all_rooms
+    amity print_all_people
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -146,6 +147,11 @@ class Amity(cmd.Cmd):
     def do_print_all_rooms(self, arg):
         """Usage: print_all_rooms"""
         amity.print_all_rooms()
+
+    @docopt_cmd
+    def do_print_all_people(self, arg):
+        """Usage: print_all_people"""
+        amity.print_all_people()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

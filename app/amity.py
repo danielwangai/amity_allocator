@@ -14,6 +14,7 @@ import os
 import random
 
 from termcolor import cprint
+from tabulate import tabulate
 
 from .fellow import Fellow
 from .staff import Staff
@@ -400,6 +401,20 @@ class Amity(object):
             for room in list(self.rooms["living_space"]):
                 cprint(room.name, "green")
 
+    def print_all_people(self):
+        """To print out all people."""
+        all_people = self.people["all_people"]
+        if all_people:
+            headers = ["person id", "first name", "last name",
+                       "role", "has office"]
+            table = []
+            for person in all_people:
+                table.append([person.person_id, person.first_name,
+                              person.last_name, ("Fellow" if type(person) ==
+                                                 Fellow else "Staff")])
+            cprint(tabulate(table, headers, tablefmt="fancy_grid"), "white")
+        else:
+            cprint("There are no people currently", "red")
     # Amity helper method begin here."""
 
     def get_all_rooms(self, rooms):
