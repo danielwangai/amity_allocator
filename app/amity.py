@@ -384,7 +384,22 @@ class Amity(object):
             cprint("Room {0} does not exist".format(room_name), "red")
             return "Room {} does not exist.".format(room_name)
 
-    # Amity helper method begin here."""
+    def print_all_rooms(self):
+        """To print all rooms."""
+        if self.rooms["office"]:
+            cprint("The following is a list of all offices.", "white")
+            cprint("---------------------------------------------")
+            for room in list(self.rooms["office"].keys()):
+                cprint(room.name, "green")
+        else:
+            cprint("There are no office spaces currently.")
+
+        if self.rooms["living_space"]:
+            cprint("The following is a list of all living spaces.", "white")
+            cprint("---------------------------------------------")
+            for room in list(self.rooms["living_space"]):
+                cprint(room.name, "green")
+            # Amity helper method begin here."""
 
     def get_all_rooms(self, rooms):
         """To return a list of room names."""
