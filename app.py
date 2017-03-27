@@ -117,7 +117,12 @@ class Amity(cmd.Cmd):
     @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage: reallocate_person <person_id> <new_room>"""
-        amity.reallocate_person(int(args['<person_id>']), args['<new_room>'])
+        if args["<person_id>"].isalpha():
+            print("person id cannot be string")
+            return
+        else:
+            (amity.reallocate_person(int(args['<person_id>']),
+                                     args['<new_room>']))
 
     @docopt_cmd
     def do_save_state(self, args):
