@@ -332,16 +332,8 @@ class TestAmity(unittest.TestCase):
         person_id = 312312312
 
         new_room = list(self.amity.rooms["office"].keys())[0]
-        original_number_of_occupants = len(
-            self.amity.rooms["office"][new_room])
-        # print(list(self.amity.rooms["office"].keys())[0])
         self.assertEqual(self.amity.reallocate_person(
-            person_id, "o", new_room.name),
-            "person with id {0} does not exist".format(person_id))
-
-        number_after_adding_attempt = len(self.amity.rooms["office"][new_room])
-        self.assertEqual(original_number_of_occupants,
-                         number_after_adding_attempt)
+            person_id, new_room.name), "person id does not exist.")
 
     def test_reallocate_person_reject_move_to_living_with_wrong_personid(self):
         """To test that method rejects reallocation to living space.
@@ -351,16 +343,9 @@ class TestAmity(unittest.TestCase):
         person_id = 312312312
 
         new_room = list(self.amity.rooms["living_space"].keys())[0]
-        original_number_of_occupants = len(
-            self.amity.rooms["living_space"][new_room])
-        # print(list(self.amity.rooms["living_space"].keys())[0])
-        self.assertEqual(self.amity.reallocate_person(person_id, "l",
+        self.assertEqual(self.amity.reallocate_person(person_id,
                                                       new_room.name),
-                         "person with id {0} does not exist".format(person_id))
-        number_after_adding_attempt = len(
-            self.amity.rooms["living_space"][new_room])
-        self.assertEqual(original_number_of_occupants,
-                         number_after_adding_attempt)
+                         "person id does not exist.")
 
     def test_reallocate_person_reject_move_to_office_given_wbad_roomname(self):
         """To test that method rejects reallocation given wrong room name."""
