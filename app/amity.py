@@ -236,6 +236,14 @@ class Amity(object):
 
     def save_state(self, db_name=None):
         """To persist data to the database."""
+        if not db_name:
+            db_name = "amity_data.db"
+
+        if not self.rooms["all_rooms"] or not self.rooms["all_people"]:
+            cprint("Cannot load empty data fo db."
+                   " Populate data then save state.")
+            return ("Cannot load empty data fo db. Populate data then"
+                    " save state.")
         db = Database(db_name)
         db.save_state(db_name, self.people, self.rooms)
 
