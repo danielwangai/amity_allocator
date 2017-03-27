@@ -83,7 +83,6 @@ class Amity(cmd.Cmd):
             room_type = "office"
         else:
             room_type = "living_space"
-        print(args["<room_name>"])
 
         amity.create_room(room_type, args["<room_name>"])
 

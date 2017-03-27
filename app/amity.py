@@ -148,7 +148,6 @@ class Amity(object):
         new_room_object = (self.
                            get_room_object_from_room_name_for_available_rooms(
                                new_room))
-        cprint(type(new_room_object), "white")
         if person_object == "person id does not exist":
             cprint("person id does not exist.", "red")
             return "person id does not exist."
@@ -160,7 +159,6 @@ class Amity(object):
         else:
             if (type(person_object) == Staff and
                     type(new_room_object) == LivingSpace):
-                print(new_room_object, type(new_room_object))
                 cprint("Cannot reallocate staff to living space.",
                        "red")
                 return "Cannot reallocate staff to living space."
@@ -284,7 +282,6 @@ class Amity(object):
             self.populate_rooms(collected_data[1])
             self.populate_allocated_people(collected_data[2])
             self.populate_unallocated_people(collected_data[3])
-            print(collected_data[1])
             return "Data load from {} success".format(db_name)
 
     def print_unallocated(self, text_file=None):
@@ -355,9 +352,9 @@ class Amity(object):
             occupants.extend(self.rooms["office"][room_object])
             if len(occupants) > 0:
                 cprint("The occupants of the - {0} - are".
-                       format(room_name), "red")
+                       format(room_name), "white")
                 cprint(", ".join([occupant.first_name for
-                                  occupant in occupants]), "red")
+                                  occupant in occupants]), "green")
                 return "Office printed successfuly."
             else:
                 cprint("The room {0} has no occupants currently".
@@ -371,9 +368,9 @@ class Amity(object):
             occupants.extend(self.rooms["living_space"][room_object])
             if len(occupants) > 0:
                 cprint("The occupants of the - {0} - are".
-                       format(room_name), "red")
+                       format(room_name), "white")
                 cprint(", ".join([occupant.first_name
-                                  for occupant in occupants]), "red")
+                                  for occupant in occupants]), "green")
                 return "Living Space printed successfuly."
             else:
                 cprint("The room {0} has no occupants currently".
@@ -427,7 +424,6 @@ class Amity(object):
 
     def handle_no_available_office_space(self, person_object):
         """To handle cases of no office space."""
-        print("No available office space")
         # put to waiting list
         self.people["all_people"].append(person_object)
         self.rooms["office_waiting_list"].append(person_object)
@@ -540,7 +536,6 @@ class Amity(object):
                 staff.person_id = person[0]
                 self.people["all_people"].append(staff)
                 self.people["staff"].append(staff)
-        print(self.people["all_people"])
 
     def populate_rooms(self, rooms):
         """To populate rooms dictionary during load state database."""
@@ -557,7 +552,6 @@ class Amity(object):
                 # save living_spaces to data structures
                 self.rooms["all_rooms"].append(living_space)
                 self.rooms["living_space"][living_space] = []
-        print(self.rooms["all_rooms"])
 
     def populate_allocated_people(self, allocated_people):
         """To populate people allocated to rooms."""
