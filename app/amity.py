@@ -239,7 +239,7 @@ class Amity(object):
         if not db_name:
             db_name = "amity_data.db"
 
-        if not self.rooms["all_rooms"] or not self.rooms["all_people"]:
+        if not self.rooms["all_rooms"] or not self.people["all_people"]:
             cprint("Cannot load empty data fo db."
                    " Populate data then save state.")
             return ("Cannot load empty data fo db. Populate data then"
@@ -256,10 +256,10 @@ class Amity(object):
                 for i in raw_data:
                     row = i.split(" ")
                     if len(row) > 3:
-                        self.add_person("Yes", row[0], row[1],
+                        self.add_person("Y", row[0], row[1],
                                         row[2].capitalize())
                     else:
-                        self.add_person("No", row[0], row[1],
+                        self.add_person("N", row[0], row[1],
                                         row[2].capitalize())
             return "File found"
         else:
@@ -399,7 +399,8 @@ class Amity(object):
             cprint("---------------------------------------------")
             for room in list(self.rooms["living_space"]):
                 cprint(room.name, "green")
-            # Amity helper method begin here."""
+
+    # Amity helper method begin here."""
 
     def get_all_rooms(self, rooms):
         """To return a list of room names."""
