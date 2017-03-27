@@ -374,12 +374,39 @@ class TestAmity(unittest.TestCase):
 
     def test_reallocate_person_does_not_reallocate_staff_to_living_space(self):
         """To test that method does not reallocate staff to living space."""
-        self.amity.add_person("staff", "David", "Ngugi", "Y")
+        self.amity.add_person("Staff", "David", "Ngugi", "Y")
         person_object = self.amity.people["all_people"][-1]
         # reallocate to living space
         self.assertEqual(self.amity.reallocate_person(
             person_object.person_id, "Python"),
             "Cannot reallocate staff to living space.")
+
+    def test_reallocate_person_does_not_reallocate_staff_to_same_office(self):
+        """To test that method does not reallocate staff to same office."""
+        self.amity.add_person("Staff", "David", "Ngugi", "Y")
+        person_object = self.amity.people["all_people"][-1]
+        # reallocate to living space
+        self.assertEqual(self.amity.reallocate_person(
+            person_object.person_id, "Narnia"),
+            "Cannot reallocate to same room.")
+
+    def test_reallocate_person_does_not_reallocate_fellow_to_same_office(self):
+        """To test that method does not reallocate fellow to same office."""
+        self.amity.add_person("Fellow", "David", "Ngugi", "Y")
+        person_object = self.amity.people["all_people"][-1]
+        # reallocate to living space
+        self.assertEqual(self.amity.reallocate_person(
+            person_object.person_id, "Narnia"),
+            "Cannot reallocate to same room.")
+
+    def test_reallocate_person_wont_realocate_fellow_to_same_livingspace(self):
+        """To test that method wont reallocate fellow to same livingspace."""
+        self.amity.add_person("Fellow", "David", "Ngugi", "Y")
+        person_object = self.amity.people["all_people"][-1]
+        # reallocate to living space
+        self.assertEqual(self.amity.reallocate_person(
+            person_object.person_id, "Python"),
+            "Cannot reallocate to same room.")
 
     def test_print_room_does_not_print_inexistent_room(self):
         """To test if method prints rooms and occupants successfully."""
