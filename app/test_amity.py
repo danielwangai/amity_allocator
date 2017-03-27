@@ -372,6 +372,15 @@ class TestAmity(unittest.TestCase):
             person_object.person_id, new_room_name),
             "room name does not exist.")
 
+    def test_reallocate_person_does_not_reallocate_staff_to_living_space(self):
+        """To test that method does not reallocate staff to living space."""
+        self.amity.add_person("staff", "David", "Ngugi", "Y")
+        person_object = self.amity.people["all_people"][-1]
+        # reallocate to living space
+        self.assertEqual(self.amity.reallocate_person(
+            person_object.person_id, "Python"),
+            "Cannot reallocate staff to living space.")
+
     def test_print_room_does_not_print_inexistent_room(self):
         """To test if method prints rooms and occupants successfully."""
         # get room
@@ -380,7 +389,6 @@ class TestAmity(unittest.TestCase):
         room_name = "I don't exist!!!"
         self.assertEqual(self.amity.print_room(room_name),
                          "The room does not exist.")
-#
 
     def test_print_room_does_not_print_when_given_wrong_name(self):
         """To test if method prints invalid message given wrong name."""

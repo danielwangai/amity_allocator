@@ -160,7 +160,7 @@ class Amity(object):
                 print(new_room_object, type(new_room_object))
                 cprint("Cannot reallocate staff to living space.",
                        "red")
-                return "Cannot reaallocate staff to living space."
+                return "Cannot reallocate staff to living space."
             elif type(new_room_object) == Office:
                 current_room = self.get_room_from_person_id(
                     person_id, "o")
