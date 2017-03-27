@@ -304,7 +304,7 @@ class TestAmity(unittest.TestCase):
         # get initial number of people
         length = len(self.amity.people["fellows"])
         # create a person
-        self.amity.add_person("Dave", "F", "Y")
+        self.amity.add_person("Fellow", "David", "Ngugi", "Y")
         # get the new number of people
         new_length = len(self.amity.people["fellows"])
         # test that person is added
@@ -317,10 +317,13 @@ class TestAmity(unittest.TestCase):
         self.assertIn(person_object,
                       self.amity.rooms["living_space"][current_room])
         # get new_room
-        self.amity.create_room(["Ruby"], "l")
-        new_room_object = self.amity.get_room_from_room_name("Ruby", "l")
-        self.amity.reallocate_person(person_object.person_id, "l", "Ruby")
-
+        self.amity.create_room("living_space", ["Ruby"])
+        new_room_object = (self.amity.
+                           get_room_object_from_room_name_for_available_rooms(
+                               "Ruby"))
+        self.amity.reallocate_person(person_object.person_id, "Ruby")
+        self.assertNotIn(person_object,
+                         self.amity.rooms["living_space"][current_room])
         self.assertIn(person_object,
                       self.amity.rooms["living_space"][new_room_object])
 
