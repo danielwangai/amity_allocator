@@ -595,7 +595,7 @@ class Amity(object):
         if len(list_of_offices) > 0:
             for office in list_of_offices:
                 if len(self.rooms["office"][office]) > 0:
-                    print(office.name)
+                    print("{} - (Office)".format(office.name))
                     print("---------------------------")
                     persons_in_office = []
                     for person in self.rooms["office"][office]:
@@ -615,7 +615,7 @@ class Amity(object):
 
             for living_space in list_of_living_spaces:
                 if len(self.rooms["living_space"][living_space]) > 0:
-                    print(living_space.name)
+                    print("{} - (living space)".format(living_space.name))
                     print("---------------------------")
                     persons_in_living_space = []
                     for person in self.rooms["living_space"][living_space]:
