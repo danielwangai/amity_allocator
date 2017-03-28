@@ -159,22 +159,18 @@ class Amity(object):
         else:
             if (type(person_object) == Staff and
                     type(new_room_object) == LivingSpace):
-                cprint("Cannot reallocate staff to living space.",
-                       "red")
+                cprint("Cannot reallocate staff to living space.", "red")
                 return "Cannot reallocate staff to living space."
             elif type(new_room_object) == Office:
                 current_room = self.get_room_from_person_id(
                     person_id, "o")
                 if current_room == "person id does not exist":
                     # if person has has no office
-                    (cprint("{} has no current office space, "
-                            "hence canot reallocate".format(
-                                person_object.first_name
-                            )))
+                    (cprint("{} has no current office space,hence canot "
+                            "reallocate".format(
+                                person_object.first_name)))
                     return "{} has no current office space, "
-                    "hence canot reallocate".format(
-                        person_object.first_name
-                    )
+                    "hence canot reallocate".format(person_object.first_name)
                 elif current_room == new_room_object:
                     cprint("Cannot reallocate to same room.", "red")
                     return "Cannot reallocate to same room."
@@ -185,30 +181,21 @@ class Amity(object):
                     # append to new room
                     (self.rooms["office"][new_room_object].append(
                         person_object))
-                    cprint("{} {} has been reallocated from "
-                           "office {} to {}".
+                    cprint("{} {} has been reallocated from office {} to {}".
                            format(person_object.first_name,
-                                  person_object.last_name,
-                                  current_room.name,
-                                  new_room_object.name)
-                           )
+                                  person_object.last_name, current_room.name,
+                                  new_room_object.name))
                     return ("{} {} has been reallocated from office {} to {}".
                             format(person_object.first_name,
-                                   person_object.last_name,
-                                   current_room.name,
+                                   person_object.last_name, current_room.name,
                                    new_room_object.name))
             elif type(new_room_object) == LivingSpace:
-                current_room = self.get_room_from_person_id(
-                    person_id, "l")
+                current_room = self.get_room_from_person_id(person_id, "l")
                 if current_room == "person id does not exist":
-                    (cprint("{} has no current living space, "
-                            "hence cannot reallocate".format(
-                                person_object.first_name
-                            )))
-                    return ("{} has no current living space, "
-                            "hence cannot reallocate".format(
-                                person_object.first_name
-                            ))
+                    (cprint("{} has no current living space, hence cannot "
+                            "reallocate".format(person_object.first_name)))
+                    return ("{} has no current living space, hence cannot "
+                            "reallocate".format(person_object.first_name))
                 elif current_room == new_room_object:
                     cprint("Cannot reallocate to same room.", "red")
                     return "Cannot reallocate to same room."
@@ -219,19 +206,16 @@ class Amity(object):
                     # append to new room
                     (self.rooms["living_space"][new_room_object].
                      append(person_object))
-                    cprint("{} {} has been reallocated from"
-                           " living space {} to {}".
-                           format(person_object.first_name,
-                                  person_object.last_name,
-                                  current_room.name,
-                                  new_room_object.name)
-                           )
-                    return ("{} {} has been reallocated from"
-                            " living space {} to {}".
-                            format(person_object.first_name,
-                                   person_object.last_name,
-                                   current_room.name,
-                                   new_room_object.name))
+                    cprint("{} {} has been reallocated from living space {} "
+                           "to {}".format(person_object.first_name,
+                                          person_object.last_name,
+                                          current_room.name,
+                                          new_room_object.name))
+                    return ("{} {} has been reallocated from living space {}"
+                            " to {}".format(person_object.first_name,
+                                            person_object.last_name,
+                                            current_room.name,
+                                            new_room_object.name))
 
     def save_state(self, db_name=None):
         """To persist data to the database."""
@@ -670,9 +654,9 @@ class Amity(object):
     def list_of_persons_allocated_to_offices(self):
         """To return a list of persons allocated to office spaces."""
         persons_in_offices = []
-        for i in list(self.rooms["office"].keys()):
-            if len(self.rooms["office"][i]) > 0:
-                persons_in_offices.extend(self.rooms["office"][i])
+        for key, value in self.rooms["office"].items():
+            if len(value) > 0:
+                persons_in_offices.extend(value)
         return persons_in_offices
 
     def list_of_fellows_allocated_to_living_spaces(self):
