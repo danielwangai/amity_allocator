@@ -285,10 +285,9 @@ class Amity(object):
             return "Data load from {} success".format(db_name)
 
     def print_unallocated(self, text_file=None):
-        """To print out a list of people space."""
+        """To print out a people without space."""
         unallocated_office = self.rooms["office_waiting_list"]
         unallocated_living_space = self.rooms["living_space_waiting_list"]
-
         if text_file:
             if not unallocated_office and not unallocated_living_space:
                 cprint("There are no unallocations")
@@ -301,28 +300,34 @@ class Amity(object):
             if unallocated_office:
                 cprint("The following are people lacking space.", "red")
                 cprint("---------------------------------------", "white")
+                headers = ["person id", "first name", "last name",
+                           "person category"]
+                table = []
                 for person in unallocated_office:
-                    cprint("{0}, {1} - {2}".format(person.first_name,
-                                                   person.last_name,
-                                                   person.category), "blue")
+                    table.append([person.person_id, person.first_name,
+                                  person.last_name, "Fellow"
+                                  if type(person) == Fellow else "Staff"])
+                print(tabulate(table, headers, tablefmt="fancy_grid"))
             else:
                 cprint("There are no persons lacking living space.", "red")
-
             cprint("\n")
             if unallocated_living_space:
                 cprint("The following are people lacking living space.", "red")
                 cprint("---------------------------------------", "white")
+                headers = ["person id", "first name", "last name",
+                           "person category"]
+                table = []
                 for person in unallocated_living_space:
-                    cprint("{0}, {1} - {2}".format(person.first_name,
-                                                   person.last_name,
-                                                   person.category), "blue")
+                    table.append([person.person_id, person.first_name,
+                                  person.last_name, "Fellow"
+                                  if type(person) == Fellow else "Staff"])
+                print(tabulate(table, headers, tablefmt="fancy_grid"))
             else:
                 cprint("There are no persons lacking living space.", "red")
-
             return "Successfully printed unallocated people to screen."
 
     def print_allocations(self, text_file=None):
-        """To print living spaces and people allocated to them."""
+        """To print rooms and people allocated to them."""
         if text_file:
             list_of_offices = list(self.rooms["office"].keys())
             list_of_living_spaces = list(self.rooms["living_space"].keys())
@@ -378,25 +383,23 @@ class Amity(object):
                 return "There are no occupants in the room currently."
         elif (room_name not in [room.name for room in offices] or
               room_name in [room.name for room in living_spaces]):
-            # if room name does not exist
             cprint("Room {0} does not exist".format(room_name), "red")
             return "Room {} does not exist.".format(room_name)
 
     def print_all_rooms(self):
         """To print all rooms."""
-        if self.rooms["office"]:
-            cprint("The following is a list of all offices.", "white")
-            cprint("---------------------------------------------")
-            for room in list(self.rooms["office"].keys()):
-                cprint(room.name, "green")
+        headers = ["room id", "room name", "room type"]
+        table = []
+        all_rooms = self.rooms["all_rooms"]
+        if all_rooms:
+            for room in all_rooms:
+                table.append([room.room_id, room.name,
+                              ("Office" if type(room) == Office
+                               else "Living Space")])
+            cprint(tabulate(table, headers, tablefmt="fancy_grid"), "white")
         else:
-            cprint("There are no office spaces currently.")
-
-        if self.rooms["living_space"]:
-            cprint("The following is a list of all living spaces.", "white")
-            cprint("---------------------------------------------")
-            for room in list(self.rooms["living_space"]):
-                cprint(room.name, "green")
+            cprint("There are no rooms currently.", "red")
+            return "There are no rooms currently."
 
     def print_all_people(self):
         """To print out all people."""
