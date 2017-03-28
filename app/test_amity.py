@@ -203,7 +203,6 @@ class TestAmity(unittest.TestCase):
         # attempt to add another fellow
         self.amity.add_person("Fellow", "Dan", "K", "Y")
         last_person = self.amity.people["all_people"][-1]
-        print(last_person)
 
         # confirm that new person has not been added to office
         self.assertNotIn(last_person,
