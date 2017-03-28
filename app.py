@@ -8,10 +8,12 @@ Usage:
     amity print_room <room_name>
     amity print_unallocated [--file=text_file]
     amity print_allocations [--file=text_file]
-    amity reallocate_person <person_id> <room_type> <new_room>
+    amity reallocate_person <person_id> <new_room>
     amity save_state [--db=sqlite_database]
     amity load_state <db>
     amity load_state <text_file>
+    amity print_all_rooms
+    amity print_all_people
     amity (-i | --interactive)
     amity (-h | --help | --version)
 Options:
@@ -81,7 +83,6 @@ class Amity(cmd.Cmd):
             room_type = "office"
         else:
             room_type = "living_space"
-        print(args["<room_name>"])
 
         amity.create_room(room_type, args["<room_name>"])
 
@@ -116,9 +117,13 @@ class Amity(cmd.Cmd):
 
     @docopt_cmd
     def do_reallocate_person(self, args):
-        """Usage: reallocate_person <person_id> <room_type> <new_room>"""
-        amity.reallocate_person(int(args['<person_id>']),
-                                args['<room_type>'], args['<new_room>'])
+        """Usage: reallocate_person <person_id> <new_room>"""
+        if args["<person_id>"].isalpha():
+            print("person id cannot be string")
+            return
+        else:
+            (amity.reallocate_person(int(args['<person_id>']),
+                                     args['<new_room>']))
 
     @docopt_cmd
     def do_save_state(self, args):
@@ -136,6 +141,16 @@ class Amity(cmd.Cmd):
     def do_load_people(self, args):
         """Usage: load_state <text_file>"""
         amity.load_people(args["<text_file>"])
+
+    @docopt_cmd
+    def do_print_all_rooms(self, arg):
+        """Usage: print_all_rooms"""
+        amity.print_all_rooms()
+
+    @docopt_cmd
+    def do_print_all_people(self, arg):
+        """Usage: print_all_people"""
+        amity.print_all_people()
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""

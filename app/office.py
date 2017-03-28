@@ -11,3 +11,6 @@ class Office(Room):
     def __init__(self, name):
         """Override the init method of Room superclass."""
         super(Office, self).__init__(name)
+
+    def __str__(self):
+        pass
