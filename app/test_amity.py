@@ -159,8 +159,10 @@ class TestAmity(unittest.TestCase):
 
         Adds fellow/staff to office waiting list when offices are full.
         """
+        self.free_variables()
         # get office
-        office = list(self.amity.rooms["office"].keys())[0]
+        self.amity.create_room("office", ["Hogwarts"])
+        office = list(self.amity.rooms["office"].keys())[-1]
         list_of_persons = [
             ["Fellow", "Daniel", "Maina", "N"],
             ["Fellow", "Dan", "Wachira", "N"],
