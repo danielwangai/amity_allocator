@@ -297,34 +297,42 @@ class Amity(object):
                                               unallocated_living_space)
                 return "Successfully dumped unallocated people to file."
         else:
-            if unallocated_office:
-                cprint("The following are people lacking space.", "red")
-                cprint("---------------------------------------", "white")
-                headers = ["person id", "first name", "last name",
-                           "person category"]
-                table = []
-                for person in unallocated_office:
-                    table.append([person.person_id, person.first_name,
-                                  person.last_name, "Fellow"
-                                  if type(person) == Fellow else "Staff"])
-                print(tabulate(table, headers, tablefmt="fancy_grid"))
-            else:
-                cprint("There are no persons lacking living space.", "red")
-            cprint("\n")
-            if unallocated_living_space:
-                cprint("The following are people lacking living space.", "red")
-                cprint("---------------------------------------", "white")
-                headers = ["person id", "first name", "last name",
-                           "person category"]
-                table = []
-                for person in unallocated_living_space:
-                    table.append([person.person_id, person.first_name,
-                                  person.last_name, "Fellow"
-                                  if type(person) == Fellow else "Staff"])
-                print(tabulate(table, headers, tablefmt="fancy_grid"))
-            else:
-                cprint("There are no persons lacking living space.", "red")
+            self.print_unallocated_to_office(unallocated_office)
+            self.print_unallocated_to_living_space(unallocated_living_space)
             return "Successfully printed unallocated people to screen."
+
+    def print_unallocated_to_office(self, unallocated_office):
+        """To print out people unallocated to offices."""
+        if unallocated_office:
+            cprint("The following are people lacking space.", "red")
+            cprint("---------------------------------------", "white")
+            headers = ["person id", "first name", "last name",
+                       "person category"]
+            table = []
+            for person in unallocated_office:
+                table.append([person.person_id, person.first_name,
+                              person.last_name, "Fellow"
+                              if type(person) == Fellow else "Staff"])
+            cprint(tabulate(table, headers, tablefmt="fancy_grid"), "white")
+        else:
+            cprint("There are no persons lacking living space.", "red")
+        cprint("\n")
+
+    def print_unallocated_to_living_space(self, unallocated_living_space):
+        """To print fellows unallocated to living spaces."""
+        if unallocated_living_space:
+            cprint("The following are people lacking living space.", "red")
+            cprint("---------------------------------------", "white")
+            headers = ["person id", "first name", "last name",
+                       "person category"]
+            table = []
+            for person in unallocated_living_space:
+                table.append([person.person_id, person.first_name,
+                              person.last_name, "Fellow"
+                              if type(person) == Fellow else "Staff"])
+            cprint(tabulate(table, headers, tablefmt="fancy_grid"), "white")
+        else:
+            cprint("There are no persons lacking living space.", "red")
 
     def print_allocations(self, text_file=None):
         """To print rooms and people allocated to them."""
