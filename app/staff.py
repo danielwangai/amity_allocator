@@ -11,3 +11,6 @@ class Staff(Person):
     def __init__(self, first_name, last_name):
         """Override the init method of Person superclass."""
         super(Staff, self).__init__(first_name, last_name)
+
+    def __str__(self):
+        pass

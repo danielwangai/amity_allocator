@@ -11,3 +11,6 @@ class LivingSpace(Room):
     def __init__(self, name):
         """Override the init method of Ro superclass."""
         super(LivingSpace, self).__init__(name)
+
+    def __str__(self):
+        pass

@@ -107,6 +107,8 @@ class Amity(object):
         Staff only entitled to office space alone
 
         """
+        import pdb
+        pdb.set_trace()
         wants_accomodation = ("Yes" if wants_accomodation is
                               "Y" else "No")
         if person_type == "Fellow":
