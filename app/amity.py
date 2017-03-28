@@ -153,6 +153,7 @@ class Amity(object):
             return "person id does not exist."
         elif new_room not in self.get_all_rooms(self.rooms['all_rooms']):
             cprint("Room does not exist.", "red")
+            return 'Room does not exist.'
         elif new_room_object == "room name does not exist":
             cprint("The room {} has no space.".format(new_room), "red")
             return "The room {} has no space.".format(new_room)
@@ -455,6 +456,7 @@ class Amity(object):
                     (self.rooms["living_space"][living_space].
                      append(person_object))
                     self.people["all_people"].append(person_object)
+
                     cprint("{} {} id {} allocated to {} (living space)".format(
                         person_object.first_name, person_object.last_name,
                         person_object.person_id, living_space.name), "blue")
