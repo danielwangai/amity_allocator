@@ -1,5 +1,16 @@
-from person import Person
+"""This file contains the definition of Person class."""
+from .person import Person
+
 
 class Staff(Person):
-    def __init__(self):
-        super(Staff, self).__init__(person_id, name)
+    """Class inherits from Person class."""
+
+    wants_accomodation = "N"
+    category = "Staff"
+
+    def __init__(self, first_name, last_name):
+        """Override the init method of Person superclass."""
+        super(Staff, self).__init__(first_name, last_name)
+
+    def __str__(self):
+        pass

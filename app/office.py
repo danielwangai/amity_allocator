@@ -1,9 +1,16 @@
-from rooms import Room
+"""This file contains the definition of office sublcass."""
+
+from .rooms import Room
+
 
 class Office(Room):
-    '''
-        Office has slots for at most 6 people(Fellows and or Staff)
-    '''
+    """Class inherits from Room class."""
+
     room_capacity = 6
-    def init(self):
-        super(Office, self).__init__(room_id, name)
+
+    def __init__(self, name):
+        """Override the init method of Room superclass."""
+        super(Office, self).__init__(name)
+
+    def __str__(self):
+        pass

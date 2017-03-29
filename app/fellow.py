@@ -1,9 +1,16 @@
-from person import Person
+"""This file contains the definition of Fellow class."""
+from .person import Person
+
 
 class Fellow(Person):
-    '''
-        by default accomodation is set to N(NO)
-    '''
+    """Class inherits from Person class."""
+
     wants_accomodation = "N"
-    def __init__(self, person_id, name):
-        super(Fellow, self).__init__(person_id, name)
+    category = "Fellow"
+
+    def __init__(self, first_name, last_name):
+        """Override the init method of Person superclass."""
+        super(Fellow, self).__init__(first_name, last_name)
+
+    def __str__(self):
+        pass
